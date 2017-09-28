@@ -1,0 +1,20 @@
+﻿MerchantService.POS
+
+
+winexe
+C#
+.cs
+D:\MerchantService\Source\MerchantService.Web\MerchantService.POS\obj\Release\
+MerchantService.POS
+none
+false
+TRACE
+
+15-7581817
+11612798364
+401561424831
+97339795226
+AddItem.xaml;App.xaml;CustomerWindow.xaml;LoginScreen.xaml;LogOut.xaml;MainWindow.xaml;PaymentWindow.xaml;POSWindow.xaml;Receipts\CpoReceipt.xaml;Receipts\ReturnbillReceipt.xaml;Simple Styles.xaml;SupervisorLogin.xaml;SuspendBill.xaml;UnsuspendBill.xaml;UserControls\BusyIndicatorControl.xaml;
+
+True
+

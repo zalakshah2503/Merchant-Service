@@ -1,0 +1,185 @@
+﻿<div ng-controller="CustomerPOWorkListController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="customerPOworklist"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div>
+                    <a class="pointer col-lg-2" ng-click="showDetails = !showDetails"><span string-replace="moresearchoption"></span></a>
+                    <a class="btn btn-primary pull-right pointer" name="customer-btn" ng-show="$root.merchatSettings.IsAllowedToCreateCPO" href="#CustomerPO"><span string-replace="addcustomerpo"></span></a>
+                    <div class="clearfix"></div>
+                    <br />
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="customername"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="255" ng-model="search.CustomerName" name="customer-name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="issuingbranch"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="search.InitiationBranchId" name="issuing-branch">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.Id as branch in branchList  | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="15" ng-model="search.CustomerMobile" name="mobile-no">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="collectingbranch"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="search.CollectingBranchId" name="collecting-branch">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="orderno"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="16" ng-model="search.PurchaseOrderNo" name="order-no">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="membershipcode"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="30" ng-model="search.MembershipCode" name="membership-code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="showDetails">
+                    <div class="col-lg-8">
+                        <h4><span string-replace="date"></span></h4>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="issuedatefrom"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <input type="text" disabled name="issue-date-from" ng-model="dateSearch.IssueDateFrom" class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="" is-open="isIssueDateFromPickerOpened" ng-required="true" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openIssueDateFromPicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="duedatefrom"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <input type="text" name="due-date-from" ng-model="dateSearch.DueDateFrom" disabled class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="" is-open="isDueDateFromPickerOpened" ng-required="true" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openDueDateFromPicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="issuedateto"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <input type="text" name="issue-date-to" ng-model="dateSearch.IssueDateTo" disabled class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="" is-open="isIssueDateToPickerOpened" ng-required="true" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openIssueDateToPicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="duedateto"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <input type="text" name="due-date-to" ng-model="dateSearch.DueDateTo" disabled class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="" is-open="isDueDateToPickerOpened" ng-required="true" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openDueDateToPicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h4><span string-replace="amount"></span></h4>
+                        <hr />
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="amountfrom"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="13" ng-model="amountSearch.AmountFrom" name="amount-from" pattern="^\d{1,8}(\.\d{1,4})?$"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="amountto"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="13" ng-model="amountSearch.AmountTo" name="amount-to" pattern="^\d{1,8}(\.\d{1,4})?$"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchCustomerPOWorkList()"><span string-replace="retailinvoicesearch"></span></button>
+                </div>
+            </div>
+            <br />
+            <div class="alert alert-success text-center" role="alert" ng-show="totalCollection.length==0">
+                <span>{{cpoNotFound}}</span>
+            </div>
+            <table class="table table-striped table-bordered table-hover" name="CPO-grid" ng-if="totalCollection.length>0">
+                <thead>
+                    <tr>
+                        <th><span string-replace="name"></span></th>
+                        <th><span string-replace="orderno"></span>.</th>
+                        <th><span string-replace="amount"></span></th>
+                        <th><span string-replace="issuedate"></span></th>
+                        <th><span string-replace="issuebranch"></span></th>
+                        <th><span string-replace="duedate"></span></th>
+                        <th><span string-replace="collectingbranch"></span></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="cpo in totalCollection" ng-class="{'reject-row':cpo.IsCancel,'highlight-row':cpo.IsSPORequired}">
+                        <td class="grid-width">{{cpo.CustomerName}}</td>
+                        <td class="grid-width">{{cpo.PurchaseOrderNo}}</td>
+                        <td class="grid-width">{{cpo.Total}}</td>
+                        <td class="grid-width">{{cpo.InitiationDate | date:'dd-MM-yyyy'}}</td>
+                        <td class="grid-width">{{cpo.InitiationBranchName}}</td>
+                        <td class="grid-width">{{cpo.DueDate | date:'dd-MM-yyyy'}}</td>
+                        <td class="grid-width">{{cpo.CollectingBranchName}}</td>
+                        <td>
+                            <div class="action-td">
+                                <a title="View" name="CPO-view" ng-click="fetchCPODetail(cpo.CustomerPOId)"><i class="fa fa-eye"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="totalCollection.length >0" style="text-align:center">
+                <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

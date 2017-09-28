@@ -1,0 +1,133 @@
+﻿<Window x:Class="MerchantService.POS.PaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:toolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:base="clr-namespace:MerchantService.POS.UserControls"
+        Title="Payment"  Width="650" Height="600" FontFamily="Arial" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" WindowStyle="ToolWindow" Tag="paymentpos">
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{Binding CashPaymentMode}" ></KeyBinding>
+        <KeyBinding Key="F2" Command="{Binding DebitCardPaymentMode}"></KeyBinding>
+        <KeyBinding Key="F3" Command="{Binding CreditCardPaymentMode}" ></KeyBinding>
+        <KeyBinding Key="F4" Command="{Binding CouponPaymentMode}"></KeyBinding>
+        <KeyBinding Key="F5" Command="{Binding ChequePaymentMode}" ></KeyBinding>
+        <KeyBinding Key="F6" Command="{Binding CreditAccountPaymentMode}"></KeyBinding>
+        <KeyBinding Key="F7" Command="{Binding DebitCardReceiptCommand}" ></KeyBinding>
+        <KeyBinding Key="F8" Command="{Binding CreditCardReceiptNo}"></KeyBinding>
+        <KeyBinding Key="F9" Command="{Binding CouponReceiptNo}" ></KeyBinding>
+        <KeyBinding Key="F10" Command="{Binding ChequeReceiptNo}"></KeyBinding>
+        <KeyBinding Key="F11" Command="{Binding SubmitCommand}"></KeyBinding>
+        <KeyBinding Key="F12" Command="{Binding CanelCommand}"></KeyBinding>
+    </Window.InputBindings>
+    <toolkit:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="Processing Bill..">
+        <StackPanel x:Name="stackPanelMain" Background="#FFEFF0F2">
+            <Grid x:Name="grdPaymentMode" Margin="10,0,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="70"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Tag="cashpos" Text="Cash" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="0" />
+                <TextBlock Text="(F1)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="0" />
+                <base:BaseTextBox VerticalContentAlignment="Center" BorderBrush="Transparent" IsFloat="True" x:Name="txtCash" Text="{Binding CashAmount,UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Static sys:String.Empty}}" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="0"  MaxLength="10" FontSize="14" LostFocus="txtCash_LostFocus" GotFocus="txtCash_GotFocus" />
+
+                <TextBlock Tag="debitcardpos" Text="Debit Card" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="1" />
+                <TextBlock Text="(F2)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="1" />
+                <base:BaseTextBox VerticalContentAlignment="Center" BorderBrush="Transparent" IsFloat="True" x:Name="txtDebitCard" Text="{Binding DebitCardAmount,UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Static sys:String.Empty}}" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="1" Padding="0,5,0,0" MaxLength="10 " FontSize="14" LostFocus="txtDebitCard_LostFocus" GotFocus="txtDebitCard_GotFocus" />
+
+                <TextBlock Tag="receiptnodpos" Text="Receipt No" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="1" />
+                <TextBlock Text="(F7)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="1" />
+                <TextBox VerticalContentAlignment="Center" BorderBrush="Transparent" x:Name="txtDebitCardReceipt" Text="{Binding DebitCardReceiptNo,UpdateSourceTrigger=PropertyChanged}" Margin="5,0" Height="35" Width="180" Grid.Column="4" Grid.Row="1" Padding="0,5,0,0" MaxLength="20" FontSize="14" LostFocus="txtDebitCardReceipt_LostFocus" GotFocus="txtDebitCardReceipt_GotFocus" />
+
+                <TextBlock Tag="creditcardpos" Text="Credit Card" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="2" />
+                <TextBlock Text="(F3)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="2" />
+                <base:BaseTextBox VerticalContentAlignment="Center" BorderBrush="Transparent" IsFloat="True" x:Name="txtCreditCard" Text="{Binding CreditCardAmount,UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Static sys:String.Empty}}" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="2" Padding="0,5,0,0" MaxLength="10" FontSize="14" LostFocus="txtCreditCard_LostFocus" GotFocus="txtCreditCard_GotFocus" />
+
+                <TextBlock Tag="receiptnocpos" Text="Receipt No" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="2" />
+                <TextBlock Text="(F8)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="2" />
+                <TextBox VerticalContentAlignment="Center" BorderBrush="Transparent" x:Name="txtCreditCardReceipt" Text="{Binding CreditCardReceiptNumber,UpdateSourceTrigger=PropertyChanged}" Margin="5,0" Height="35" Width="180" Grid.Column="3" Grid.Row="2" Padding="0,5,0,0" MaxLength="20" FontSize="14" GotFocus="txtCreditCardReceipt_GotFocus" LostFocus="txtCreditCardReceipt_LostFocus" />
+
+                <TextBlock Tag="couponpos" Text="Coupon" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="3" />
+                <TextBlock Text="(F4)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="3" />
+                <base:BaseTextBox VerticalContentAlignment="Center" BorderBrush="Transparent" IsFloat="True" x:Name="txtCoupon" Text="{Binding CouponAmount,UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Static sys:String.Empty}}" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="3" Padding="0,5,0,0" MaxLength="10" FontSize="14" GotFocus="txtCoupon_GotFocus" LostFocus="txtCoupon_LostFocus" />
+
+                <TextBlock Tag="couponnopos" Text="Coupon No" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="3" />
+                <TextBlock Text="(F9)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="3" />
+                <TextBox VerticalContentAlignment="Center" BorderBrush="Transparent" x:Name="txtCouponNo" Text="{Binding CouponNo,UpdateSourceTrigger=PropertyChanged}" Margin="5,0" Height="35" Width="180" Grid.Column="3" Grid.Row="3" Padding="0,5,0,0" MaxLength="20" FontSize="14" GotFocus="txtCouponNo_GotFocus" LostFocus="txtCouponNo_LostFocus" />
+
+                <TextBlock Tag="chequepos" Text="Cheque" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="4" />
+                <TextBlock Text="(F5)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="4" />
+                <base:BaseTextBox VerticalContentAlignment="Center" BorderBrush="Transparent" IsFloat="True" x:Name="txtCheque" Text="{Binding chequeAmount,UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Static sys:String.Empty}}" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="4" Padding="0,5,0,0" MaxLength="10" FontSize="14" GotFocus="txtCheque_GotFocus" LostFocus="txtCheque_LostFocus" />
+               
+                <TextBlock Tag="chequepos" Text="Cheque" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="4" />
+                <TextBlock Text="(F10)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="2" Grid.Row="4" />
+                <TextBox VerticalContentAlignment="Center" BorderBrush="Transparent" x:Name="txtChequeNo" Text="{Binding ChequeNo,UpdateSourceTrigger=PropertyChanged}" Margin="5,0" Height="35" Width="180" Grid.Column="3" Grid.Row="4" Padding="0,5,0,0" MaxLength="20" FontSize="14" GotFocus="txtChequeNo_GotFocus" LostFocus="txtChequeNo_LostFocus" />                             
+
+                <TextBlock Tag="creditaccountpos" Text="Credit Account" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="5" />
+                <TextBlock Text="(F6)" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Grid.Column="0" Grid.Row="5" />
+                <base:BaseTextBox VerticalContentAlignment="Center" BorderBrush="Transparent" IsFloat="True" x:Name="txtCreditAcocount" Text="{Binding CreditAccountAmount,UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Static sys:String.Empty}}" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="5" Padding="0,5,0,0" MaxLength="10" FontSize="14" GotFocus="txtCreditAcocount_GotFocus" LostFocus="txtCreditAcocount_LostFocus" />
+
+                <Label Tag="downpaymentpos" HorizontalAlignment="Right" FontWeight="Bold" Content="DownPayment" FontSize="13" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center"/>
+                <TextBox VerticalContentAlignment="Center" BorderBrush="Transparent" x:Name="txtDownPayment" Text="{Binding DownPaymentAmount}" IsReadOnly="True" Margin="5,0" Height="35" Width="180" Grid.Column="1" Grid.Row="6" Padding="0,5,0,0" MaxLength="10" FontSize="14"></TextBox>
+
+                <Label Tag="additionalcostpos" HorizontalAlignment="Right" FontWeight="Bold" Content="Additional Cost" x:Name="lblAdditionalCost" FontSize="13" Grid.Column="2" Grid.Row="6" VerticalAlignment="Center"></Label>
+                <TextBox VerticalContentAlignment="Center" BorderBrush="Transparent" x:Name="txtAdditionalCode" Text="{Binding AdditionalCost}" IsReadOnly="True" Margin="5,0" Height="35" Width="180" Grid.Column="3" Grid.Row="6" Padding="0,5,0,0" MaxLength="10" FontSize="14"></TextBox>
+
+                <Grid Background="#FFDEDEDE" Grid.ColumnSpan="4" Margin="20,20,20,0" Grid.Row="7" Grid.RowSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Tag="totalpos" HorizontalAlignment="Right" Content="Total:" FontSize="13" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,14,0,12" FontWeight="Bold" />
+                    <TextBlock  AutomationProperties.AutomationId="totalamt" Margin="10,5,0,0" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="{Binding TotalAmount,StringFormat=C2}" AutomationProperties.HelpText="{Binding TotalAmount}" Height="35" Width="180"  Padding="0,5,0,0" FontSize="17" />
+                    <Label Grid.Row="1" Grid.Column="0" Tag="paidpos" HorizontalAlignment="Right" Content="Paid:" FontSize="13" VerticalAlignment="Center" FontWeight="Bold" />
+                    <TextBlock AutomationProperties.HelpText="{Binding PaidAmount}"  AutomationProperties.AutomationId="paid" Margin="10,5,0,0" Grid.Row="1" Grid.Column="1" x:Name="txtPaid" Height="35" Width="180" Text="{Binding PaidAmount,StringFormat=C2, FallbackValue=0}" Padding="0,5,0,0" FontSize="16" FontWeight="Bold"/>
+                    <Label Grid.Row="0" Grid.Column="2" Tag="differencepos" HorizontalAlignment="Right" FontWeight="Bold" Content="Difference:" FontSize="13" VerticalAlignment="Center" />
+                    <TextBlock AutomationProperties.HelpText="{Binding DifferenceAmount}"  AutomationProperties.AutomationId="diff" Margin="10,5,0,0" FontWeight="Bold" Grid.Row="0" Grid.Column="3" x:Name="txtDifference" Text="{Binding DifferenceAmount,StringFormat=C2,FallbackValue=0}" Height="35" Width="180" Padding="0,5,0,0" FontSize="16" />
+                    <Label Grid.Row="1" Grid.Column="2" Tag="amounttoreturnpos" HorizontalAlignment="Right" FontWeight="Bold" Content="Amount To Be Return:" FontSize="13" VerticalAlignment="Center" />
+                    <TextBlock  AutomationProperties.HelpText="{Binding RemainingAmount}" AutomationProperties.AutomationId="amttortrn" Foreground="#FFA98C64" Margin="10,5,0,0" FontWeight="Bold" Grid.Row="1" Grid.Column="3" x:Name="txtRemaining" Text="{Binding RemainingAmount,StringFormat=C2,FallbackValue=0}"  Height="35" Width="180" Padding="0,5,0,0" FontSize="16" />
+                </Grid>
+            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" >
+                <StackPanel Orientation="Horizontal">
+                    <Label Tag="submitpos" FontSize="14" Content="Submit" Width="60" Height="35" Foreground="White" 
+                   Background="#FF28759F"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                       VerticalAlignment="Center"   />
+                    <Label FontSize="14" Content="(F11)" Width="50" Height="35" Foreground="White" 
+                   Background="#FF28759F"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                       VerticalAlignment="Center"   />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Tag="cancelpos" FontSize="14" Content="Cancel" Width="60" Height="35" Foreground="White" 
+                   Background="#FFB44F3D"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                       VerticalAlignment="Center" Margin="10,0,0,0"  />
+                    <Label FontSize="14" Content="(F12)" Width="50" Height="35" Foreground="White" 
+                   Background="#FFB44F3D"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                       VerticalAlignment="Center" Margin="0,0,0,0"  />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </toolkit:BusyIndicator>
+</Window>

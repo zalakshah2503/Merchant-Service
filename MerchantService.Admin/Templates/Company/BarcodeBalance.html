@@ -1,0 +1,75 @@
+﻿<div ng-class="{'disabled':isPaymentMode}">
+    <br />
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-3 control-label">Balance Barcode:</label>
+            <div class="col-md-8">
+                <fieldset>
+                    <legend>Digit </legend>
+                        <a href="" class="pull-right help-icon"><span class="fa fa-question-circle"></span></a>
+                    <div class="row">
+                        <label class="col-md-3 control-label">Minimum:</label>
+                        <div class="col-md-4" ng-class="{ 'has-error': addCompany.frombarcode.$touched && addCompany.frombarcode.$invalid }">
+                            <input type="number" name="frombarcode" ng-min="4" max="18" ng-max="18" required ng-model="companyDetail.BalanceBarcodeFrom" class="form-control" id="">
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="addCompany.frombarcode.$error" ng-if="addCompany.frombarcode.$touched">
+                                <p ng-message="max" class="text-error">{{barcodeInvalid}}</p>
+                                <p ng-message="required" class="text-error">{{barcodeRequired}}</p>
+                                <p ng-message="min" class="text-error">{{barcodeInvalid}}</p>
+                                <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="col-md-3 control-label">Maximum:</label>
+                        <div class="col-md-4" ng-class="{ 'has-error': addCompany.tobarcode.$touched && addCompany.tobarcode.$invalid }">
+                            <input type="number" name="tobarcode" ng-min="4" max="18" ng-max="18" required ng-model="companyDetail.BalanceBarcodeTo" class="form-control" id="">
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="addCompany.tobarcode.$error" ng-if="addCompany.tobarcode.$touched">
+                                <p ng-message="max" class="text-error">{{barcodeInvalid}}</p>
+                                <p ng-message="min" class="text-error">{{barcodeInvalid}}</p>
+                                <p ng-message="required" class="text-error">{{barcodeRequired}}</p>
+                                <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Price:</label>
+            <div class="col-md-8">
+                <fieldset>
+                    <legend>Digit </legend>
+                    <a href="" class="pull-right help-icon"><span class="fa fa-question-circle"></span></a>
+                    <div class="row">
+                        <div class="radio col-md-6 radio-btns">
+                            <label> <input type="radio" value="First" name="digit-first" ng-model="companyDetail.PriceStartFrom">First </label>
+                            <label> <input type="radio" value="Last" name="digit-last" ng-model="companyDetail.PriceStartFrom">Last </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 control-label">Price Digit Length:</label>
+                        <div class="col-md-4" ng-class="{ 'has-error': addCompany.pricedigitlength.$touched && addCompany.pricedigitlength.$invalid }">
+                          
+                            <input type="number" name="pricedigitlength" min="1" max="4" ng-max="4" required ng-model="companyDetail.PriceDigitLength" class="form-control" id="">
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="addCompany.pricedigitlength.$error" ng-if="addCompany.pricedigitlength.$touched">
+                                <p ng-message="max" class="text-error">{{priceDigitInvalid}}</p>
+                                <p ng-message="required" class="text-error">{{priceDigitRequired}}</p>
+                                <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+        </div>
+        <div class="text-center color-example-gray" >
+            <span> (e.g. Minimum = 12, Maximum = 12, Price Digit Length = 4, Barcode = 52386431<b>3224</b>)</span>
+        </div>
+    </div>
+</div>
+

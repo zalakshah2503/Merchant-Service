@@ -1,0 +1,24 @@
+Time : 12:49:49.2816 
+Message :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 68
+   at MerchantService.Core.Global.MerchantContext..ctor(IErrorLog _errorLog, IMerchantDataRepository _merchantDataRepository) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 29
+   at MerchantService.Core.Controllers.BaseController.get_MerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\BaseController.cs:line 28
+   at MerchantService.Core.Controllers.POS.ReturnBillController.CheckAllowToAnotherBranch() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\POS\ReturnBillController.cs:line 468
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext() 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

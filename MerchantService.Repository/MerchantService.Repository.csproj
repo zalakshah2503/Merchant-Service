@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A7B391A9-4A5E-49A6-9D04-110B1C71D055}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MerchantService.Repository</RootNamespace>
+    <AssemblyName>MerchantService.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="NCalc, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NCalc-Edge.1.4.3\lib\NCalc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationClasses\AccountViewModels.cs" />
+    <Compile Include="ApplicationClasses\Account\DoubleEntryAc.cs" />
+    <Compile Include="ApplicationClasses\Account\GroupAccountAC.cs" />
+    <Compile Include="ApplicationClasses\Account\JournalEntryAc.cs" />
+    <Compile Include="ApplicationClasses\Account\LedgerAccountAC.cs" />
+    <Compile Include="ApplicationClasses\Account\ReceiptPaymentAC.cs" />
+    <Compile Include="ApplicationClasses\Account\ReceiptPaymentDetailAC.cs" />
+    <Compile Include="ApplicationClasses\Account\ReceiptPaymentVoucherAC.cs" />
+    <Compile Include="ApplicationClasses\Account\SalesPurchaseAC.cs" />
+    <Compile Include="ApplicationClasses\Account\SalesPurchaseDetailAC.cs" />
+    <Compile Include="ApplicationClasses\Account\SalesPurchaseVoucherAC.cs" />
+    <Compile Include="ApplicationClasses\Account\UserAccessPageListAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\AdditionalServiceAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\BranchCPOConfigurationsAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\BranchDetailAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\Company\BalanceBarcodeAc.cs" />
+    <Compile Include="ApplicationClasses\Admin\Company\CompanyDetailAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\Company\AdditionalServiceAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\IncidentReport\IncidentReportAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\IncidentReport\IncidentReportWorkListAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\ResetPasswordAC.cs" />
+    <Compile Include="ApplicationClasses\Admin\UserAccess\ActivePageList.cs" />
+    <Compile Include="ApplicationClasses\Admin\UserAccess\UserAccessDetailAC.cs" />
+    <Compile Include="ApplicationClasses\AspNetUsers.cs" />
+    <Compile Include="ApplicationClasses\CustomAttributes\CustomAttributesAc.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CPOAdditionalCostAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CPOConstantsAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CPODownPaymentAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CPOItemAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CPOPaymentAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CPOReceiptAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CustomerPOAC.cs" />
+    <Compile Include="ApplicationClasses\CustomerPO\CustomerPurchaseOrderDetailAC.cs" />
+    <Compile Include="ApplicationClasses\Customer\CustomerProfileAc.cs" />
+    <Compile Include="ApplicationClasses\Customer\WorkFlowLogAc.cs" />
+    <Compile Include="ApplicationClasses\Globalization\GlobalizationAc.cs" />
+    <Compile Include="ApplicationClasses\Admin\RoleAc.cs" />
+    <Compile Include="ApplicationClasses\Admin\UserDetailAc.cs" />
+    <Compile Include="ApplicationClasses\Globalization\GlobalizationDetailAc.cs" />
+    <Compile Include="ApplicationClasses\Globalization\LanguageAC.cs" />
+    <Compile Include="ApplicationClasses\IdentityModel.cs" />
+    <Compile Include="ApplicationClasses\IncidentReport\CashierIncidentReportAC.cs" />
+    <Compile Include="ApplicationClasses\IncidentReport\CashierIncidentReportDetailAC.cs" />
+    <Compile Include="ApplicationClasses\IncidentReport\ManageIncidentReportAC.cs" />
+    <Compile Include="ApplicationClasses\InternalTransferGoods\InventoryTransferAc.cs" />
+    <Compile Include="ApplicationClasses\InternalTransferGoods\ItemInventoryTransferAc.cs" />
+    <Compile Include="ApplicationClasses\ItemDestruction\ItemDestructionApprovalAC.cs" />
+    <Compile Include="ApplicationClasses\ItemDestruction\ItemDestructionSearchModelAC.cs" />
+    <Compile Include="ApplicationClasses\Item\ReturnItemOfferMeesage.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\ReceivingPurchaseOrderAC.cs" />
+    <Compile Include="Modules\Account\AccountingRepository.cs" />
+    <Compile Include="Modules\Account\IAccountingRepository.cs" />
+    <Compile Include="Modules\InternalTransferGoods\IInternalTransferGoodsRepository.cs" />
+    <Compile Include="Modules\InternalTransferGoods\InternalTransferGoodsRepository.cs" />
+    <Compile Include="ApplicationClasses\Supplier\CreditNoteReceivingAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SPOReceipt.cs" />
+    <Compile Include="ApplicationClasses\Inventory\InventoryHubAc.cs" />
+    <Compile Include="ApplicationClasses\Inventory\InventoryRecorderAc.cs" />
+    <Compile Include="ApplicationClasses\Inventory\InventoryUnmatchedItemAc.cs" />
+    <Compile Include="ApplicationClasses\Inventory\IssueInventoryAc.cs" />
+    <Compile Include="ApplicationClasses\ItemChangeRequest\IcrQuantityAC.cs" />
+    <Compile Include="ApplicationClasses\IncidentReport\PosIncidentReportAc.cs" />
+    <Compile Include="ApplicationClasses\ItemChangeRequest\ItemChangedDetailsAC.cs" />
+    <Compile Include="ApplicationClasses\ItemDestruction\ItemDestructionDetailAC.cs" />
+    <Compile Include="ApplicationClasses\ItemDestruction\ItemDestructionRequestAC.cs" />
+    <Compile Include="ApplicationClasses\ItemDestruction\ItemDestructionRequestWorkListAC.cs" />
+    <Compile Include="ApplicationClasses\Item\CategoryAC.cs" />
+    <Compile Include="ApplicationClasses\Item\ItemOfferAC.cs" />
+    <Compile Include="ApplicationClasses\Item\ItemOfferDetailAC.cs" />
+    <Compile Include="ApplicationClasses\Item\ItemProfileAC.cs" />
+    <Compile Include="ApplicationClasses\Item\ItemQuantityAC.cs" />
+    <Compile Include="ApplicationClasses\Item\POSItemAC.cs" />
+    <Compile Include="ApplicationClasses\Item\SubItemProfileAC.cs" />
+    <Compile Include="ApplicationClasses\Item\ItemSupplierAC.cs" />
+    <Compile Include="ApplicationClasses\Item\UpdateItemOfferAC.cs" />
+    <Compile Include="ApplicationClasses\Item\WorkFlowItemOfferAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSReturnBillAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSReturnBillListAC.cs" />
+    <Compile Include="ApplicationClasses\POS\ObservableCollection.cs" />
+    <Compile Include="ApplicationClasses\POS\POSTempItemAC.cs" />
+    <Compile Include="ApplicationClasses\POS\POSTempTranscationAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSSessionWorkListAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\ReturnBillAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\ReturnBillReceiptAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SPOBranchAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\NonSalesTransactionAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSBillPaymentAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSChangePaymentTypeAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSNonSalesTransactionListAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSSessionAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSSessionBillListAC.cs" />
+    <Compile Include="ApplicationClasses\Sales\POSSessionClosingAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SPOPaymentAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SPOReceivingAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SPOReceivingBillAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SupplierBranchId.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SupplierItemAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SupplierPOWorkListAC.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\WorkFlowLogAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\ContactPersonAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\CreditNoteAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\DiscountDaysAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\SupplierProfileAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\ParamTypeAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\SupplierReturnItemAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\SupplierReturnReceiptAC.cs" />
+    <Compile Include="ApplicationClasses\Supplier\SupplierReturnRequest.cs" />
+    <Compile Include="ApplicationClasses\SystemParameter\ParamTypeAc.cs" />
+    <Compile Include="ApplicationClasses\SystemParameter\SystemParameterAC.cs" />
+    <Compile Include="ApplicationClasses\WorkFlow\PermissionAc.cs" />
+    <Compile Include="ApplicationClasses\WorkFlow\StatusTypeAc.cs" />
+    <Compile Include="ApplicationClasses\WorkFlow\WorkFlowAc.cs" />
+    <Compile Include="ApplicationClasses\WorkFlow\WorkFlowActionAC.cs" />
+    <Compile Include="ApplicationClasses\WorkFlow\WorkFlowDetailAc.cs" />
+    <Compile Include="DataRepository\DataRepository.cs" />
+    <Compile Include="DataRepository\IDataRepository.cs" />
+    <Compile Include="Modules\Account\ILedgerAccountRepository.cs" />
+    <Compile Include="Modules\Account\IReceiptPaymentVoucherRepository.cs" />
+    <Compile Include="Modules\Account\ISalesPurchaseVoucherRepository.cs" />
+    <Compile Include="Modules\Account\LedgerAccountRepository.cs" />
+    <Compile Include="Modules\Account\ReceiptPaymentVoucherRepository.cs" />
+    <Compile Include="Modules\Account\SalesPurchaseVoucherRepository.cs" />
+    <Compile Include="Modules\Admin\AdditionalServiceRepository.cs" />
+    <Compile Include="Modules\Admin\Branch\BranchRepository.cs" />
+    <Compile Include="Helper\ApplicationClassHelper.cs" />
+    <Compile Include="Modules\Admin\Company\CompanyRepository.cs" />
+    <Compile Include="Modules\Admin\Globalization\GlobalizationRepository.cs" />
+    <Compile Include="Modules\Admin\Globalization\IGlobalizationRepository.cs" />
+    <Compile Include="Modules\Admin\IAdditionalServiceRepository.cs" />
+    <Compile Include="Modules\Admin\Branch\IBranchRepository.cs" />
+    <Compile Include="Modules\Admin\Company\ICompanyRepository.cs" />
+    <Compile Include="Modules\Account\GroupAccountRepository.cs" />
+    <Compile Include="Modules\Account\IGroupAccountRepository.cs" />
+    <Compile Include="Modules\Admin\IncidentReports\IManageIncidentReportRepository.cs" />
+    <Compile Include="Modules\Admin\IncidentReports\ManageIncidentReportRepository.cs" />
+    <Compile Include="Modules\Admin\IRoleRepository.cs" />
+    <Compile Include="Modules\Admin\ManageUserAccess\IManageUserAccessRepository.cs" />
+    <Compile Include="Modules\Admin\ManageUserAccess\ManageUserAccessRepository.cs" />
+    <Compile Include="Modules\Admin\User\IUserDetailRepository.cs" />
+    <Compile Include="Modules\Admin\RoleRepository.cs" />
+    <Compile Include="Modules\Admin\User\UserDetailRepository.cs" />
+    <Compile Include="Modules\CreditNote\CreditNoteRepository.cs" />
+    <Compile Include="Modules\CreditNote\ICreditNoteRepository.cs" />
+    <Compile Include="Modules\CustomerPO\CustomerPORepository.cs" />
+    <Compile Include="Modules\CustomerPO\CustomerPOWorkListRepository.cs" />
+    <Compile Include="Modules\CustomerPO\ICustomerPORepository.cs" />
+    <Compile Include="Modules\CustomerPO\ICustomerPOWorkListRepository.cs" />
+    <Compile Include="Modules\Customer\CustomerRepository.cs" />
+    <Compile Include="Modules\Customer\ICustomerRepository.cs" />
+    <Compile Include="Modules\Global\IMerchantDataRepository.cs" />
+    <Compile Include="Modules\Global\MerchantDataRepository.cs" />
+    <Compile Include="Modules\IncidentReports\IIncidentReportRepository.cs" />
+    <Compile Include="Modules\IncidentReports\IncidentReportRepository.cs" />
+    <Compile Include="Modules\Inventory\IInventoryRepository.cs" />
+    <Compile Include="Modules\Inventory\InventoryRepository.cs" />
+    <Compile Include="Modules\ItemChangeRequest\ICRRepository.cs" />
+    <Compile Include="Modules\ItemChangeRequest\ICRWorkListRepository.cs" />
+    <Compile Include="Modules\ItemChangeRequest\IICRRepository.cs" />
+    <Compile Include="Modules\ItemChangeRequest\IICRWorkListRepository.cs" />
+    <Compile Include="Modules\ItemDestructionRequest\IItemDestructionRequestRepository.cs" />
+    <Compile Include="Modules\ItemDestructionRequest\ItemDestructionRequestRepository.cs" />
+    <Compile Include="Modules\Item\CategoryRepository.cs" />
+    <Compile Include="Modules\Item\ICategoryRepository.cs" />
+    <Compile Include="Modules\Item\IItemRepository.cs" />
+    <Compile Include="Modules\Item\ISystemParameterRepository.cs" />
+    <Compile Include="Modules\Item\ItemRepository.cs" />
+    <Compile Include="Modules\Item\SystemParameterRepository.cs" />
+    <Compile Include="ApplicationClasses\SupplierPO\SupplierPOAC.cs" />
+    <Compile Include="Modules\ParentRecords\IParentRecordsRepository.cs" />
+    <Compile Include="Modules\ParentRecords\ParentRecordsRepository.cs" />
+    <Compile Include="Modules\PosIncidentReport\IPosIncidentReportRepository.cs" />
+    <Compile Include="Modules\PosIncidentReport\PosIncidentReportRepository.cs" />
+    <Compile Include="Modules\POS\IPOSProcessRepository.cs" />
+    <Compile Include="Modules\POS\IPOSSessionRepository.cs" />
+    <Compile Include="Modules\POS\POSProcessRepository.cs" />
+    <Compile Include="Modules\POS\POSSessionRepository.cs" />
+    <Compile Include="Modules\POS\ReturnBillRepository.cs" />
+    <Compile Include="Modules\POS\IReturnBillRepository.cs" />
+    <Compile Include="Modules\SupplierPO\ISPOPaymentRepository.cs" />
+    <Compile Include="Modules\SupplierPO\ISPOReceivingRepository.cs" />
+    <Compile Include="Modules\SupplierPO\ISupplierPORepository.cs" />
+    <Compile Include="Modules\SupplierPO\ISupplierPOWorkListRepository.cs" />
+    <Compile Include="Modules\SupplierPO\SPOPaymentRepository.cs" />
+    <Compile Include="Modules\SupplierPO\SPOReceivingRepository.cs" />
+    <Compile Include="Modules\SupplierPO\SupplierPORepository.cs" />
+    <Compile Include="Modules\SupplierPO\SupplierPOWorkListRepository.cs" />
+    <Compile Include="Modules\Supplier\ISupplierProfileRepository.cs" />
+    <Compile Include="Modules\Supplier\ISupplierReturnRepository.cs" />
+    <Compile Include="Modules\Supplier\ISupReturnWorkListRepository.cs" />
+    <Compile Include="Modules\Supplier\SupplierProfileRepository.cs" />
+    <Compile Include="Modules\Supplier\SupplierReturnRepository.cs" />
+    <Compile Include="Modules\Supplier\SupReturnWorkListRepository.cs" />
+    <Compile Include="Modules\WorkFlow\IRolePermissionRepository.cs" />
+    <Compile Include="Modules\WorkFlow\IWorkFlowDetailsRepository.cs" />
+    <Compile Include="Modules\WorkFlow\IWorkFlowRepository.cs" />
+    <Compile Include="Modules\WorkFlow\RolePermissionRepository.cs" />
+    <Compile Include="Modules\WorkFlow\WorkFlowDetailsRepository.cs" />
+    <Compile Include="Modules\WorkFlow\WorkFlowRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MerchantService.Utility\MerchantService.Utility.csproj">
+      <Project>{f20ec415-a1ad-412d-a96c-aaa0c9b83eeb}</Project>
+      <Name>MerchantService.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MerchantService.DomainModel\MerchantService.DomainModel.csproj">
+      <Project>{61200d42-0980-4da4-a17e-0bd8ccf0d6ca}</Project>
+      <Name>MerchantService.DomainModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

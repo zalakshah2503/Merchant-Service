@@ -1,0 +1,1722 @@
+﻿<!DOCTYPE html>
+<html ng-app="app" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Merchant Service</title>
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Styles.Render("~/Content/Theme/themecss")
+    @System.Web.Optimization.Scripts.Render("~/bundles/modernizr")
+    @System.Web.Optimization.Styles.Render("~/Content/Maincss")
+    @Scripts.Render("~/Home/MerchantSettings")
+    <script type="text/javascript">
+        var dafaultLanguage = "@System.Configuration.ConfigurationManager.AppSettings["MainLanguage"]";
+        var lang = @Html.Raw(Json.Encode(@ViewBag.LanguageValue));//"ValueSl";
+        var stringReplace = @Html.Raw(Json.Encode(Model));
+        var apiPath = "@string.Format("{0}://{1}/", HttpContext.Current.Request.Url.Scheme,HttpContext.Current.Request.Url.Authority)";
+        var authenticationPath = "@System.Configuration.ConfigurationManager.AppSettings["AuthenticationPath"]";
+        var listOfAccessPages = @Html.Raw(Json.Encode(@ViewBag.ListOfAccessPage));
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="">Merchant Service</a>
+        </div>
+        @Html.Partial("_LoginPartial")
+        <!-- /.navbar-header -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                @*{{$root.merchatSettings.IsAllowToReview}}*@
+                <ul class="nav" id="side-menu" navigation-menu>
+                    <li>
+                        <a name="item-main-link" id="item-dr-menu-e"><i class="fa fa-th-large fa-fw"></i> <span string-replace="item"></span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ng-if="$root.merchatSettings.IsAllowManageSystemParameter">
+                                <a href="#ManageSystemParameter" id="select-ManageSystemParameter-e" name="manage-system-link"><span string-replace="managesystemparameter"></span></a>
+                            </li>
+                            <li>
+                                <a href="#ManageCategory" id="select-ManageCategory-e" name="manage-category-link"><span string-replace="managecategory"></span> </a>
+                            </li>
+                            <li>
+                                <a href="#BrandSearch" id="select-BrandSearch-e" name="brand-search-link"><span string-replace="brandsearch"></span></a>
+                            </li>
+                            <li id="Item-profile-link">
+                                <a href="#ItemProfile" name="item-profile-link"><span string-replace="itemprofile"></span></a>
+                            </li>
+                            <li>
+                                <a href="#ItemOffer" name="initiate-item-offer-link"> <span string-replace="initiateitemoffer"></span></a>
+                            </li>
+                            <li>
+                                <a href="#ItemOfferWorkList" name="item-offer-worklist-link"><span string-replace="itemofferworklist"></span></a>
+                            </li>
+                            <li>
+                                <a href="#InitiateICR" name="initiate-icr-link"> <span string-replace="initiateicr"></span></a>
+                            </li>
+                            <li>
+                                <a href="#ICRWorkList" name="icr-worklist-link"><span string-replace="icrworklist"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a name="supplier-main-link"><i class="fa fa-truck fa-fw"></i> <span string-replace="supplier"></span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ng-if="$root.merchatSettings.IsAllowToCreateSupplierProfile||$root.merchatSettings.IsAllowToEditSupplierProfile||$root.merchatSettings.IsAllowToDeleteSupplier">
+                                <a href="#SupplierProfile" name="supplier-profile-link"><span string-replace="supplierprofile"></span></a>
+                            </li>
+                            <li id="SPO-link">
+                                <a href="#SupplierPOWorkList" name="spo-worklist-link"><span string-replace="supplierpurchaseorder"></span></a>
+                            </li>
+                            <li>
+                                <a href="#SupplierPurchaseOrderBillPayment" name="po-bill-link"><span string-replace="purchaseorderbillpayment"></span></a>
+                            </li>
+                            <li>
+                                <a href="#CreditNote" name="credit-note-link"><span string-replace="receivingcreditnote"></span></a>
+                            </li>
+                            <li>
+                                <a href="#SupplierReturnRequest" name="initiate-supplier-link"><span string-replace="initiatesupplierreturnrequest"></span></a>
+                            </li>
+                            <li id="supplier-return-worklist-link">
+                                <a href="#SupplierReturnRequestWorkList" name="return-request-worklist-link"><span string-replace="supplierreturnrequestworklist"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a name="customer-main-link"><i class="fa fa-group fa-fw"></i> <span string-replace="customerpos"></span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li id="customer-link" ng-if="$root.merchatSettings.IsAllowToCreateCustomerProfile ||$root.merchatSettings.IsAllowToReview">
+                                <a href="#CustomerWorkList" name="customer-profile-link"><span string-replace="customerprofile"></span></a>
+                            </li>
+                            <li id="CPO-link">
+                                <a href="#CustomerPOWorkList" name="cpo-worklist-link"><span string-replace="customerurchaseorder"></span></a>
+                            </li>
+                            <li>
+                                <a href="#CustomerPOPayment" name="customer-payment-link"><span string-replace="customerpayment"></span></a>
+                            </li>
+                            @*<li id="CustomerPODetailList">
+                                    <a href="#CustomerPODetailList" name="cpo-worklist-link">Customer PO Detail List</a>
+                                </li>*@
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#ManageIncidentReport" name="manage-incident-link"><i class="fa fa-file fa-fw"></i> <span string-replace="incidentreport"> </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#ManageIncidentReportWorklist" name="issue-incident-report-worklist-link"> <span string-replace="managecashierincidentworklist"> </span> </a>
+                            </li>
+                            <li id="item-incident-report-link">
+                                <a href="#IncidentReport" name="item-incident-report-link"><span string-replace="itemincidentreport"> </span> </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a name="inventory-main-link"><i class="fa  fa-th fa-fw"></i> <span string-replace="inventory"></span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li ng-if="$root.merchatSettings.IsAllowToInitiateIssueStockInventory">
+                                <a href="#IssueStockInventory" name="issue-inventory-link"><span string-replace="issueinventory"></span></a>
+                            </li>
+                            <li id="inventory-worklist" ng-if="$root.merchatSettings.IsAllowToInitiateIssueStockInventory || $root.merchatSettings.IsAllowInventoryStart || $root.merchatSettings.IsAllowReviewStockInventory || $root.merchatSettings.IsAllowToReview">
+                                <a href="#StockInventory" name="inventory-worklist-link"><span string-replace="inventoryworklist"></span> </a>
+                            </li>
+                            <li ng-if="$root.merchatSettings.IsAllowInventoryRecord" id="inventory-recorder">
+                                <a href="#InventoryRecorderWorkList" name="inventory-recorder-link"><span string-replace="inventoryrecorder"></span></a>
+                            </li>
+                            <li id="inventory-monitor">
+                                <a href="#InventoryMonitorWorkList" name="inventory-monitor-link"><span string-replace="inventorymonitor"></span></a>
+                            </li>
+                            <li ng-if="$root.merchatSettings.IsAllowToInitiateIntrenalTransferGood">
+                                <a href="#InventoryTransfer" name="inventory-transfer-link"><span string-replace="inventorytransfer"></span> </a>
+                            </li>
+                            <li ng-if="$root.merchatSettings.IsAllowToInitiateIntrenalTransferGood || $root.merchatSettings.IsAllowToReview" id="inventory-transfer-worklist-link">
+                                <a href="#InventoryTransferWorkList" name="inventory-transfer-worklist-link"><span string-replace="inventorytransferworklist"></span> </a>
+                            </li>
+                            <li>
+                                <a href="#ItemDestructionRequest" name="item-destruction-link"><span string-replace="itemdestruction"></span></a>
+                            </li>
+                            <li id="item-destruction-worklist">
+                                <a href="#ItemDestructionWorkList" name="item-destruction-worklist-link"><span string-replace="itemdestructionworklist"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a name="acount-main-link"><i class="fa fa-adn fa-fw"></i> <span string-replace="account"></span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#AccountGroup" name="groups-link"><span string-replace="group"></span></a>
+                            </li>
+                            <li>
+                                <a href="#AccountLedger" name="ledgers-link"><span string-replace="ledgers"></span></a>
+                            </li>
+                            <li>
+                                <a href="#Journal" name="Journal-link"><span string-replace="journal"></span></a>
+
+                            </li>
+                            <li>
+                                <a href="#AccountingWorkList" name="accountentry-link"><span string-replace="accountingworklist"></span></a>
+                            </li>
+                            <li>
+                                <a name="acount-voucher-link"><span string-replace="accountingvoucher"></span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li>
+                                        <a href="#Receipt" name="receipt-link"><span string-replace="receipt"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#Payment" name="payment-link"><span string-replace="payment"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#Sales" name="sales-link"><span string-replace="sales"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#Purchase" name="purchase-link"><span string-replace="purchase"></span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a name="bank-reconcilation-link"><span string-replace="bankreconciliation"></span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li>
+                                        <a href="#UploadBankStatement" name="upload-statement-link"><span string-replace="uploadbankstatement"></span></a>
+                                    </li>
+                                    <li id="7">
+                                        <a href="#BankReconcile" name="bank-reconcile-link"><span string-replace="bankreconcile"></span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a name="sales-main-link"><i class="fa fa-suitcase fa-fw"></i> <span string-replace="sales"></span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#ReturnBillSearch" name="bill-search-link"><span string-replace="returnbillsearch"></span></a>
+                            </li>
+                            <li>
+                                <a href="#ReturnBill" name="return-bill-link"><span string-replace="returnbillpos"></span> </a>
+                            </li>
+                            <li>
+                                <a href="#SessionBills" name="session-bill-link"><span string-replace="sessionbill"></span> </a>
+                            </li>
+                            <li>
+                                <a href="#SessionClosing" name="session-closing-link"><span string-replace="sessionclosing"></span></a>
+                            </li>
+                            <li id="session-worklist-link">
+                                <a href="#SessionWorkList" name="session-worklist-link"><span string-replace="sessionworklist"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a name="report-main-link"><i class="fa fa-file-text fa-fw"></i> <span string-replace="reports"></span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level report-links">
+                            <li>
+                                <a href="#MembershipCustomerReport" name="membership-customer-report"><span string-replace="membershipcustomerreport"></span></a>
+                            </li>
+                            <li>
+                                <a href="#SalesAnalysisReport" name="sales-analysis-report"><span string-replace="salesanalysisreport"></span></a>
+                            </li>
+                            <li>
+                                <a href="#SupplierDetailReport" name="supplier-details-report"><span string-replace="supplierdetailreport"></span></a>
+                            </li>
+                            <li>
+                                <a href="#PaymentReceiptVouchersReport" name="payment-vouchers-report"><span string-replace="paymentreceiptvouchersreport"></span></a>
+                            </li>
+                            <li>
+                                <a href="#GoodsTransactionReport" name="goods-transaction-report"><span string-replace="goodstransactionreport"></span></a>
+                            </li>
+                            <li>
+                                <a href="#GoodsProfitabilityReport" name="goods-profitability-report"><span string-replace="goodsprofitabilityreport"></span></a>
+                            </li>
+                            <li>
+                                <a href="#BranchCashierAccountsClosing" name="branch-cashier-acount"><span string-replace="branchcashieraccountsclosing"></span></a>
+                            </li>
+                            <li>
+                                <a href="#SupplierPurchaseOrder" name="SPO-report"><span string-replace="supplierpurchaseorder"></span></a>
+                            </li>
+                            <li>
+                                <a href="#BranchMonitor" name="branch-monitor-report"><span string-replace="branchmonitor"></span></a>
+                            </li>
+                            <li>
+                                <a href="#BranchComparison" name="branch-comparison"><span string-replace="branchcomparison"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+    </nav>
+    <div id="page-wrapper" style="min-height: 561px">
+        <toast class="toaster-div"> </toast>
+        <ng-view></ng-view>
+        @RenderBody()
+    </div>
+
+    <div id="busyindicator" class="busy-indicator" ng-show="isLoading">
+        <img src="/Content/Images/Loader.gif" />
+    </div>
+
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery")
+    @System.Web.Optimization.Scripts.Render("~/bundles/angular")
+    @System.Web.Optimization.Scripts.Render("~/bundles/bootstrap")
+    @System.Web.Optimization.Scripts.Render("~/bundles/app")
+    @System.Web.Optimization.Scripts.Render("~/bundles/constants")
+    @System.Web.Optimization.Scripts.Render("~/bundles/themejs")
+    @System.Web.Optimization.Scripts.Render("~/bundles/model")
+    @System.Web.Optimization.Scripts.Render("~/bundles/service")
+    @System.Web.Optimization.Scripts.Render("~/bundles/controller")
+    @System.Web.Optimization.Scripts.Render("~/bundles/directive")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+@*VIEW CUSTOMER DETAILS DIALOG BOX*@
+<script type="text/ng-template" id="viewCustomerProfile">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="customerdetails"></span></h3>
+    </div>
+    <form name="updateCustomer">
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div ng-class="{'disabled':customerProfile.IsDisabled}" class="row m-0">
+                    <div ng-if="customerProfile.IsAllowReview">
+                        <div ng-if="customerProfile.IsUpdated">
+                            <h4><span string-replace="differencedetails"></span></h4>
+                            <hr />
+                            <div ng-class="{'enabled': customerProfile.IsAllowEnabled}" class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="name"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" maxlength="255" id="" name="name" ng-class="{'updateText':customerProfile.Name != updateCustomerInfo.Name}" ng-model="customerProfile.Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="address"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" name="address" maxlength="350" ng-class="{'updateText':customerProfile.Address != updateCustomerInfo.Address}" ng-model="customerProfile.Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="email"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="email" maxlength="255" ng-class="{'updateText':customerProfile.Email != updateCustomerInfo.Email}" class="form-control" name="email" ng-model="customerProfile.Email" id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="fax"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="15" ng-class="{'updateText':customerProfile.Fax != updateCustomerInfo.Fax}" class="form-control" id="" name="fax" ng-model="customerProfile.Fax">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="pricecategory"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <ui-select ng-model="customerProfile.PriceCategory" name="category">
+                                                <ui-select-match placeholder="Select Price Category">{{$select.selected.Category}}</ui-select-match>
+                                                <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                                    <div ng-bind-html="category.Category | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" maxlength="15" name="mobile" ng-class="{'updateText':customerProfile.Mobile != updateCustomerInfo.Mobile}" ng-model="customerProfile.Mobile" id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="phone"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="15" ng-class="{'updateText':customerProfile.Phone != updateCustomerInfo.Phone}" class="form-control" name="phone" ng-model="customerProfile.Phone" id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="zipcode"></span>:</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': updateCustomer.zipcode.$touched && updateCustomer.zipcode.$invalid}">
+                                            <input type="text" ng-class="{'updateText':customerProfile.Zipcode != updateCustomerInfo.Zipcode}" class="form-control" id="" name="zipcode" ng-model="customerProfile.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                                            <div class="help-block" ng-messages="updateCustomer.zipcode.$error" ng-if="updateCustomer.zipcode.$touched">
+                                                <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="amountlimit"></span>:</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': updateCustomer.amountLimit.$touched && updateCustomer.amountLimit.$invalid}">
+                                            <input ng-class="{'updateText':customerProfile.AmountLimit != updateCustomerInfo.AmountLimit}" ng-disabled="isAmountLimitDisable" name="amountLimit" type="text" class="form-control" id="" ng-model="customerProfile.AmountLimit" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" ng-change="changeAmountLimit(customerProfile.AmountLimit)">
+                                            <div class="help-block" ng-messages="updateCustomer.amountLimit.$error" ng-if="updateCustomer.amountLimit.$touched">
+                                                <p ng-message="pattern" class="text-error">{{amountLimitInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="balanceamount"></span>:</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': updateCustomer.balanceAmount.$touched && updateCustomer.balanceAmount.$invalid}">
+                                            <input ng-class="{'updateText':customerProfile.BalanceAmount != updateCustomerInfo.BalanceAmount}" type="text" name="balanceAmount" ng-disabled="isBalanceAmountLimitDisable" class="form-control" id="" ng-model="customerProfile.BalanceAmount" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" ng-change="changeBalanceAmountLimit(customerProfile.BalanceAmount)">
+                                            <div class="help-block" ng-messages="updateCustomer.balanceAmount.$error" ng-if="updateCustomer.balanceAmount.$touched">
+                                                <p ng-message="pattern" class="text-error">{{balanceAmountInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4><span string-replace="originaldetails"></span></h4>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="name"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="255" class="form-control" id="" name="name" ng-model="updateCustomerInfo.Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="address"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" maxlength="350" name="address" ng-model="updateCustomerInfo.Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="email"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="email" maxlength="255" class="form-control" name="email" ng-model="updateCustomerInfo.Email" id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="fax"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="15" class="form-control" id="" name="fax" ng-model="updateCustomerInfo.Fax">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="pricecategory"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <ui-select ng-model="updateCustomerInfo.PriceCategory" name="category">
+                                                <ui-select-match placeholder="Select Price Category">{{$select.selected.Category}}</ui-select-match>
+                                                <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                                    <div ng-bind-html="category.Category | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="15" class="form-control" name="mobile" ng-model="updateCustomerInfo.Mobile" id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="phone"></span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="phone" ng-model="updateCustomerInfo.Phone" id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="zipcode"></span>:</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': updateCustomer.zipcode.$touched && updateCustomer.zipcode.$invalid}">
+                                            <input type="text" class="form-control" id="" name="zipcode" ng-model="updateCustomerInfo.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                                            <div class="help-block" ng-messages="updateCustomer.zipcode.$error" ng-if="updateCustomer.zipcode.$touched">
+                                                <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="amountlimit"></span>:</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': updateCustomer.amountLimit.$touched && updateCustomer.amountLimit.$invalid}">
+                                            <input ng-disabled="isAmountLimitDisable" name="amountLimit" type="text" class="form-control" id="" ng-model="updateCustomerInfo.AmountLimit" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeAmountLimit(customerProfile.AmountLimit)">
+                                            <div class="help-block" ng-messages="updateCustomer.amountLimit.$error" ng-if="updateCustomer.amountLimit.$touched">
+                                                <p ng-message="pattern" class="text-error">{{amountLimitInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="balanceamount"></span>:</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': updateCustomer.balanceAmount.$touched && updateCustomer.balanceAmount.$invalid}">
+                                            <input type="text" name="balanceAmount" ng-disabled="isBalanceAmountLimitDisable" class="form-control" id="" ng-model="updateCustomerInfo.BalanceAmount" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeBalanceAmountLimit(customerProfile.BalanceAmount)">
+                                            <div class="help-block" ng-messages="updateCustomer.balanceAmount.$error" ng-if="updateCustomer.balanceAmount.$touched">
+                                                <p ng-message="pattern" class="text-error">{{balanceAmountInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="!customerProfile.IsUpdated">
+                            <h4><span string-replace="customerdetails"></span>:</h4>
+                            <hr />
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="name"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" maxlength="255" class="form-control" id="" name="name" ng-model="customerProfile.Name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="address"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" maxlength="350" name="address" ng-model="customerProfile.Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="email"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" class="form-control" maxlength="255" name="email" ng-model="customerProfile.Email" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="fax"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="15" id="" name="fax" ng-model="customerProfile.Fax">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="pricecategory"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <ui-select ng-model="customerProfile.PriceCategory" name="category">
+                                            <ui-select-match placeholder="Select Price Category">{{$select.selected.Category}}</ui-select-match>
+                                            <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                                <div ng-bind-html="category.Category | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" maxlength="15" class="form-control" name="mobile" ng-model="customerProfile.Mobile" id="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="phone"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" maxlength="15" class="form-control" name="phone" ng-model="customerProfile.Phone" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="zipcode"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.zipcode.$touched && updateCustomer.zipcode.$invalid}">
+                                        <input type="text" class="form-control" id="" name="zipcode" ng-model="customerProfile.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                                        <div class="help-block" ng-messages="updateCustomer.zipcode.$error" ng-if="updateCustomer.zipcode.$touched">
+                                            <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="amountlimit"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.amountLimit.$touched && updateCustomer.amountLimit.$invalid}">
+                                        <input ng-disabled="isAmountLimitDisable" name="amountLimit" type="text" class="form-control" id="" ng-model="customerProfile.AmountLimit" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeAmountLimit(customerProfile.AmountLimit)">
+                                        <div class="help-block" ng-messages="updateCustomer.amountLimit.$error" ng-if="updateCustomer.amountLimit.$touched">
+                                            <p ng-message="pattern" class="text-error">{{amountLimitInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="balanceamount"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.balanceAmount.$touched && updateCustomer.balanceAmount.$invalid}">
+                                        <input type="text" name="balanceAmount" ng-disabled="isBalanceAmountLimitDisable" class="form-control" id="" ng-model="customerProfile.BalanceAmount" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeBalanceAmountLimit(customerProfile.BalanceAmount)">
+                                        <div class="help-block" ng-messages="updateCustomer.balanceAmount.$error" ng-if="updateCustomer.balanceAmount.$touched">
+                                            <p ng-message="pattern" class="text-error">{{balanceAmountInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="!customerProfile.IsAllowReview">
+                        <div ng-if="!customerProfile.IsUpdated">
+                            <h4><span string-replace="customerdetails"></span>:</h4>
+                            <hr />
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="name"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="255" id="" name="name" ng-model="customerProfile.Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="address"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" maxlength="350" name="address" ng-model="customerProfile.Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="email"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" class="form-control" maxlength="255" name="email" ng-model="customerProfile.Email" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="fax"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="15" id="" name="fax" ng-model="customerProfile.Fax">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="pricecategory"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <ui-select ng-model="customerProfile.PriceCategory" name="category">
+                                            <ui-select-match placeholder="Select Price Category">{{$select.selected.Category}}</ui-select-match>
+                                            <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                                <div ng-bind-html="category.Category | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="15" name="mobile" ng-model="customerProfile.Mobile" id="">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="phone"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="15" name="phone" ng-model="customerProfile.Phone" id="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="zipcode"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.zipcode.$touched && updateCustomer.zipcode.$invalid}">
+                                        <input type="text" class="form-control" id="" name="zipcode" ng-model="customerProfile.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                                        <div class="help-block" ng-messages="updateCustomer.zipcode.$error" ng-if="updateCustomer.zipcode.$touched">
+                                            <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="amountlimit"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.amountLimit.$touched && updateCustomer.amountLimit.$invalid}">
+                                        <input ng-disabled="isAmountLimitDisable" name="amountLimit" type="text" class="form-control" id="" ng-model="customerProfile.AmountLimit" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeAmountLimit(customerProfile.AmountLimit)">
+                                        <div class="help-block" ng-messages="updateCustomer.amountLimit.$error" ng-if="updateCustomer.amountLimit.$touched">
+                                            <p ng-message="pattern" class="text-error">{{amountLimitInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="balanceamount"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.balanceAmount.$touched && updateCustomer.balanceAmount.$invalid}">
+                                        <input type="text" name="balanceAmount" ng-disabled="isBalanceAmountLimitDisable" class="form-control" id="" ng-model="customerProfile.BalanceAmount" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeBalanceAmountLimit(customerProfile.BalanceAmount)">
+                                        <div class="help-block" ng-messages="updateCustomer.balanceAmount.$error" ng-if="updateCustomer.balanceAmount.$touched">
+                                            <p ng-message="pattern" class="text-error">{{balanceAmountInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="customerProfile.IsUpdated">
+                            <h4><span string-replace="customerdetails"></span>:</h4>
+                            <hr />
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="name"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="255" id="" name="name" ng-model="customerProfile.Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="15" name="mobile" ng-model="customerProfile.Mobile" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="address"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" name="address" maxlength="350" ng-model="customerProfile.Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="fax"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="" maxlength="15" name="fax" ng-model="customerProfile.Fax">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="pricecategory"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <ui-select ng-model="customerProfile.PriceCategory" name="category">
+                                            <ui-select-match placeholder="Select Price Category">{{$select.selected.Category}}</ui-select-match>
+                                            <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                                <div ng-bind-html="category.Category | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="email"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" class="form-control" maxlength="254" name="email" ng-model="customerProfile.Email" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="phone"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="15" name="phone" ng-model="customerProfile.Phone" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="zipcode"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.zipcode.$touched && updateCustomer.zipcode.$invalid}">
+                                        <input type="text" class="form-control" id="" name="zipcode" ng-model="customerProfile.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                                        <div class="help-block" ng-messages="updateCustomer.zipcode.$error" ng-if="updateCustomer.zipcode.$touched">
+                                            <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="amountlimit"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.amountLimit.$touched && updateCustomer.amountLimit.$invalid}">
+                                        <input ng-disabled="isAmountLimitDisable" name="amountLimit" type="text" class="form-control" id="" ng-model="customerProfile.AmountLimit" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeAmountLimit(customerProfile.AmountLimit)">
+                                        <div class="help-block" ng-messages="updateCustomer.amountLimit.$error" ng-if="updateCustomer.amountLimit.$touched">
+                                            <p ng-message="pattern" class="text-error">{{amountLimitInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="balanceamount"></span>:</label>
+                                    <div class="col-sm-8" ng-class="{'has-error': updateCustomer.balanceAmount.$touched && updateCustomer.balanceAmount.$invalid}">
+                                        <input type="text" name="balanceAmount" ng-disabled="isBalanceAmountLimitDisable" class="form-control" id="" ng-model="customerProfile.BalanceAmount" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" maxlength="13" ng-change="changeBalanceAmountLimit(customerProfile.BalanceAmount)">
+                                        <div class="help-block" ng-messages="updateCustomer.balanceAmount.$error" ng-if="updateCustomer.balanceAmount.$touched">
+                                            <p ng-message="pattern" class="text-error">{{balanceAmountInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2 p-0" style="width:16.5%"><span string-replace="comment"></span>:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" maxlength="350" name="comment" ng-model="customerProfile.Comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <br />
+                    <table class="table table-striped table-bordered table-hover" name="customer-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="stage"></span>:</th>
+                                <th><span string-replace="action"></span></th>
+                                <th><span string-replace="actiondate"></span></th>
+                                <th><span string-replace="userrole"></span></th>
+                                <th><span string-replace="username"></span></th>
+                                <th><span string-replace="comment"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="workFlow in customerProfile.WorkFlowAction">
+                                <td>{{workFlow.Stage}}</td>
+                                <td>{{workFlow.Action}}</td>
+                                <td>{{workFlow.ActionDate}}</td>
+                                <td>{{workFlow.RoleName}}</td>
+                                <td>{{workFlow.UserName}}</td>
+                                <td>{{workFlow.Comment}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button ng-if="($root.merchatSettings.IsAllowToCreateCustomerProfile && customerProfile.IsRejected && customerProfile.IsCurrentUser) || ($root.merchatSettings.IsAllowToReview  && customerProfile.IsResubmitRequest)" class="btn btn-primary" type="button" ng-click="resubmitCustomerRequest(customerProfile)" name="update-btn"><span string-replace="resubmit"></span></button>
+            <button ng-if="$root.merchatSettings.IsAllowToCreateCustomerProfile && customerProfile.IsActive && customerProfile.IsCurrentUser" class="btn btn-primary" type="button" ng-click="updateCustomerInformation(customerProfile)" name="update-btn">><span string-replace="update"></span></button>
+            <button ng-if="$root.merchatSettings.IsAllowToReview && customerProfile.IsAllowToApprove" class="btn btn-primary" type="button" ng-click="customerRequestApproveAndReject(customerProfile,true)" name="update-btn"><span string-replace="approve"></span></button>
+            <button ng-if="$root.merchatSettings.IsAllowToReview && customerProfile.IsAllowToApprove" class="btn btn-primary" type="button" ng-click="customerRequestApproveAndReject(customerProfile,false)" name="update-btn"><span string-replace="reject"></span></button>
+            <button class="btn btn-default" type="button" ng-click="closeCustomerViewDialogbox()" name="cancel-btn"><span string-replace="cancelpos"></span></button>
+        </div>
+    </form>
+
+    <div ng-show="isUserDetailsLoading" class="absolute-fullElement text-center disabled-overlay">
+        <h1 class="loader-center"><i class="glyphicon glyphicon-refresh spin"></i></h1>
+    </div>
+</script>
+
+<script type="text/ng-template" id="Billsearch">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="billsearch"></span> </h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="customernopos"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" name="customer-no">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="fromdate"></span>:</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="from-date" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="" is-open="isJointPickerDateOpened" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click=""><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="fromamount"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" name="from-amount">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="branch"></span>:</label>
+                        <div class="col-sm-8">
+                            <ui-select ng-model="" ng-change="" name="branch">
+                                <ui-select-match placeholder="Select Type"></ui-select-match>
+                                <ui-select-choices repeat="">
+                                    <div ng-bind-html=""></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="todate"></span>:</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" disabled class="form-control" name="to-date" datepicker-popup="dd-MMMM-yyyy" ng-model="" is-open="isJointPickerDateOpened" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click=""><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="toamount"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" name="to-amount">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" name="search-btn"><span string-replace="search"></span></button>
+            </div>
+        </div>
+        <hr />
+        <table class="table table-striped table-bordered table-hover" name="bill-search-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="billno"></span></th>
+                    <th><span string-replace="amount"></span></th>
+                    <th><span string-replace="billdate"></span></th>
+                    <th><span string-replace="branchname"></span></th>
+                    <th><span string-replace="cashiername"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>00111</td>
+                    <td>200</td>
+                    <td>23-8-2015</td>
+                    <td>zxcvbb</td>
+                    <td>abc</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" name="cancel-btn"><span string-replace="cancelpos"></span></button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="BrandSearch">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="brandsearch"></span> </h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="brandname"></span>:</label>
+                        <div class="col-sm-7">
+                            <ui-select ng-model="search.Brand" name="brand-name">
+                                <ui-select-match placeholder="Select">{{$select.selected.BrandName}}</ui-select-match>
+                                <ui-select-choices repeat="brand.BrandName as brand in brandList | filter: $select.search">
+                                    <div ng-bind-html="brand.BrandName | highlight: $select.search" name="{{brand.BrandName}}"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <button class="btn btn-primary m-r-40" ng-click="searchCategory()" name="search-btn"><span string-replace="search"></span></button>
+                    <button class="btn btn-primary" ng-click="gridBinding()" name="show-all-btn"><span string-replace="showall"></span></button>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-success text-center" role="alert" ng-show="categoryErrorMessageDisplay">
+            <span>{{noCategoryFound}}</span>
+        </div>
+        <label ng-show="isBrandSearchVisible"><span string-replace="categorylist"></span></label>
+        <hr />
+        <table class="table table-striped table-bordered table-hover" name="category-list-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="brandname"></span></th>
+                    <th><span string-replace="groupname"></span></th>
+                    <th>Arabic Brand Name</th>
+                    <th>Arabic Group Name</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="category in $root.totalCollection">
+                <tr ng-click="gridClickForItemPoup(category.Id)" class="pointer">
+                    <td>{{category.Brand}}</td>
+                    <td>{{category.Group}}</td>
+                    <td>{{category.BrandArabic}}</td>
+                    <td>{{category.GroupArabic}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-show="$root.totalCollection.length >0" style="text-align:center">
+            <pagination total-items="$root.totalItems" items-per-page="$root.itemsPerPage" ng-model="$root.currentPage" max-size="$root.maxSize" boundary-links="true"></pagination>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" name="cancel-btn" ng-click="cancelItemPopup()" name="cancel-btn"><span string-replace="cancelpos"></span></button>
+    </div>
+</script>
+
+@*DELETE CUSTOMER DETAILS CONFIRMATION DIALOG BOX*@
+<script type="text/ng-template" id="customerDetailsConfirmation">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeCustomerDeleteDialogbox()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Delete CustomerInformation Confirmation</h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span> <span class="text-success">{{customerProfile.Name}} </span><span string-replace="customerdetails"></span>?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="deletecustomerInformation(customerProfile)" name="yes-btn"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeCustomerDeleteDialogbox()" name="no-btn"><span string-replace="no"></span></button>
+        </div>
+    </div>
+    <div ng-show="isUserDetailsLoading" class="absolute-fullElement text-center disabled-overlay">
+        <h1 class="loader-center"><i class="glyphicon glyphicon-refresh spin"></i></h1>
+    </div>
+</script>
+
+
+
+@*INVENTORY TYPE DETAILS DIALOGBOX*@
+<script type="text/ng-template" id="inventoryTypeDetails">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeInventoryDetailDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="details"></span></h4>
+        </div>
+        <div class="modal-body">
+
+            @*Supplier List*@
+            <div ng-if="isSupplierPanelVisible">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="suppliername"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" name="suppliername" ng-model="search.NameEn">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="suppliercode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" name="suppliercode" ng-model="search.Code">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row text-center">
+                        <button class="btn btn-primary" name="search-btn" ng-click="serchSupllierDetails()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="supplierErrorMessage">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <br />
+                <div ng-hide="supplierErrorMessage">
+                    <table class="table table-striped table-bordered table-hover" name="supplier-profile">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="suppliername"></span></th>
+                                <th><span string-replace="suppliercode"></span></th>
+
+                                <th><span string-replace="phone"></span></th>
+                                <th><span string-replace="fax"></span></th>
+                                <th><span string-replace="email"></span></th>
+
+                            </tr>
+                        </thead>
+                        @*{{supplierCollection}}*@
+                        <tbody dir-paginate="supplier in supplierCollection| itemsPerPage: 10">
+                            <tr class="pointer" ng-click="addSupplierName(supplier.SupplierProfileId)">
+                                <td class="grid-width">{{supplier.NameEn}}</td>
+                                <td class="grid-width">{{supplier.Code}}</td>
+
+                                <td>{{supplier.Phone}}</td>
+                                <td>{{supplier.Fax}}</td>
+                                <td class="grid-width">{{supplier.Email}}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="supplierCollection.length >0" style="text-align:center">
+                        <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
+                    </div>
+                </div>
+
+                <!--extra for paging-->
+                <div ng-show="totalCollection.length >0" style="text-align:center">
+                    <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true"></pagination>
+                </div>
+
+
+            </div>
+
+            @*Item List*@
+            <div class="table-div" ng-if="isItemPanelVisible">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" maxlength="255" name="itemnameen" ng-model="itemSearch.ItemNameEn">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemBarcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="18" id="" name="barcode" ng-model="itemSearch.Barcode">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-repalce="itemcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="20" id="" name="code" ng-model="itemSearch.Code">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row text-center">
+                        <button class="btn btn-primary" name="search-btn" ng-click="serchItemDetails()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="itemErrorMessage">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <br />
+                <div ng-hide="itemErrorMessage">
+                    <table class="table table-striped table-bordered table-hover" name="item-grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th><span string-replace="itemname"></span></th>
+                                <th><span string-replace="itemBarcode"></span></th>
+                                <th><span string-repalce="itemcode"></span></th>
+                                <th><span string-replace="itemflavour"></span></th>
+                                <th><span string-replace="category"></span></th>
+                                <th><span string-replace="unit"></span></th>
+                            </tr>
+                        </thead>
+
+                        <tbody dir-paginate="item in itemCollection| itemsPerPage: 10">
+                            <tr>
+                                <td id="{{item.Id}}"><a class="pointer" ng-click="getSubItemList(item.Id)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                                <td class="pointer" ng-click="addItemBarcode(item.Barcode,item.Id)">{{item.ItemNameEn}}</td>
+                                <td class="pointer" ng-click="addItemBarcode(item.Barcode,item.Id)">{{item.Barcode}}</td>
+                                <td class="pointer" ng-click="addItemBarcode(item.Barcode,item.Id)">{{item.Code}}</td>
+                                <td class="pointer" ng-click="addItemBarcode(item.Barcode,item.Id)">{{item.FlavourEn}}</td>
+                                <td class="pointer" ng-click="addItemBarcode(item.Barcode,item.Id)">{{item.ItemType}}</td>
+                                <td class="pointer" ng-click="addItemBarcode(item.Barcode,item.Id)">{{item.BaseUnitCount}}</td>
+                            </tr>
+                            <tr id="subChild{{item.Id}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                                <td colspan="10">
+                                    <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                        <thead>
+                                            <tr>
+                                                <th><span string-replace="itemname"></span></th>
+                                                <th><span string-replace="itemBarcode"></span></th>
+                                                <th><span string-repalce="itemcode"></span></th>
+                                                <th><span string-replace="itemflavour"></span></th>
+                                                <th><span string-replace="category"></span></th>
+                                                <th><span string-replace="unit"></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="pointer" ng-repeat="subItem in item.listOfChildProfileAC" ng-click="addItemBarcode(subItem.Barcode,subItem.Id)">
+                                                <td>{{subItem.ItemNameEn}}</td>
+                                                <td>{{subItem.Barcode}}</td>
+                                                <td>{{subItem.Code}}</td>
+                                                <td>{{subItem.FlavourEn}}</td>
+                                                <td>{{subItem.ItemType}}</td>
+                                                <td>{{subItem.BaseUnitCount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="itemCollection.length >0" style="text-align:center">
+                        <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+
+            @*Category List*@
+            <div ng-if="isCategoryPanelVisible">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="brandname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" maxlength="255" name="BrandName" ng-model="search.BrandName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="groupname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" maxlength="255" name="GroupName" ng-model="search.GroupName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="categoryname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" maxlength="255" name="CategoryName" ng-model="search.CategoryName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row text-center">
+                        <button class="btn btn-primary" name="search-btn" ng-click="serchCategoryDetails()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="categoryErrorMessage">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <br />
+                <div ng-hide="categoryErrorMessage">
+                    <table class="table table-striped table-bordered table-hover" name="category">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="brandname"></span></th>
+                                <th><span string-replace="groupname"></span></th>
+                                <th><span string-replace="categoryname"></span></th>
+
+                            </tr>
+                        </thead>
+                        <tbody dir-paginate="category in categoryCollection| itemsPerPage: 10">
+                            <tr class="pointer" ng-click="addCategoryName(category.CategoryId)">
+                                <td class="grid-width">{{category.BrandName}}</td>
+                                <td class="grid-width">{{category.GroupName}}</td>
+                                <td>{{category.CategoryName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="supplierCollection.length >0" style="text-align:center">
+                        <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeInventoryDetailDialogBox()"><span string-replace="cancelpos"></span></button>
+        </div>
+    </div>
+</script>
+
+@*ISSUE STOCK INVENTORY DELETE DIALOGBOX*@
+<script type="text/ng-template" id="deleteIssueInventory">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeIssueInventoryDeleteDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            {{issuestockDeleteConfirmationMessage}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="deleteIssueStockInventoryById(issueInventoryDetails.IssueStockInventoryId)"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeIssueInventoryDeleteDialogBox()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>
+
+@*ItemDetail DialogBox*@
+<script type="text/ng-template" id="itemDetailsDialogBox">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="itemsearch"></span></h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" maxlength="255" name="itemname" ng-model="itemSearch.ItemNameEn">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" maxlength="18" name="barcode" ng-model="itemSearch.Barcode">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" maxlength="255" name="flavour" ng-model="itemSearch.FlavourEn">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-repalce="itemcode"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" maxlength="20" name="code" ng-model="itemSearch.Code">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row text-center">
+                <button class="btn btn-primary" name="search-btn" ng-click="serchItemDetails()"><span string-replace="search"></span></button>
+            </div>
+        </div>
+        <div class="alert alert-success text-center" role="alert" ng-show="itemErrorMessage">
+            <span>{{noItemFound}}</span>
+        </div>
+        <br />
+        <div ng-hide="itemErrorMessage">
+            <br />
+            <table class="table table-striped table-bordered table-hover" name="inventory-grid">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><span string-replace="barcode"></span></th>
+                        <th><span string-replace="itemname"></span></th>
+                        <th><span string-repalce="itemcode"></span></th>
+                        <th><span string-replace="flavourpos"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="pricepos"></span></th>
+                    </tr>
+                </thead>
+                <tbody dir-paginate="item in itemCollection| itemsPerPage: 8">
+                    <tr>
+                        <td id="{{item.Id}}"><a class="pointer" ng-click="getSubItemList(item.ItemProfileId)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                        <td class="pointer" ng-click="getItemDetailsByItemBarcode(item.Barcode)">{{item.Barcode}}</td>
+                        <td class="pointer" ng-click="getItemDetailsByItemBarcode(item.Barcode)">{{item.ItemNameEn}}</td>
+                        <td class="pointer" ng-click="getItemDetailsByItemBarcode(item.Barcode)">{{item.Code}}</td>
+                        <td class="pointer" ng-click="getItemDetailsByItemBarcode(item.Barcode)">{{item.FlavourEn}}</td>
+                        <td class="pointer" ng-click="getItemDetailsByItemBarcode(item.Barcode)">{{item.Unit}}</td>
+                        <td class="pointer" ng-click="getItemDetailsByItemBarcode(item.Barcode)">{{item.SellPrice}}</td>
+                    </tr>
+                    <tr id="subChild{{item.Id}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                        <td colspan="10">
+                            <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                <thead>
+                                    <tr>
+                                        <th><span string-replace="barcode"></span></th>
+                                        <th><span string-replace="itemname"></span></th>
+                                        <th><span string-repalce="itemcode"></span></th>
+                                        <th><span string-replace="flavourpos"></span></th>
+                                        <th><span string-replace="unit"></span></th>
+                                        <th><span string-replace="pricepos"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="pointer" ng-repeat="subItem in item.listOfChildProfileAC" ng-click="getItemDetailsByItemBarcode(subItem.Barcode)">
+                                        <td>{{subItem.Barcode}}</td>
+                                        <td>{{subItem.ItemNameEn}}</td>
+                                        <td>{{subItem.Code}}</td>
+                                        <td>{{subItem.FlavourEn}}</td>
+                                        <td>{{subItem.Unit}}</td>
+                                        <td>{{subItem.SellPrice}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="itemCollection.length >0" style="text-align:center">
+                <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" name="cancel-btn" ng-click="closeItemDetailModelDialogBox()"><span string-replace="cancelpos"></span></button>
+    </div>
+</script>
+
+@*BalanceAmount Confirmation Dialog*@
+<script type="text/ng-template" id="balanceAmountConfirmation">
+    <div class="modal-content">
+        <form name="balanceForm" novalidate>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="closeBalanceAmountLimitDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span string-replace="prepaycustomerbalance"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4"><span string-replace="balanceamount"></span>:</label>
+                        <div class="col-sm-4 p-0">
+                            <input type="text" name="balanceAmount" maxlength="13" class="form-control" id="" ng-model="customerInfo.CustomerBalanceAmount" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" />
+                            <div class="help-block" ng-messages="balanceForm.balanceAmount.$error" ng-if="balanceForm.balanceAmount.$touched">
+                                <p ng-message="pattern" class="text-error"><span>{{balanceAmountInvalid}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="saveBalanceAmount(customerInfo)" ng-disabled="balanceForm.$invalid"><span string-replace="submitpos"></span></button>
+                <button type="button" class="btn btn-default" ng-click="closeBalanceAmountLimitDialogBox()"><span string-replace="cancelpos"></span></button>
+            </div>
+        </form>
+    </div>
+</script>
+
+@*Unmatched Item Warning Dialog*@
+<script type="text/ng-template" id="unmatedItemWarningMessage">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeBalanceAmountLimitDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="inventoryunmatched"></span></h4>
+        </div>
+        @*{{unmatchedItemDetails}}*@
+
+        <div class="modal-body cust-page">
+            <fieldset>
+                <legend><span string-replace="unmatcheditem"></span></legend>
+                <table class="table table-striped table-bordered table-hover" name="unmatched-item-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="barcode"></span></th>
+                            <th><span string-replace="unitpos"></span></th>
+                            <th><span string-replace="itemname"></span></th>
+                            <th><span string-replace="systemquantity"></span></th>
+                            <th><span string-replace="systemquantity"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tbody>
+                        <tr>
+                            <td>{{unmatchedItemDetails.ItemDetails.Barcode}}</td>
+                            <td>{{unmatchedItemDetails.ItemDetails.Unit}}</td>
+                            <td>{{unmatchedItemDetails.ItemDetails.ItemNameEn}}</td>
+                            <td>{{unmatchedItemDetails.ItemDetails.ShelfQuantity}}</td>
+                            <td>{{unmatchedItemDetails.ItemDetails.ActualQuantity}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeUnmatchedItemWarnigDialogBox()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>
+
+@*item search dialog box*@
+<script type="text/ng-template" id="itemSearchDialogBox">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="itemsearch"></span></h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" maxlength="255" id="" name="itemname" ng-model="search.ItemNameEn">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" maxlength="18" id="" name="barcode" ng-model="search.Barcode">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" maxlength="255" name="flavour" ng-model="search.FlavourEn">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" maxlength="20" name="code" ng-model="search.Code">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row text-center">
+                <button class="btn btn-primary" name="search-btn" ng-click="serchItemDetails()"><span string-replace="search"></span></button>
+            </div>
+        </div>
+        <br />
+        <div class="alert alert-success text-center" role="alert" ng-show="errorItemMessage">
+            <span>{{noItemFound}}</span>
+        </div>
+        <br />
+        <div ng-hide="errorItemMessage">
+            <br />
+            <table class="table table-striped table-bordered table-hover" name="inventory-grid">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><span string-replace="barcode"></span></th>
+                        <th><span string-replace="itemname"></span></span> </th>
+                        <th><span string-replace="itemcode"></span></th>
+                        <th><span string-replace="flavourpos"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="pricepos"></span></th>
+                    </tr>
+                </thead>
+                <tbody dir-paginate="item in itemCollection| itemsPerPage: 8">
+                    <tr>
+                        <td id="{{item.Id}}"><a class="pointer" ng-click="getSubItemList(item.ItemProfileId)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                        <td class="pointer" ng-click="getItemDetails(item.Barcode)">{{item.Barcode}}</td>
+                        <td class="pointer" ng-click="getItemDetails(item.Barcode)">{{item.ItemNameEn}}</td>
+                        <td class="pointer" ng-click="getItemDetails(item.Barcode)">{{item.Code}}</td>
+                        <td class="pointer" ng-click="getItemDetails(item.Barcode)">{{item.FlavourEn}}</td>
+                        <td class="pointer" ng-click="getItemDetails(item.Barcode)">{{item.Unit}}</td>
+                        <td class="pointer" ng-click="getItemDetails(item.Barcode)">{{item.SellPrice}}</td>
+                    </tr>
+                    <tr id="subChild{{item.Id}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                        <td colspan="10">
+                            <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                <thead>
+                                    <tr>
+                                        <th><span string-replace="barcode"></span></th>
+                                        <th><span string-replace="itemname"></span></span> </th>
+                                        <th><span string-repalce="itemcode"></span></th>
+                                        <th><span string-replace="flavourpos"></span></th>
+                                        <th><span string-replace="unit"></span></th>
+                                        <th><span string-replace="pricepos"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="pointer" ng-repeat="subItem in item.listOfChildProfileAC" ng-click="getItemDetails(subItem.Barcode)">
+                                        <td>{{subItem.Barcode}}</td>
+                                        <td>{{subItem.ItemNameEn}}</td>
+                                        <td>{{subItem.Code}}</td>
+                                        <td>{{subItem.FlavourEn}}</td>
+                                        <td>{{subItem.Unit}}</td>
+                                        <td>{{subItem.SellPrice}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="itemCollection.length >0" style="text-align:center">
+                <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" name="cancel-btn" ng-click="closeItemDetailModelDialogBox()"><span string-replace="cancelpos"></span></button>
+    </div>
+</script>
+
+@*Item Validation Dialog*@
+<script type="text/ng-template" id="itemValidation">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeItemValidationDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="itemvalidation"></span></h4>
+        </div>
+        <div class="modal-body">
+            {{errorMessage}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeItemValidationDialogBox()"><span string-replace="okay"></span></button>
+
+        </div>
+    </div>
+</script>
+
+@*Issue Inventory Date time validation.*@
+<script type="text/ng-template" id="updateInventoryDateDetails">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeupdateInventoryDateDetailDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="issueinventory"></span></h4>
+        </div>
+        <div class="modal-body">
+            @*Same inventory was issues before/after days, are you sure you want to issue it again?*@
+            {{inventoryErrorMessage}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-if="isDateAlreadyExist" class="btn btn-primary" ng-click="updateIssueStockInventoryDate()"><span string-replace="yes"></span></button>
+            <button type="button" ng-if="isDateAlreadyExist" class="btn btn-default" data-dismiss="modal" ng-click="closeupdateInventoryDateDetailDialogBox()"><span string-replace="no"></span></button>
+            <button type="button" ng-if="isFullInventoryAlreadyExist || isCurrentDateAlreadyExist" class="btn btn-default" data-dismiss="modal" ng-click="closeupdateInventoryDateDetailDialogBox()"><span string-replace="close"></span></button>
+        </div>
+    </div>
+</script>
+
+
+@*UNMATCHED ITEM DETAILS*@
+<script type="text/ng-template" id="unmatchedItemDetails">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeUnmatchedItemDetailsModelDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="unmatcheditemdetails"></span></h4>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-success text-center" role="alert" ng-show="unmatchedItemErrorMessage">
+                <span>{{noItemFound}}</span>
+            </div>
+            <br />
+            <div ng-hide="unmatchedItemErrorMessage">
+                <table class="table table-striped table-bordered table-hover" name="inventory-item-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="barcode"></span></th>
+                            <th><span string-replace="itemname"></span></th>
+                            <th><span string-replace="flavor"></span></th>
+                            <th><span string-replace="categoryname"></span></th>
+                            <th><span string-replace="unitpos"></span></th>
+                            <th><span string-replace="shelfquantity"></span></th>
+                            <th ng-if="isAllowToReRecord"><span string-replace="action"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="unmatchedItemDetails in unmatchedItemCollection | itemsPerPage: 10">
+                            <td>{{unmatchedItemDetails.Barcode}}</td>
+                            <td>{{unmatchedItemDetails.ItemName}}</td>
+                            <td>{{unmatchedItemDetails.FlavorName}}</td>
+                            <td>{{unmatchedItemDetails.CategoryName}}</td>
+                            <td>{{unmatchedItemDetails.Unit}}</td>
+                            <td>{{unmatchedItemDetails.ShelfQuantity}}</td>
+                            <td ng-if="isAllowToReRecord">
+                                <input type="checkbox" ng-disabled="unmatchedItemDetails.IsRerecordDisabled" ng-model="unmatchedItemDetails.IsRerecord">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="unmatchedItemCollection.length >0" style="text-align:center">
+                    <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeUnmatchedItemDetailsModelDialogBox()"><span string-replace="close"></span></button>
+            <button class="btn btn-primary m-r-10" ng-if="isAllowToReRecord" ng-click="reRecordSelectedItemDetails()" ng-disabled="checkRerecordItem()?false:true"><span string-replace="rerecord"></span></button>
+        </div>
+    </div>
+</script>
+
+@*Add Ledger Popup*@
+<script type="text/ng-template" id="ledgerAddPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" name="close-btn" data-dismiss="modal" ng-click="cancleAddLedgerPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="addledger"></span></h4>
+        </div>
+        <div class="modal-body">
+            <form name="addLedger">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label class="control-label col-lg-4"><span string-replace="category"></span>:</label>
+                                <div class="col-lg-8" ng-class="{ 'has-error': addLedger.category.$touched && addLedger.category.$invalid }">
+                                    <ui-select name="category" ng-model="ledgersAccount.GroupId" ng-change="changeCategory()" required>
+                                        <ui-select-match placeholder="Select Category">{{$select.selected.GroupName}}</ui-select-match>
+                                        <ui-select-choices repeat="group.GroupId as group in listOfGroup | filter: $select.search">
+                                            <div ng-bind-html="group.GroupName | highlight: $select.search" name="{{group.GroupName}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addLedger.category.$error" ng-if="addLedger.category.$touched">
+                                        <p ng-message="required" class="text-error">{{groupNameRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-lg-4"><span string-replace="detailtype"></span>:</label>
+                                <div class="col-lg-8" ng-class="{ 'has-error': addLedger.detailtype.$touched && addLedger.detailtype.$invalid }">
+                                    <ui-select name="detailtype" ng-model="ledgersAccount.GroupTypeId" ng-disabled="isDisableDetailType" ng-change="changeDetailType(groupType.Name)" required>
+                                        <ui-select-match placeholder="Select Detail">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="groupType.Id  as groupType in listOfLedgerGroupType | filter: $select.search">
+                                            <div ng-bind-html="groupType.Name | highlight: $select.search" name="{{groupType.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addLedger.detailtype.$error" ng-if="addLedger.detailtype.$touched">
+                                        <p ng-message="required" class="text-error">{{detailTypeRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4"></label>
+                                <div class="col-lg-8">
+                                    <div class="display-text-according disabled">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label class="control-label col-lg-4"><span string-replace="name"></span>:</label>
+                                <div class="col-lg-8" ng-class="{ 'has-error': addLedger.ledegerName.$touched && addLedger.ledegerName.$invalid }">
+                                    <input type="text" name="ledegerName" class="form-control" maxlength="255" ng-model="ledgersAccount.LedgerName" required />
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addLedger.ledegerName.$error" ng-if="addLedger.ledegerName.$touched">
+                                        <p ng-message="required" class="text-error">{{ledegerNameRequired}}</p>
+                                    </div>
+                                    <p class="text-error" ng-show="isLedgerNameNotValid">{{ledgerNameNotValid}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-lg-4"><span string-replace="description"></span>:</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control" maxlength="250" ng-model="ledgersAccount.Description"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="checkbox col-lg-4 control-label"> <label> <input type="checkbox" ng-model="ledgersAccount.isSubAccountChecked" ng-click="clickSubAccountCheckBox()"><span string-replace="Is sub-account"></span></label> </div>
+                                <div class="col-lg-8">
+                                    <ui-select name="detailtype" ng-model="ledgersAccount.ParentLedgerId" ng-disabled="ledgersAccount.isSubAccountChecked?false:true">
+                                        <ui-select-match placeholder="Select">{{$select.selected.LedgerName}}</ui-select-match>
+                                        <ui-select-choices repeat="ledger.LedgerId as ledger in listOfLedgers  | filter: $select.search">
+                                            <div>
+                                                <label class="main-opt" ng-bind-html="ledger.LedgerName | highlight: $select.search" name="{{ledger.LedgerName}}"></label><label class="sub-option-name no-bold">{{ledger.LableName}}</label>
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <p class="text-error" ng-show="isLedgerValid">{{ledgerNotValid}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-show="isBalancedSection">
+                                <div class="col-lg-6 p-0">
+                                    <label class="control-label"><span string-replace="balance"></span>:</label><br />
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" ng-model="ledgersAccount.Balance" />
+                                </div>
+                                <div class="col-lg-6 p-0">
+                                    <label class="control-label"><span string-replace="asOf"></span>:</label><br />
+                                    <div class="input-group">
+                                        <input type="text" name="end-date" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="ledgersAccount.ledgersDate" is-open="isLedgerDate" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="openledgerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="save-btn" class="btn btn-primary" ng-click="saveLedgers()" ng-disabled="addLedger.$invalid"><span string-replace="save"></span></button>
+                    <button type="button" name="cancle-btn" class="btn btn-default" ng-click="cancleAddLedgerPopup()"><span string-replace="cancelpos"></span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+@*Remove Item Confiramtion*@
+<script type="text/ng-template" id="removeItemConfiramtion">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeRemoveItemConfirmationDialogBox()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="removeitemconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            {{itemDeleteConfirmationMessage}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="removeItemFromTheItemCollection()"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-primary" ng-click="closeRemoveItemConfirmationDialogBox()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="AutomaticPOPopup">
+    <div class="modal-content">
+        <form name="addAutomaticSPO" novalidate>
+            <div class="modal-header">
+                <h4 class="modal-title"><span string-replace="automaticpurchaseorderdetails"></span></h4>
+            </div>
+            <div class="modal-body">
+                {{AutomaticPOPopup}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="closeAutomaticPOPopup()">Okay</button>
+            </div>
+        </form>
+    </div>
+</script>

@@ -1,0 +1,153 @@
+﻿<div ng-controller="issueStockInventoryController">
+    <div class="panel panel-default" ng-init="viewIssueStockInventoryMoniterDetailsById()">
+        <div class="panel-heading"><span string-replace="inventorymonitor"></span></div>
+        <div class="panel-body">
+            <label><span string-replace="issuestockinventory"></span></label>
+            <hr />
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventoryno"></span>.:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="20" name="inventorynumber" ng-model="issueInventoryDetails.InventoryNO" ng-disabled="true" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" ng-disabled="true" class="form-control" name="branch" ng-model="issueInventoryDetails.BranchName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="startdate"></span>:</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" min-date="minStartDate" name="startdate" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-change="updateIssueInventoryDate(issueInventoryDetails)" ng-model="issueInventoryDetails.StartDate" is-open="isOpenStartDateFromModel" ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button ng-if="$root.merchatSettings.IsAllowInventoryStart && issueInventoryDetails.IsInitiate && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" type="button" class="btn btn-default" ng-click="openStartDateFromModel($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="issueInventoryDetails.IsItemInventory">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="item"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-disabled="true" class="form-control" name="item" ng-model="issueInventoryDetails.Barcode" />
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="issueInventoryDetails.IsSupplierInventory">
+                            <label class="control-label col-sm-4 p-0"><span><span string-replace="suppliername"></span></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" ng-disabled="true" class="form-control" name="suppliername" ng-model="issueInventoryDetails.SupplierName" />
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="issueInventoryDetails.IsCategoryInventory">
+                            <label class="control-label col-sm-4 p-0"><span><span string-replace="categoryname"></span></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" ng-disabled="true" class="form-control" name="categoryname" ng-model="issueInventoryDetails.CategoryName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventorytype"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-disabled="true" class="form-control" name="inventorytype" ng-model="issueInventoryDetails.InventoryType" />
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="issueInventoryDetails.IsCloseDateNullable">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="elapsedtime"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-disabled="true" class="form-control" name="elapsedtime" ng-model="issueInventoryDetails.ElapsedTime" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="$root.merchatSettings.IsAllowReviewStockInventory && issueInventoryDetails.IsRecord">
+                    <label class="col-lg-2 control-label"><span string-replace="initiationcomment"></span>:</label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" maxlength="350" name="initiationcomment" ng-model="issueInventoryDetails.InitiationComment"></textarea>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row" ng-if="issueInventoryDetails.InventoryRecorderCollection.length > 0">
+                <div class="col-lg-6">
+                    <label><span string-replace="inventoryprogress"></span></label>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-6 p-0"><span string-replace="shelfquantity"></span>:</label>
+                                <div class="col-sm-5">
+                                    <label class="highlight-text">{{issueInventoryDetails.ShelfAmount}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-7 p-0"><span string-replace="quantityprogress"></span>:</label>
+                                <div class="col-sm-5">
+                                    <label class="highlight-text">{{issueInventoryDetails.QuantityProcess}}%</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row" ng-if="issueInventoryDetails.IsUnmatchedButtonVisible">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <button class="btn btn-primary m-r-10" name="unmatcheditem-btn" ng-click="getUnmatchedItemListById(issueInventoryDetails.IssueStockInventoryId)"><span string-replace="unmatcheditem"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <label><span string-replace="recordersprogress"></span></label>
+                    <hr />
+
+                    <table class="table table-striped table-bordered table-hover" name="recorder-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="employee"></span></th>
+                                <th><span string-replace="quantity"></span></th>
+                                <th><span string-replace="progress"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="inventory in issueInventoryDetails.InventoryRecorderCollection">
+                            <tr>
+                                <td>{{inventory.UserName}}</td>
+                                <td>{{inventory.RecordedQuantity}}</td>
+                                <td>{{inventory.Process}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <div class="row text-center" ng-if="isDispalyChartSection">
+
+                <div>
+                    <div google-chart chart="chartObject" style="height:400px; width:100%;"></div>
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <button class="btn btn-primary m-r-10" name="start-btn" ng-if="$root.merchatSettings.IsAllowInventoryStart && issueInventoryDetails.IsInitiate && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted && issueInventoryDetails.IsStartDate" ng-click="startIssueStockInventory(issueInventoryDetails.IssueStockInventoryId)"><span string-replace="start"></span></button>
+                <button class="btn btn-primary m-r-10" name="submit-btn" ng-if="$root.merchatSettings.IsAllowReviewStockInventory && issueInventoryDetails.IsRecord && !issueInventoryDetails.IsActive && issueInventoryDetails.IsAllowToStartInventory && !issueInventoryDetails.IsDeleted" ng-click="submitIssueStockInventoryDetails(issueInventoryDetails)"><span string-replace="submitpos"></span></button>
+                <button class="btn btn-default" name="cancel-btn" ng-click="cancelIssueInventory()"><span string-replace="cancelpos"></span></button>
+            </div>
+        </div>
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

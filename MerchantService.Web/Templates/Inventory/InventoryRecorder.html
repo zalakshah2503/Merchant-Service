@@ -1,0 +1,132 @@
+﻿<div ng-controller="inventoryRecordController">
+    <div class="panel panel-default" ng-init="getInventoryRecorderDetailsById()">
+        <div class="panel-heading"><span string-replace="inventoryrecorder"></span></div>
+        <div class="panel-body">
+            <div class="alert alert-success text-center" role="alert" ng-show="inventoryRecordErrorMessage">
+                <span>{{noItemFound}}</span>
+            </div>
+            <div class="form-horizontal" ng-hide="inventoryRecordErrorMessage">
+                <label><span string-replace="selectinventory"></span></label>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventory"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-disabled="true" class="form-control" name="inventoryname" ng-model="issueInventoryDetails.InventoryType" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" ng-disabled="true" class="form-control" name="branchname" ng-model="issueInventoryDetails.BranchName" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div>
+                    <label><span string-replace="recorditem"></span></label>
+                    <hr />
+                    <form name="inventoryForm" novalidate>
+                        <div class="row" ng-class="{'disabled': issueInventoryDetails.IsDeleted}">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" maxlength="18" class="form-control" name="barcode"  pattern="[0-9]*[0-9]*" ng-model="issueInventoryDetails.Barcode" ng-blur="getItemDetailsByItemBarcode(issueInventoryDetails.Barcode)" />
+                                        <div class="help-block" ng-messages="inventoryForm.barcode.$error" ng-if="inventoryForm.barcode.$touched">
+                                            <p ng-message="pattern" class="text-error"><span>{{itemBarcodeValid}}</span></p>
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="quantity"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="quantity" class="form-control" ng-model="issueInventoryDetails.Quantity" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" enter-key ng-disabled="issueInventoryDetails.IsQuantityDisabled">
+                                        <div class="help-block" ng-messages="inventoryForm.quantity.$error" ng-if="inventoryForm.quantity.$touched">
+                                            <p ng-message="pattern" class="text-error"><span>{{validQuantityError}}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                <a ng-click="getItemListByIssueInventoryId(issueInventoryDetails.IssueStockInventoryId)" name="search-item-link" class="pointer"><span string-replace="searchitem"></span></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br />
+                <div>
+                    <label><span string-replace="itemdetails"></span></label>
+                    <hr />
+                    <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                        <span>{{noItemFound}}</span>
+                    </div>
+                    <div class="row" ng-hide="errorMessageDisplayForBlankList" ng-class="{'disabled' : isDisabledItemDetails}">
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="255" class="form-control" name="itemname" ng-model="issueInventoryDetails.ItemDetails.ItemNameEn" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="255" class="form-control" name="itemflavour" ng-model="issueInventoryDetails.ItemDetails.FlavourEn" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="18" class="form-control" name="barcode" ng-model="issueInventoryDetails.ItemDetails.Barcode" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemtype"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="50" name="itemtype" ng-model="issueInventoryDetails.ItemDetails.ItemType" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="unittype"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="50" name="unittype" ng-model="issueInventoryDetails.ItemDetails.Unit" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="baseunitcount"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" name="baseunitcount" ng-model="issueInventoryDetails.ItemDetails.BaseUnit" />
+                                    <div class="help-block" ng-messages="inventoryForm.baseunitcount.$error" ng-if="inventoryForm.baseunitcount.$touched">
+                                        <p ng-message="pattern" class="text-error"><span>{{validBaseUnitCount}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 text-center">
+                            <label class="control-label"><span string-replace="baseunitcount"></span></label>
+                            <h3>{{issueInventoryDetails.ItemDetails.ItemRecordCount}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row text-center">
+                    <button class="btn btn-default" name="close-btn" ng-click="cancelIssueInventory()"><span string-replace="close"></span></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

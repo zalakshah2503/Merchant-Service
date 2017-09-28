@@ -1,0 +1,14 @@
+﻿
+<div ng-if="!$root.IsAdmin">
+    <div ng-controller="SalesChartCtrl">
+        <div google-chart chart="chartObject" style="height:400px; width:80%;"></div>
+    </div>
+    <br />
+    <br />
+    <div ng-controller="PurchaseChartCtrl">
+        <div google-chart chart="chartObject" style="height:400px; width:80%;"></div>
+    </div>
+</div>
+<div ng-if="$root.IsAdmin">
+    <div ng-include='"/Templates/ManageUser.html"'></div>
+</div>

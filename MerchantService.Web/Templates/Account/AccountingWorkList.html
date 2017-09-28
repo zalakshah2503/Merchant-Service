@@ -1,0 +1,41 @@
+﻿<div ng-controller="AccountingController">
+    <div class="panel panel-default" ng-init="getAllAccountingEntry()">
+        <div class="panel-heading"><span string-replace="accountingentry"></span></div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" name="inventory-transfer-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="ledgername"></span></th>
+                        <th><span string-replace="debit"></span></th>
+                        <th><span string-replace="credit"></span></th>
+                        <th><span string-replace="activityname"></span></th>
+                        <th><span string-replace="description"></span></th>
+                        <th><span string-replace="transactiondatepos"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="acc in accountingEntryCollection.DoubleEntryAc| itemsPerPage: 20" ng-class="{'highlight-row': inventory.IsTragetedBranch}">
+                        <td>{{acc.LedgerName}}</td>
+                      
+                        <td>{{acc.Debit}}</td>
+                        <td>{{acc.Credit}}</td>
+                        <td>{{acc.ActivityName}}</td>
+                        <td>{{acc.Description}}</td>
+                        <td>{{acc.TransactionDate|date:'dd-MM-yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" class="text-right">
+                            <b><span string-replace="total"></span>:</b>
+                        </td>
+                        <td>{{accountingEntryCollection.TotalDebit}}</td>
+                        <td colspan="4">{{accountingEntryCollection.TotalCredit}}</td>
+                    </tr>
+                </tbody>
+            </table>           
+            <div ng-show="accountingEntryCollection.DoubleEntryAc.length >0" style="text-align:center">
+                <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+   
+</div>

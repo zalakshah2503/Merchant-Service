@@ -1,0 +1,295 @@
+Time : 12:04:44.0839 
+Message : 
+ErrorPath : /api/supplierprofile/getsupplierprofilelist
+RawUrl : /api/supplierprofile/getsupplierprofilelist
+Message : A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The semaphore timeout period has expired.)
+Source : .Net SqlClient Data Provider
+StackTrace :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   at System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.<Reader>b__c(DbCommand t, DbCommandInterceptionContext`1 c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext,TResult](TTarget target, Func`3 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.Reader(DbCommand command, DbCommandInterceptionContext interceptionContext)
+   at System.Data.Entity.Internal.InterceptableDbCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+TargetSite : Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:04:44.1445 
+Message : 
+ErrorPath : /api/supplierprofile/getsupplierprofilelist
+RawUrl : /api/supplierprofile/getsupplierprofilelist
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 356
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:04:44.2016 
+Message : 
+ErrorPath : /api/supplierprofile/getsupplierprofilelist
+RawUrl : /api/supplierprofile/getsupplierprofilelist
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 58
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:04:58.1936 
+Message : 
+ErrorPath : /api/sporeceiving/getreceivingpurchasorderlist
+RawUrl : /api/sporeceiving/getreceivingpurchasorderlist?purchaseOrderId=2
+Message : A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The semaphore timeout period has expired.)
+Source : .Net SqlClient Data Provider
+StackTrace :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   at System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.<Reader>b__c(DbCommand t, DbCommandInterceptionContext`1 c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext,TResult](TTarget target, Func`3 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.Reader(DbCommand command, DbCommandInterceptionContext interceptionContext)
+   at System.Data.Entity.Internal.InterceptableDbCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+TargetSite : Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:04:58.2156 
+Message : 
+ErrorPath : /api/sporeceiving/getreceivingpurchasorderlist
+RawUrl : /api/sporeceiving/getreceivingpurchasorderlist?purchaseOrderId=2
+Message : A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The semaphore timeout period has expired.)
+Source : .Net SqlClient Data Provider
+StackTrace :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   at System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.<Reader>b__c(DbCommand t, DbCommandInterceptionContext`1 c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext,TResult](TTarget target, Func`3 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.Reader(DbCommand command, DbCommandInterceptionContext interceptionContext)
+   at System.Data.Entity.Internal.InterceptableDbCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+TargetSite : Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:04.5274 
+Message : An error occurred while executing the command definition. See the inner exception for details. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:27.7716 
+Message : 
+ErrorPath : /api/spopayment/getsupplierbill
+RawUrl : /api/spopayment/getsupplierbill
+Message : A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+Source : .Net SqlClient Data Provider
+StackTrace :    at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+TargetSite : Void .ctor(System.Data.ProviderBase.DbConnectionPoolIdentity, System.Data.SqlClient.SqlConnectionString, System.Data.SqlClient.SqlCredential, System.Object, System.String, System.Security.SecureString, Boolean, System.Data.SqlClient.SqlConnectionString, System.Data.SqlClient.SessionData, System.Data.ProviderBase.DbConnectionPool, System.String, Boolean) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:27.7936 
+Message : 
+ErrorPath : /api/spopayment/getsupplierbill
+RawUrl : /api/spopayment/getsupplierbill
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 356
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:27.8196 
+Message : 
+ErrorPath : /api/spopayment/getsupplierbill
+RawUrl : /api/spopayment/getsupplierbill
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 58
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:27.8466 
+Message : 
+ErrorPath : /api/spopayment/getsupplierbill
+RawUrl : /api/spopayment/getsupplierbill
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 68
+   at MerchantService.Core.Global.MerchantContext..ctor(IErrorLog _errorLog, IMerchantDataRepository _merchantDataRepository) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 29
+   at MerchantService.Core.Controllers.BaseController.get_MerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\BaseController.cs:line 28
+   at MerchantService.Core.Controllers.SupplierPO.SPOPaymentController.GetSupplierBill() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\SupplierPO\SPOPaymentController.cs:line 59
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:32.8774 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:48.7321 
+Message : 
+ErrorPath : /api/supplierprofile/getsupplierprofilelist
+RawUrl : /api/supplierprofile/getsupplierprofilelist
+Message : A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+Source : .Net SqlClient Data Provider
+StackTrace :    at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+TargetSite : Void .ctor(System.Data.ProviderBase.DbConnectionPoolIdentity, System.Data.SqlClient.SqlConnectionString, System.Data.SqlClient.SqlCredential, System.Object, System.String, System.Security.SecureString, Boolean, System.Data.SqlClient.SqlConnectionString, System.Data.SqlClient.SessionData, System.Data.ProviderBase.DbConnectionPool, System.String, Boolean) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:48.7632 
+Message : 
+ErrorPath : /api/supplierprofile/getsupplierprofilelist
+RawUrl : /api/supplierprofile/getsupplierprofilelist
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 356
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:48.7733 
+Message : 
+ErrorPath : /api/supplierprofile/getsupplierprofilelist
+RawUrl : /api/supplierprofile/getsupplierprofilelist
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 58
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:51.7956 
+Message : 
+ErrorPath : /api/branch/getBranch
+RawUrl : /api/branch/getBranch
+Message : A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+Source : .Net SqlClient Data Provider
+StackTrace :    at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+TargetSite : System.Data.ProviderBase.DbConnectionInternal UserCreateRequest(System.Data.Common.DbConnection, System.Data.Common.DbConnectionOptions, System.Data.ProviderBase.DbConnectionInternal) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:51.8185 
+Message : 
+ErrorPath : /api/branch/getBranch
+RawUrl : /api/branch/getBranch
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Admin.BranchRepository.GetBranchList(String userName, Nullable`1 companyId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Admin\Branch\BranchRepository.cs:line 62
+TargetSite : System.Collections.Generic.List`1[MerchantService.DomainModel.Models.Branch.BranchDetail] GetBranchList(System.String, System.Nullable`1[System.Int32]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:51.8469 
+Message : 
+ErrorPath : /api/branch/getBranch
+RawUrl : /api/branch/getBranch
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Admin.BranchRepository.GetBranchList(String userName, Nullable`1 companyId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Admin\Branch\BranchRepository.cs:line 87
+   at MerchantService.Core.Controllers.Admin.BranchController.GetBranchList() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\Admin\BranchController.cs:line 63
+TargetSite : System.Collections.Generic.List`1[MerchantService.DomainModel.Models.Branch.BranchDetail] GetBranchList(System.String, System.Nullable`1[System.Int32]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:05:53.4448 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

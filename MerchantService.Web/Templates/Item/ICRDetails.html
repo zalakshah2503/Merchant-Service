@@ -1,0 +1,242 @@
+﻿<div ng-controller="icrWorkListController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="targetitem"></span></div></div>
+        <div class="panel-body">
+            <br />
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" class="form-control" disabled id="" ng-model="itemChangedDetails.ItemProfile.ItemNameEn" name="itemname">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.FlavourEn" name="itemflavour">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemtype"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.SystemParameter.ValueEn" name="itemtype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="20" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.Code" name="itemcode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="18" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.Barcode" name="barcode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="unittype"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.SystemParameter.ValueEn" name="unittype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="baseunitcount"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="6" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.BaseUnit" name="baseunitcount">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="sellprice"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" disabled ng-model="itemChangedDetails.ItemProfile.SellPrice" name="sellprice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="sellpricea"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" disabled ng-model="itemChangedDetails.ItemProfile.SellPriceA" name="sellpricea" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="sellpriceb"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" id="" disabled ng-model="itemChangedDetails.ItemProfile.SellPriceB" name="sellpriceb">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="sellpricec"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" id="" disabled ng-model="itemChangedDetails.ItemProfile.SellPriceC" name="sellpricec">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="sellpriced"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" disabled ng-model="itemChangedDetails.ItemProfile.SellPriceD" name="sellpriced">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="costprice"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" disabled ng-model="itemChangedDetails.ItemProfile.CostPrice" name="costprice">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="isofferitem"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" disabled value="Yes" ng-if="itemChangedDetails.ItemProfile.IsOfferItem" id="" name="isitemoffer">
+                                <input type="text" class="form-control" disabled value="No" ng-if="!itemChangedDetails.ItemProfile.IsOfferItem" id="" name="isitemoffer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <label><span string-replace="requesttype"></span>: <span ng-show="!(itemChangedDetails.IsPriceChangeRequest)" string-replace="itemquantitychangerequest"></span><span ng-show="itemChangedDetails.IsPriceChangeRequest" string-replace="itempricechangerequest"></span></label>
+            <div class="p-15" ng-show="!(itemChangedDetails.IsPriceChangeRequest)">
+                <div class="row">
+                    <table class="table table-striped table-bordered table-hover" name="qty-change-req-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="branchname"></span></th>
+                                <th><span string-replace="systemquantity"></span></th>
+                                <th><span string-replace="action"></span></th>
+                                <th><span string-replace="modifyingquantity"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="quantity in itemChangedDetails.IcrQuantity">
+                            <tr>
+                                <td>{{quantity.BranchName}}</td>
+                                <td>{{quantity.ActualQuantity}}</td>
+                                <td ng-show="{{quantity.IsAddOperation}}"><span string-replace="add"></span></td>
+                                <td ng-show="!({{quantity.IsAddOperation}})"><span string-replace="subtract"></span></td>
+                                <td>{{quantity.ModifyingQuantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="p-15" ng-show="itemChangedDetails.IsPriceChangeRequest">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><span string-replace="sellprice"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" disabled ng-class="{'reject-row':itemChangedDetails.ModifyingSellPrice<itemChangedDetails.ModifyingCostPrice}" ng-model="itemChangedDetails.ModifyingSellPrice" class="form-control" name="sellprice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><span string-replace="sellpricea"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" disabled class="form-control" ng-class="{'reject-row':itemChangedDetails.ModifyingSellPriceA<itemChangedDetails.ModifyingCostPrice}" ng-model="itemChangedDetails.ModifyingSellPriceA" name="sellpricea" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><span string-replace="sellpriceb"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" disabled class="form-control" ng-class="{'reject-row':itemChangedDetails.ModifyingSellPriceB<itemChangedDetails.ModifyingCostPrice}" ng-model="itemChangedDetails.ModifyingSellPriceB" name="sellpriceb" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><span string-replace="sellpricec"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" disabled class="form-control" ng-class="{'reject-row':itemChangedDetails.ModifyingSellPriceC<itemChangedDetails.ModifyingCostPrice}" ng-model="itemChangedDetails.ModifyingSellPriceC" name="sellpricec" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><span string-replace="sellpriced"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" disabled class="form-control" ng-class="{'reject-row':itemChangedDetails.ModifyingSellPriceD<itemChangedDetails.ModifyingCostPrice}" ng-model="itemChangedDetails.ModifyingSellPriceD" name="sellpriced" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><span string-replace="costprice"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" disabled class="form-control" ng-model="itemChangedDetails.ModifyingCostPrice" name="costprice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <label><span string-replace="action"></span></label>
+            <table class="table table-striped table-bordered table-hover" name="action-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="stage"></span></th>
+                        <th><span string-replace="action"></span></th>
+                        <th><span string-replace="actiondate"></span></th>
+                        <th><span string-replace="userrole"></span></th>
+                        <th><span string-replace="username"></span></th>
+                        <th><span string-replace="comment"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="log in itemChangedDetails.WorkFlowLog">
+                        <td>{{log.Stage}}</td>
+                        <td>{{log.Action}}</td>
+                        <td>{{log.ActionDate}}</td>
+                        <td>{{log.RoleName}}</td>
+                        <td>{{log.UserName}}</td>
+                        <td>{{log.Comment}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div class="row">
+                <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                <div class="col-lg-9">
+                    <textarea class="form-control" maxlength="350" name="comment" ng-model="itemChangedDetails.Comment"></textarea>
+                </div>
+            </div>
+            <br />
+            <div class="row text-center">
+                <label ng-show="$root.merchatSettings.IsAllowedToApproveICR">
+                    <button class="btn btn-primary m-r-10" name="approve-btn" ng-click="approveICR()" ng-show="isApproval"><span string-replace="approve"></span></button>
+                </label>
+                <label ng-show="$root.merchatSettings.IsAllowedToRejectICR">
+                    <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="openRejectICRPopup()" ng-show="isApproval"><span string-replace="reject"></span></button>
+                </label>
+                <label ng-show="$root.merchatSettings.IsAllowedToReturnICR">
+                    <button class="btn btn-primary m-r-10" name="return-btn" ng-click="returnICR()" ng-show="isApproval"><span string-replace="return"></span></button>
+                </label>
+                <label ng-show="$root.merchatSettings.IsAllowedToEditICR">
+                    <button class="btn btn-primary m-r-10" name="return-btn" ng-click="editICR()" ng-show="isEditVisible"><span string-replace="edit"></span></button>
+                </label>
+                <button class="btn btn-primary m-r-10" name="return-btn" ng-click="resubmitICRDetail()" ng-show="isEditVisible"><span string-replace="resubmit"></span></button>
+                <label ng-show="$root.merchatSettings.IsAllowedToApproveICR">
+                    <button class="btn btn-primary m-r-10" name="return-btn" ng-click="reviewICR()" ng-show="isReviewVisible"><span string-replace="review"></span></button>
+                </label>
+                <button class="btn btn-default" name="cancel-btn" ng-click="cancel()"><span string-replace="cancelpos"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="RejectICRPopup">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeRejectICRPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{rejectConfirm}}</h4>
+        </div>
+        <div class="modal-body">
+            {{rejectConfirmation}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="rejectICR()"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeRejectICRPopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>

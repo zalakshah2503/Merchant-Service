@@ -1,0 +1,107 @@
+﻿<div ng-controller="IncidentReportWorklistController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="manageincidentreportworklist"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4"><span string-replace="cashiername"></span>:</label>
+                            <div class="col-lg-7">
+                                <ui-select name="cashierName" ng-model="search.CashierId">
+                                    <ui-select-match placeholder="Select Cashier Name">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="cashier.cashierId as cashier in cashierList | filter: $select.search">
+                                        <div ng-bind-html="cashier.Name | highlight: $select.search" name="{{cashier.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4"><span string-replace="branchname"></span>:</label>
+                            <div class="col-lg-7">
+                                <ui-select name="branchName" ng-model="search.BranchId">
+                                    <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.branchId as branch in branchList | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="btn btn-primary" ng-click="searchClick()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <br />
+                <div ng-show="!errorMessageDisplayForBlankList">
+                    <table class="table table-striped table-bordered table-hover" name="incident-report-grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th><span string-replace="cashiername"></span></th>
+                                <th><span string-replace="branchname"></span></th>
+                                <th><span string-replace="reacheddatetime"></span></th>
+                                <th><span string-replace="operationcount"></span></th>
+                                <th><span string-replace="amount"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="incidentReport in totalCollection">
+                            <tr>
+                                <td id="{{incidentReport.CashierId}}"><a class="pointer" ng-click="getSubItemList(incidentReport.CashierId)" name="plus-link" ng-show="incidentReport.HasChildItem"><i attr="incidentReport.CashierId" class="fa fa-plus action-icon"></i></a></td>
+                                <td>{{incidentReport.CashierName}}</td>
+                                <td>{{incidentReport.BranchName}}</td>
+                                <td>{{incidentReport.ReachedDateTime |date:'dd-MM-yyyy HH:mm'}}</td>
+                                <td>{{incidentReport.OperationCount}}</td>
+                                <td>{{incidentReport.Amount}}</td>
+                                <td>
+                                    <div class="action-td">
+                                        <a title="Edit" name="report-edit" ng-click="actionClickEvent(incidentReport.CashierId)"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                            <tr id="subChild{{incidentReport.CashierId}}" ng-if="incidentReport.HasChildItem" class="isHide sub-grid-list">
+                                <td colspan="10">
+                                    <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                        <thead>
+                                            <tr>
+                                                <th><span string-replace="cashiername"></span></th>
+                                                <th><span string-replace="branchname"></span></th>
+                                                <th><span string-replace="reacheddatetime"></span></th>
+                                                <th><span string-replace="operationcount"></span></th>
+                                                <th><span string-replace="modifieddatetime"></span></th>
+                                                <th><span string-replace="amount"></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="subIncidentReport in incidentReport.ListOfSubIncidentReportWorkListAC">
+                                                <td>{{subIncidentReport.CashierName}}</td>
+                                                <td>{{subIncidentReport.BranchName}}</td>
+                                                <td>{{subIncidentReport.ReachedDateTime |date:'dd-MM-yyyy hh:mm'}}</td>
+                                                <td>{{subIncidentReport.OperationCount}}</td>
+                                                <td>{{subIncidentReport.ModifiedDate|date:'dd-MM-yyyy hh:mm'}}</td>
+                                                <td>{{subIncidentReport.Amount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="totalCollection.length >0" style="text-align:center">
+                        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

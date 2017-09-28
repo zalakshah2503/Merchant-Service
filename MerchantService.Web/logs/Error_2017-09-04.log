@@ -1,0 +1,47 @@
+Time : 08:37:46.1021 
+Message : A null value was returned where an instance of IHttpActionResult was expected. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 09:08:17.8215 
+Message : A null value was returned where an instance of IHttpActionResult was expected. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 09:17:39.6100 
+Message : A null value was returned where an instance of IHttpActionResult was expected. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 11:30:35.0073 
+Message : An item with the same key has already been added. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 13:00:10.7170 
+Message : A null value was returned where an instance of IHttpActionResult was expected. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 14:54:30.7970 
+Message : 
+ErrorPath : /Home/MerchantSettings
+RawUrl : /Home/MerchantSettings
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Core
+StackTrace :    at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 61
+TargetSite : Void InitializeMerchantContext() 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 14:54:30.8410 
+Message : 
+ErrorPath : /Home/MerchantSettings
+RawUrl : /Home/MerchantSettings
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Core
+StackTrace :    at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 68
+   at MerchantService.Core.Global.MerchantContext..ctor(IErrorLog _errorLog, IMerchantDataRepository _merchantDataRepository) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 29
+   at MerchantService.Core.Controllers.HomeController.get_MerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\HomeController.cs:line 68
+   at MerchantService.Core.Controllers.HomeController.MerchantSettings() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\HomeController.cs:line 82
+TargetSite : Void InitializeMerchantContext() 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 14:54:34.4490 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

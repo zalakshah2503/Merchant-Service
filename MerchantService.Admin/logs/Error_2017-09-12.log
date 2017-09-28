@@ -1,0 +1,27 @@
+Time : 14:04:17.9465 
+Message : 
+ErrorPath : /api/WorkFlow/editWorkFlowInformationById
+RawUrl : /api/WorkFlow/editWorkFlowInformationById?workFlowId=47
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.ChildWorkFlowPermissio(Int32 activityId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 690
+   at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.EditWorkFlowInformationById(Int32 workFlowId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 598
+TargetSite : System.Collections.Generic.List`1[MerchantService.Repository.ApplicationClasses.WorkFlow.WorkFlowPermission] ChildWorkFlowPermissio(Int32) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 14:04:35.6434 
+Message : 
+ErrorPath : /api/WorkFlow/editWorkFlowInformationById
+RawUrl : /api/WorkFlow/editWorkFlowInformationById?workFlowId=47
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.ChildWorkFlowPermissio(Int32 activityId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 690
+   at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.EditWorkFlowInformationById(Int32 workFlowId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 642
+   at MerchantService.Core.Controllers.WorkFlow.WorkFlowController.EditWorkFlowInformationById(Int32 workFlowId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\WorkFlow\WorkFlowController.cs:line 398
+TargetSite : System.Collections.Generic.List`1[MerchantService.Repository.ApplicationClasses.WorkFlow.WorkFlowPermission] ChildWorkFlowPermissio(Int32) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 14:04:57.2087 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,352 @@
+﻿<div ng-controller="CustomerPOController">
+    <form name="cpoDownPayment" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-heading"><span string-replace="customerpurchaseorderpayment"></span></div>
+            <div class="panel-body">
+                <div ng-hide="isCPOAdded">
+                    <label><span string-replace="searchfilter"></span></label>
+                    <hr />
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <ui-select ng-model="customerDetail.Customer" ng-change="customerChange(customerDetail.Customer.CustomerId)" name="customername">
+                                            <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="customer as customer in customerList | filter: $select.search">
+                                                <div ng-bind-html="customer.Name | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="mobile"></span>.:</label>
+                                    <div class="col-sm-7">
+                                        <ui-select ng-model="customerDetail.Customer" ng-change="customerChange(customerDetail.Customer.CustomerId)" name="mobilenumber">
+                                            <ui-select-match placeholder="Select">{{$select.selected.Mobile}}</ui-select-match>
+                                            <ui-select-choices repeat="customer as customer in customerList | filter: $select.search">
+                                                <div ng-bind-html="customer.Mobile | highlight: $select.search" name="{{customer.Mobile}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-6 p-0"><span string-replace="membershipno"></span>.:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="" maxlength="30" ng-model="customerInfo.membershipCode" ng-change="membershipCodeChange(customerInfo.membershipCode)" name="membership-no">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <button class="btn btn-primary" name="search-btn" ng-click="customerSearch()"><span string-replace="search"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="userErrorMessageDisplay">
+                    <span>{{custNotFound}}</span>
+                </div>
+                <div ng-show="isCustomerDetailsVisible">
+                    <br />
+                    <label><span string-replace="customerdetails"></span></label>
+                    <hr />
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" maxlength="255" class="form-control" id="" ng-disabled="true" ng-model="customerProfile.Name" name="customername">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="customertype"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="" ng-disabled="true" ng-show="isCreditCustomer || customerProfile.IsCreditCustomer" value="Credit" name="customertype">
+                                        <input type="text" class="form-control" id="" ng-disabled="true" ng-hide="isCreditCustomer || customerProfile.IsCreditCustomer" value="Non-Credit" name="customertype">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="mobile"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="" ng-disabled="true" ng-model="customerProfile.Mobile" name="mobile" maxlength="15">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="pricecategory"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="" ng-disabled="true" ng-model="customerProfile.PriceCategoryName" name="pricecategory">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 cust-page">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="membershipcode"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="30" id="" ng-disabled="true" ng-model="customerProfile.MembershipCode" name="membershipcode">
+                                    </div>
+                                </div>
+
+                                <fieldset>
+                                    <legend><span string-replace="amount"></span>:</legend>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="balance"></span>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" ng-disabled="true" ng-model="customerProfile.BalanceAmt" name="balance">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="limit"></span>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" ng-disabled="true" ng-model="customerProfile.LimitAmt" name="limit">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <label><span string-replace="customerpurchaseorderdetails"></span></label>
+                    <hr />
+                    <table class="table table-striped table-bordered table-hover" name="CPO-details-grid" ng-show="isCPOAdded">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="name"></span></th>
+                                <th><span string-replace="orderno"></span>.</th>
+                                <th><span string-replace="issuedate"></span></th>
+                                <th><span string-replace="issuebranch"></span></th>
+                                <th><span string-replace="duedate"></span></th>
+                                <th><span string-replace="collectingbranch"></span></th>
+                                <th><span string-replace="totalamount"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="grid-width">{{cpoInfo.InitiatorName}}</td>
+                                <td class="grid-width">{{cpoInfo.PurchaseOrderNo}}</td>
+                                <td class="grid-width">{{cpoInfo.InitiationDate | date:'dd-MMM-yyyy'}}</td>
+                                <td class="grid-width">{{cpoInfo.InitiationBranchName}}</td>
+                                <td class="grid-width">{{cpoInfo.DueDateTemp | date:'dd-MMM-yyyy'}}</td>
+                                <td class="grid-width">{{cpoInfo.CollectingBranchName}}</td>
+                                <td class="grid-width">{{cpoInfo.TotalCPOAmount}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-striped table-bordered table-hover" name="CPO-details-grid" ng-show="cpoDownPaymnetList.length>0">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="name"></span></th>
+                                <th><span string-replace="orderno"></span>.</th>
+                                <th><span string-replace="paidamount"></span></th>
+                                <th><span string-replace="issuedate"></span></th>
+                                <th><span string-replace="issuebranch"></span></th>
+                                <th><span string-replace="duedate"></span></th>
+                                <th><span string-replace="collectingbranch"></span></th>
+                                <th><span string-replace="totalamount"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="list in cpoDownPaymnetList" ng-class="{'highlight-row':list.DownPaymentAmount>=list.Total}">
+                                <td class="grid-width">{{list.InitiatorName}}</td>
+                                <td class="grid-width">{{list.PurchaseOrderNo}}</td>
+                                <td class="grid-width">{{list.DownPaymentAmount}}</td>
+                                <td class="grid-width">{{list.InitiationDate | date:'dd-MM-yyyy'}}</td>
+                                <td class="grid-width">{{list.InitiationBranchName}}</td>
+                                <td class="grid-width">{{list.DueDate | date:'dd-MM-yyyy'}}</td>
+                                <td class="grid-width">{{list.CollectingBranchName}}</td>
+                                <td class="grid-width">{{list.Total}}</td>
+                                <td>
+                                    <div class="radio"> <label> <input type="radio" value="" ng-click="cpoSelect(list)" ng-model="list.Select" name="collect"></label> </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div ng-hide="isCPOAdded">
+                        <div class="alert alert-success text-center" role="alert" ng-hide="(cpoDownPaymnetList.length > 0) ">
+                            <span>{{cpoNotFound}}</span>
+                        </div>
+                    </div>
+                    <br />
+                    <div ng-if="isPaymentDetailVisible">
+                        <label><span string-replace="paymentdetails"></span></label>
+                        <hr />
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="cash"></span>:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" ng-change="onAmountChange(CPOPayment.Cash)" pattern="^\d{1,8}(\.\d{1,4})?$" maxlength="13" ng-model="CPOPayment.Cash" name="cash">
+                                                    <div class="help-block" ng-messages="cpoDownPayment.cash.$error">
+                                                        <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="creditcard"></span>:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="onAmountChange(CPOPayment.CreditCardAmount)" maxlength="13" ng-model="CPOPayment.CreditCardAmount" name="creditcard">
+                                                    <div class="help-block" ng-messages="cpoDownPayment.creditcard.$error">
+                                                        <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="debitcard"></span>:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="onAmountChange(CPOPayment.DebitCardAmount)" maxlength="13" ng-model="CPOPayment.DebitCardAmount" name="debitcard">
+                                                    <div class="help-block" ng-messages="cpoDownPayment.debitcard.$error">
+                                                        <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="coupon"></span>:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="onAmountChange(CPOPayment.CouponAmount)" maxlength="13" ng-model="CPOPayment.CouponAmount" name="coupon">
+                                                    <div class="help-block" ng-messages="cpoDownPayment.coupon.$error">
+                                                        <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="creditaccount"></span>:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" pattern="^\d{1,8}(\.\d{1,4})?$" maxlength="13" ng-disabled="!((cpoInfo.AllowCreditAccountLimit || AllowCreditAccountLimit) && (isCreditCustomer || customerprofile.IsCreditCustomer))" class="form-control" ng-change="onAmountChange(CPOPayment.CreditAccountAmount)" ng-model="CPOPayment.CreditAccountAmount" name="creditacc">
+                                                    <div class="help-block" ng-messages="cpoDownPayment.creditacc.$error">
+                                                        <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="receiptno"></span>.:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" maxlength="20" ng-model="CPOPayment.CreditCardReceipt" name="receipt-no">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="receiptno"></span>.:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" maxlength="20" ng-model="CPOPayment.DebitCardReceipt" name="r-no">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 p-0"><span string-replace="couponno"></span>.:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" maxlength="20" ng-model="CPOPayment.CouponNo" name="coupon-no">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 cust-page">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-7 p-0"><span string-replace="totalamount"></span>:</label>
+                                        <div class="col-sm-5">
+                                            <label class="control-label">{{cpoInfo.TotalCPOAmount}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group highlight-text" ng-show="isCPOAdded">
+                                        <label class="control-label col-sm-7 p-0"><span string-replace="downpaymentamount"></span>:</label>
+                                        <div class="col-sm-5">
+                                            <label class="control-label">{{downPayment}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-7 p-0"><span string-replace="alreadypaid"></span>:</label>
+                                        <div class="col-sm-5">
+                                            <label class="control-label">{{cpoInfo.DownPaymentAmount}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group highlight-text">
+                                        <label class="control-label col-sm-7 p-0"><span string-replace="difference"></span>:</label>
+                                        <div class="col-sm-5">
+                                            <label class="control-label">{{differenceAmtFromCustomer}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group highlight-text">
+                                        <label class="control-label col-sm-7 p-0"><span string-replace="amounttobereturnedtocustomer"></span>:</label>
+                                        <div class="col-sm-5">
+                                            <label class="control-label">{{differenceAmtToCustomer}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label text-right col-sm-2 p-0"><span string-replace="comment"></span>:</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" maxlength="350" ng-model="CPOPayment.Comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row text-center">
+                <button class="btn btn-primary" name="submit-btn" ng-if="(cpoInfo.TotalCPOAmount>0)" ng-disabled="cpoDownPayment.$invalid" ng-click="saveCPO()"><span string-replace="submitpos"></span></button>
+                <button name="cancel-btn" string-replace="cancelpos" ng-if="isCustomerDetailsVisible" ng-click="cancel()" class="btn btn-default" ></button>
+            </div>
+            <br />
+        </div>
+    </form>
+</div>
+<script type="text/ng-template" id="LimitBalanceErrorPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeLimitBalanceErrorPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="oops"></span></h4>
+        </div>
+        <div class="modal-body" ng-if="isLimit">
+            {{only}}{{amount}}{{available}}
+        </div>
+        <div class="modal-body" ng-if="isBalance">
+            {{yourBalIs}}{{amount}}{{plsPayRemainingAmt}}
+        </div>
+        <div class="modal-body" ng-if="!isBalance">
+            <div ng-if="!isLimit">
+                {{payDownPayment}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeLimitBalanceErrorPopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="excessAmountErrorPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeExcessAmountErrorPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="oops"></span></h4>
+        </div>
+        <div class="modal-body">
+            {{excessCPOAmountError}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="excessAmtApprove()"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-primary" ng-click="closeExcessAmountErrorPopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>
+
+

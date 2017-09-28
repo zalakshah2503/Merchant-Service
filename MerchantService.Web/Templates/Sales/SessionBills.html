@@ -1,0 +1,241 @@
+﻿<div ng-controller="POSSessionBillController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="sessionbill"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="billno"></span>:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" maxlength="20" name="billno" ng-model="search.BillNo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <button class="btn btn-primary" ng-click="clickOnSearch()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <br />
+            <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                <span>{{noItemFound}}</span>
+            </div>
+            <div class="table-div" ng-show="!errorMessageDisplayForBlankList">
+                <table class="table table-striped table-bordered table-hover" name="item-grid">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><span string-replace="billno"></span></th>
+                            <th><span string-replace="totalamount"></span></th>
+                            <th><span string-replace="billdate"></span></th>
+                            <th><span string-replace="membershipcode"></span></th>
+                            <th><span string-replace="cashiername"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="item in totalCollection">
+                        <tr ng-click="viewSessionBill(item.POSBillId)" class="pointer">
+                            <td id="{{item.POSBillId}}"><a class="pointer" ng-click="getSubItemList(item.POSBillId,$event)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                            <td>{{item.BillNo}}</td>
+                            <td>{{item.NumberOfTotalAmount}}</td>
+                            <td>{{item.BillDate|date:'dd-MM-yyyy hh:mm' }}</td>
+                            <td>{{item.MembershipCode}}</td>
+                            <td>{{item.CashierName}}</td>
+                        </tr>
+                        <tr id="subChild{{item.POSBillId}}" class="isHide sub-grid-list">
+                            <td colspan="10">
+                                <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                    <thead>
+                                        <tr>
+                                            <th><span string-replace="barcode"></span></th>
+                                            <th><span string-replace="name"></span></th>
+                                            <th><span string-replace="flavor"></span></th>
+                                            <th><span string-replace="unit"></span></th>
+                                            <th><span string-replace="baseunit"></span></th>
+                                            <th><span string-replace="sellprice"></span></th>
+                                            <th><span string-replace="quantity"></span></th>
+                                            <th><span string-replace="returnedquantity"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="subItem in item.listOfPOSSessionBillItemAC">
+                                            <td>{{subItem.Barcode}}</td>
+                                            <td>{{subItem.Name}}</td>
+                                            <td>{{subItem.Flavor}}</td>
+                                            <td>{{subItem.Unit}}</td>
+                                            <td>{{subItem.BaseUnit}}</td>
+                                            <td>{{subItem.SellPrice}}</td>
+                                            <td>{{subItem.Quantity}}</td>
+                                            <td>{{subItem.ReturnQunatity}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="totalCollection.length >0" style="text-align:center">
+                    <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+            </div>
+            <br />
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h4><span string-replace="currentpaymentmethod"></span></h4>
+                        <hr />
+                        <div class="form-group p-r-15">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="billno"></span>:</label>
+                            <div class="col-sm-5 p-r-0">
+                                <input type="text" class="form-control" id="" name="billno1" ng-model="billNumber" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="form-group p-r-15">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="cash"></span>:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" name="cash" ng-model="currentPaymentObject.Cash" ng-disabled="true">
+                            </div>
+                            <div class="col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group p-r-15">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="debitcard"></span>:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" name="debit-card" ng-model="currentPaymentObject.DebitCard" ng-disabled="true">
+                            </div>
+                            <label class="control-label col-sm-3 p-0"><span string-replace="receiptno"></span>.:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" class="form-control" id="" name="receipt-no" ng-model="currentPaymentObject.ReceiptNoDebitCard" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="form-group p-r-15">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="creditcard"></span>:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" name="credit-card" ng-model="currentPaymentObject.CreditCard" ng-disabled="true">
+                            </div>
+                            <label class="control-label col-sm-3 p-0"><span string-replace="receiptno"></span>.:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" class="form-control" id="" name="receipt-no" ng-model="currentPaymentObject.ReceiptNoCreditCard" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="form-group p-r-15">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="cheque"></span>:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" name="cheque" ng-model="currentPaymentObject.Cheque" ng-disabled="true" />
+                            </div>
+                            <label class="control-label col-sm-3 p-0"><span string-replace="chequeno"></span>.:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" class="form-control" name="cheque-no" ng-model="currentPaymentObject.ChequeNo" ng-disabled="true" />
+                            </div>
+                        </div>
+                        <div class="form-group p-r-15">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="coupon"></span>:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" name="coupon" ng-model="currentPaymentObject.Coupon" ng-disabled="true">
+                            </div>
+                            <label class="control-label col-sm-3 p-0"><span string-replace="couponno"></span>.:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" class="form-control" id="" name="coupon-no" ng-disabled="true" ng-model="currentPaymentObject.CouponNo">
+                            </div>
+                        </div>
+                        <div class="form-group p-r-15">
+                            <div class="col-sm-6">
+                            </div>
+                            <label class="control-label col-sm-3 p-0"><span string-replace="billamount"></span>:</label>
+                            <div class="col-sm-3 p-r-0">
+                                <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" id="" name="bill-amt" ng-model="currentPaymentObject.billAmount" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" style="border-left:1px solid #ddd">
+                        <form name="newPayment" novalidate>
+                            <h4><span string-replace="newpaymentmethod"></span></h4>
+                            <hr />
+                            <div class="form-group p-r-15 m-t-70">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="cash"></span>:</label>
+                                <div class="col-sm-3 p-r-0" ng-class="{ 'has-error': newPayment.cashtext.$touched && newPayment.cashtext.$invalid }">
+                                    <input type="text" class="form-control" id="" pattern="^\d{1,8}(\.\d{1,4})?$" maxlength="13" name="cashtext" ng-model="newPaymentObject.Cash" ng-change="updateBillAmount()">
+                                    <div class="help-block" ng-messages="newPayment.cashtext.$error" ng-if="newPayment.cashtext.$touched">
+                                        <p ng-message="pattern" class="text-error">{{ValidCashMessage}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                </div>
+                            </div>
+                            <div class="form-group p-r-15">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="debitcard"></span>:</label>
+                                <div class="col-sm-3 p-r-0" ng-class="{ 'has-error': newPayment.debittext.$touched && newPayment.debittext.$invalid }">
+                                    <input type="text" class="form-control" maxlength="13"  pattern="^\d{1,8}(\.\d{1,4})?$" id="" name="debittext" ng-model="newPaymentObject.DebitCard" ng-change="updateBillAmount()">
+                                    <div class="help-block" ng-messages="newPayment.debittext.$error" ng-if="newPayment.debittext.$touched">
+                                        <p ng-message="pattern" class="text-error">{{ValidDebitCardAmt}}</p>
+                                    </div>
+                                  </div>
+                                <label class="control-label col-sm-3 p-0"><span string-replace="receiptno"></span>.:</label>
+                                <div class="col-sm-3 p-r-0">
+                                    <input type="text" class="form-control" id="" maxlength="20" name="rec-no-text" ng-model="newPaymentObject.ReceiptNoDebitCard">
+                                </div>
+                            </div>
+                            <div class="form-group p-r-15">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="creditcard"></span>:</label>
+                                <div class="col-sm-3 p-r-0" ng-class="{ 'has-error': newPayment.credittext.$touched && newPayment.credittext.$invalid }">
+                                    <input type="text" class="form-control" id="" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" name="credittext" ng-model="newPaymentObject.CreditCard" ng-change="updateBillAmount()">
+                                    <div class="help-block" ng-messages="newPayment.credittext.$error" ng-if="newPayment.credittext.$touched">
+                                        <p ng-message="pattern" class="text-error">{{ValidCreditCardAmt}}</p>
+                                    </div>
+                                 </div>
+                                <label class="control-label col-sm-3 p-0"><span string-replace="receiptno"></span>.:</label>
+                                <div class="col-sm-3 p-r-0">
+                                    <input type="text" class="form-control" id="" maxlength="20" name="receipt-text" ng-model="newPaymentObject.ReceiptNoCreditCard">
+                                </div>
+                            </div>
+                            <div class="form-group p-r-15">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="cheque"></span>:</label>
+                                <div class="col-sm-3 p-r-0" ng-class="{ 'has-error': newPayment.chequeAmt.$touched && newPayment.chequeAmt.$invalid }">
+                                    <input type="text" class="form-control" maxlength="13"  pattern="^\d{1,8}(\.\d{1,4})?$" name="chequeAmt" ng-model="newPaymentObject.Cheque" ng-change="updateBillAmount()" />
+                                    <div class="help-block" ng-messages="newPayment.chequeAmt.$error" ng-if="newPayment.chequeAmt.$touched">
+                                        <p ng-message="pattern" class="text-error">{{ValidChequeAmt}}</p>
+                                    </div>
+                                </div>
+                                <label class="control-label col-sm-3 p-0"><span string-replace="chequeno"></span>.:</label>
+                                <div class="col-sm-3 p-r-0">
+                                    <input type="text" class="form-control" maxlength="20" name="cheque-no" ng-model="newPaymentObject.ChequeNo" />
+                                </div>
+                            </div>
+                            <div class="form-group p-r-15">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="coupon"></span>:</label>
+                                <div class="col-sm-3 p-r-0" ng-class="{ 'has-error': newPayment.coupontext.$touched && newPayment.coupontext.$invalid }">
+                                    <input type="text" class="form-control" id="" pattern="^\d{1,8}(\.\d{1,4})?$"  maxlength="13" name="coupontext" ng-model="newPaymentObject.Coupon" ng-change="updateBillAmount()">
+                                    <div class="help-block" ng-messages="newPayment.coupontext.$error" ng-if="newPayment.coupontext.$touched">
+                                        <p ng-message="pattern" class="text-error">{{ValidCouponAmt}}</p>
+                                    </div>
+                                  </div>
+                                <label class="control-label col-sm-3 p-0"><span string-replace="couponno"></span>.:</label>
+                                <div class="col-sm-3 p-r-0">
+                                    <input type="text" class="form-control" id="" maxlength="20" name="coupon-no-text" ng-model="newPaymentObject.CouponNo">
+                                </div>
+                            </div>
+                            <div class="form-group p-r-15">
+                                <div class="col-sm-6">
+                                </div>
+                                <label class="control-label col-sm-3 p-0"><span string-replace="billamount"></span>:</label>
+                                <div class="col-sm-3 p-r-0">
+                                    <input type="text" class="form-control" id="" maxlength="13" name="bill-amt-text" ng-model="newPaymentObject.BillAmount" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                    <div class="help-block">
+                                        <p class="text-error" ng-show="isMatchedForCurrentPayment">{{matchedForCurrentPayment}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+            <div class="row text-center">
+                <button class="btn btn-primary m-r-10" name="change-payment-btn" ng-click="changePaymentEvent()"><span string-replace="changepayment"></span></button>
+                <button class="btn btn-default" name="close-btn" ng-click="cancleButtonEvent()"><span string-replace="close"></span></button>&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>

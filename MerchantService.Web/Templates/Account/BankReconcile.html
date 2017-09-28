@@ -1,0 +1,82 @@
+﻿<div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="bankreconcile"></span></div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="pull-left col-lg-6">
+                        <label class="control-label"><span string-replace="ledgername"></span> : </label><label class="control-label"><span string-replace="bank"></span></label>
+                    </div>
+                    <div class="text-right col-lg-6">
+                        <label class="control-label">2015-01-01 to 2015-06-30</label>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <label><span string-replace="reconciliation"></span></label>
+                </div>
+                <br />
+                <table class="table table-striped table-bordered table-hover" name="reconcile-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="date"></span></th>
+                            <th><span string-replace="particular"></span></th>
+                            <th><span string-replace="vouchertype"></span></th>
+                            <th><span string-replace="transactiontype"></span></th>
+                            <th><span string-replace="instrumentno"></span></th>
+                            <th><span string-replace="instructiondate"></span></th>
+                            <th><span string-replace="bankdate"></span></th>
+                            <th><span string-replace="debit"></span></th>
+                            <th><span string-replace="credit"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>4-6-2015</td>
+                            <td>asff</td>
+                            <td>sdfsf  f</td>
+                            <td>Cheque</td>
+                            <td>02</td>
+                            <td>4-6-2015</td>
+                            <td>4-6-2015</td>
+                            <td>0</td>
+                            <td>500</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7" class="text-right"><span string-replace="balanceaspercompanybook"></span>:</td>
+                            <td>200</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right"><span string-replace="accountnotreflectedinbank"></span>:</td>
+                            <td>200</td>
+                            <td>500</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right"><span string-replace="accountsnotreflectedincompanybook"></span>:</td>
+                            <td>200</td>
+                            <td>800</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right"><span string-replace="balanceasperbank"></span>:</td>
+                            <td></td>
+                            <td>800</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right"><span string-replace="balanceasperimportedbankstatement"></span>:</td>
+                            <td>55</td>
+                            <td>800</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right"><span string-replace="difference"></span>:</td>
+                            <td>55</td>
+                            <td>800</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

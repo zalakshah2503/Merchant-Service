@@ -1,0 +1,521 @@
+﻿<div ng-controller="ItemDestructionRequestController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="itemdestructionrequest"></span></div>
+        <div class="panel-body">
+            <form name="itemDestructionRequest" novalidate>
+                <br />
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="255" ng-model="ItemDestructionSearchModel.ItemNameEn" name="itemname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="20" ng-model="ItemDestructionSearchModel.ItemCode" name="itemcode">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="$root.merchatSettings.IsAllowToDestructionItemAnotherBranch">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="branchname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="ItemDestructionRequestModel.branchId" name="branchName">
+                                        <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                            <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="item"></span> <span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="18" ng-model="ItemDestructionSearchModel.Barcode" name="barcode">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="selectCategory"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="ItemDestructionSearchModel.CategoryId" name="type">
+                                        <ui-select-match placeholder="Select Item Type">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="category.Id as category in categoryList | filter: $select.search">
+                                            <div ng-bind-html="category.Name | highlight: $select.search" name="{{category.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class=" control-label col-sm-4 p-0">
+                                    <span string-replace="suppliername"></span>:
+                                </label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="ItemDestructionSearchModel.SupplierId" name="supplier">
+                                        <ui-select-match placeholder="Select Supplier">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="supplier.Id as supplier in supplierList | filter: $select.search">
+                                            <div ng-bind-html="supplier.Name | highlight: $select.search" name="{{supplier.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemunit"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="ItemDestructionSearchModel.UnitParamTypeId" name="unit">
+                                        <ui-select-match placeholder="Select Unit">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="unitType.Id as unitType in unitList | filter: $select.search">
+                                            <div ng-bind-html="unitType.Name | highlight: $select.search" name="{{unitType.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row text-center">
+                        <button class="btn btn-primary" name="search-btn" ng-click="searchButton()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <div ng-show="!errorMessageDisplayForBlankList">
+                    <br />
+                    <label><span string-replace="itemlist"></span></label>
+                    <hr />
+                    <div class="table-div">
+                        <table class="table table-striped table-bordered table-hover" name="item-grid">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th><span string-replace="itemname"></span></th>
+                                    <th><span string-replace="itemflavor"></span></th>
+                                    <th><span string-replace="barcode"></span></th>
+                                    <th><span string-replace="type"></span> </th>
+                                    <th><span string-replace="systemquantity"></span></th>
+                                    <th><span string-replace="suppliername"></span></th>
+                                    <th><span string-replace="unit"></span></th>
+                                    <th class="date-td"><div ng-show="isSameSupplierInList"><span class="m-r-10" string-replace="selectall"></span><input type="checkbox" class="verti-align-top" ng-model="selectedAll" ng-click="selectAll()" /></div></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="item in totalCollection">
+                                <tr>
+                                    <td id="{{item.Id}}{{item.SupplierId}}"><a class="pointer" ng-click="getSubItemList(item.Id,item.SupplierId)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                                    <td>{{item.ItemNameEn}}</td>
+                                    <td>{{item.FlavourEn}}</td>
+                                    <td>{{item.Barcode}}</td>
+                                    <td>{{item.ItemType}}</td>
+                                    <td>{{item.SystemQuantity}}</td>
+                                    <td>{{item.SupplierName}}</td>
+                                    <td>{{item.Unit}}</td>
+                                    <td>
+                                        <input type="checkbox" class="verti-align-top" ng-model="item.Checked" ng-class="{'isHide':item.SystemQuantity <= 0}" ng-click="viewItemDetail(item)" />
+                                    </td>
+                                </tr>
+                                <tr id="subChild{{item.Id}}{{item.SupplierId}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                                    <td colspan="10">
+                                        <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                            <thead>
+                                                <tr>
+                                                    <th><span string-replace="itemname"></span></th>
+                                                    <th><span string-replace="itemflavor"></span></th>
+                                                    <th><span string-replace="barcode"></span></th>
+                                                    <th><span string-replace="type"></span> </th>
+                                                    <th><span string-replace="systemquantity"></span></th>
+                                                    <th><span string-replace="suppliername"></span></th>
+                                                    <th><span string-replace="unit"></span></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="subItem in item.listOfChildProfileAC">
+                                                    <td>{{subItem.ItemNameEn}}</td>
+                                                    <td>{{subItem.FlavourEn}}</td>
+                                                    <td>{{subItem.Barcode}}</td>
+                                                    <td>{{subItem.ItemType}}</td>
+                                                    <td>{{subItem.SystemQuantity}}</td>
+                                                    <td>{{subItem.SupplierName}}</td>
+                                                    <td>{{subItem.Unit}}</td>
+                                                    <td>
+                                                        <input type="checkbox" ng-click="viewItemDetail(subItem)" ng-model="subItem.Checked" ng-class="{'isHide':subItem.SystemQuantity <= 0}" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <button class="btn btn-primary pull-right" ng-click="viewItemList()" ng-disabled="destructionItemList.length <= 0"><span string-replace="additem"></span></button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div ng-show="totalCollection.length >0" style="text-align:center">
+                        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    </div>
+                </div>
+                <div class="request-section">
+                    <div ng-if="isRequestDetail">
+                        <br />
+                        <label><span string-replace="requestdetail"></span></label>
+                        <hr />
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="destructioncause"></span>:</label>
+                                        <div class="col-sm-7" ng-class="{ 'has-error': itemDestructionRequest.destructioncause.$touched && itemDestructionRequest.destructioncause.$invalid }">
+                                            <ui-select ng-model="ItemDestructionRequestModel.destructioCasueId" name="destructioncause" required>
+                                                <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                <ui-select-choices repeat="destruction.Id as destruction in destructioCasueList | filter: $select.search">
+                                                    <div ng-bind-html="destruction.Name | highlight: $select.search" name="{{destruction.Name}}"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="itemDestructionRequest.destructioncause.$error" ng-if="itemDestructionRequest.destructioncause.$touched">
+                                                <p ng-message="required" class="text-error">{{destructionCauseRequired}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0"><span string-replace="initiatedby"></span>:</label>
+                                        <div class="col-sm-7" ng-class="{ 'has-error': itemDestructionRequest.initiated.$touched && itemDestructionRequest.initiated.$invalid }">
+                                            <ui-select name="initiated" ng-model="ItemDestructionRequestModel.intiatedId" required>
+                                                <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                <ui-select-choices repeat="initiate.Id as initiate in initiatedList | filter: $select.search">
+                                                    <div ng-bind-html="initiate.Name | highlight: $select.search" name="{{initiate.Name}}"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="itemDestructionRequest.initiated.$error" ng-if="itemDestructionRequest.initiated.$touched">
+                                                <p ng-message="required" class="text-error">{{initiatedRequired}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <label><span string-replace="requestitems"></span></label>
+                        <hr />
+                        <div class="alert alert-success text-center" role="alert" ng-show="errorMessageForNotAddedDestructionItem">
+                            <span>{{noItemFound}}</span>
+                        </div>
+                        <p class="text-error" ng-show="isDestructionQuantityRequired">{{DestructionQuantityRequired}}</p>
+                        <p class="text-error" ng-show="isDestructionQuantityNotValid">{{destructionQuantityNotValid}}</p>
+                        <div ng-show="!errorMessageForNotAddedDestructionItem">
+                            <table class="table table-striped table-bordered table-hover" name="request-item-grid">
+                                <thead>
+                                    <tr>
+                                        <th><span string-replace="itemname"></span></th>
+                                        <th><span string-replace="barcode"></span></th>
+                                        <th><span string-replace="type"></span> </th>
+                                        <th><span string-replace="systemquantity"></span></th>
+                                        <th><span string-replace="suppliername"></span></th>
+                                        <th><span string-replace="costprice"></span></th>
+                                        <th><span string-replace="destructionquantity"></span></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="item in destructionItemList| itemsPerPage: 3">
+                                        <td>{{item.ItemNameEn}}</td>
+                                        <td>{{item.Barcode}}</td>
+                                        <td>{{item.ItemType}}</td>
+                                        <td>{{item.SystemQuantity}}</td>
+                                        <td>{{item.SupplierName}}</td>
+                                        <td>{{item.CostPrice}}</td>
+                                        <td>
+                                            <input type="text" class="form-control text-width" ng-model="item.DestructionQuantity" ng-blur="compareSystemQuantityWithIndex(item.SystemQuantity,item,$index)" name="destructionqty_{{$index}}" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" />
+                                            <span class="pointer" ng-show="item.isShowDestructionQuantity" tooltip="Branch has only {{item.ActualQuantity}} quantity to destruct" tooltip-placement="right"><i class="fa fa-warning text-error icon-big"></i></span>
+                                            <div class="help-block" ng-messages="itemDestructionRequest['destructionqty_' + $index].$error" ng-if="itemDestructionRequest['destructionqty_' + $index].$touched">
+                                                <p ng-message="pattern" class="text-error">{{validDestructionQuantity}}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="action-td">
+                                                <a title="Delete" name="req-item-delete" ng-click="deletedestructionItem(item.Id)"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div ng-show="destructionItemList.length >0" style="text-align:center">
+                                <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                            <div class="col-lg-9">
+                                <textarea class="form-control" maxlength="250" name="comment" ng-model="ItemDestructionRequestModel.comment"></textarea>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row text-center">
+                            <button class="btn btn-primary m-r-10" name="submit-bnt" ng-click="submitButton()" ng-disabled="itemDestructionRequest.$invalid" ng-show="isSubmit"><span string-replace="submitpos"></span></button>
+                            <button class="btn btn-primary m-r-10" name="submit-bnt" ng-click="updateButton()" ng-disabled="itemDestructionRequest.$invalid" ng-show="!isSubmit"><span string-replace="update"></span></button>
+                            <button class="btn btn-default" name="cancel-btn" ng-click="clickCancelButton()"><span string-replace="cancelpos"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script type="text/ng-template" id="itemListPopup">
+            <div class="modal-header">
+                <h3 class="modal-title"><span string-replace="itemlist"></span></h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-5 p-0"><span string-replace="itemnameen"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="255" name="item-name" ng-model="search.ItemNameEn" auto-focus="isFocusIn">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5 p-0"><span string-replace="selectCategory"></span>:</label>
+                                <div class="col-sm-7">
+                                    <ui-select ng-model="search.CategoryId" name="select-category">
+                                        <ui-select-match placeholder="Select Category">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="category.Id as category  in categoryList | filter: $select.search">
+                                            <div ng-bind-html="category.Name | highlight: $select.search" name="{{category.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemBarcode"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="18" ng-model="search.Barcode" name="barcode">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="selectUnit"></span>:</label>
+                                <div class="col-sm-7">
+                                    <ui-select name="unit" ng-model="search.UnitParamTypeId" required name="unit">
+                                        <ui-select-match placeholder="Select Unit">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="unitType.Id as unitType in unitList | filter: $select.search">
+                                            <div ng-bind-html="unitType.Name | highlight: $select.search" name="{{unitType.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemflavouren"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="255" ng-model="search.FlavourEn" name="flavour">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="20" ng-model="search.Code" name="item-code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" ng-click="searchEvent()" name="searc-btn"><span string-replace="search"></span></button>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <div ng-show="isItemGrid">
+                    <br />
+                    <label><span string-replace="itemsearch"></span></label>
+                    <hr />
+                    <div class="table-div">
+                        <table class="table table-striped table-bordered table-hover" name="item-grid">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th><span string-replace="itemname"></span></th>
+                                    <th><span string-replace="itemBarcode"></span></th>
+                                    <th><span string-replace="itemcode"></span> </th>
+                                    <th><span string-replace="itemflavor"></span></th>
+                                    <th><span string-replace="category"></span></th>
+                                    <th><span string-replace="unit"></span></th>
+                                    <th><span string-replace="isactive"></span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="item in totalCollection">
+                                <tr>
+                                    <td id="item{{item.Id}}"><a class="pointer" ng-click="getchildItemList(item.Id)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                                    <td>{{item.ItemNameEn}}</td>
+                                    <td>{{item.Barcode}}</td>
+                                    <td>{{item.Code}}</td>
+                                    <td>{{item.FlavourEn}}</td>
+                                    <td>{{item.ItemType}}</td>
+                                    <td>{{item.Unit}}</td>
+                                    <td>{{item.IsActive}}</td>
+                                    <td class="action-td-width">
+                                        <div class="action-td">
+                                            <a title="View" name="item-view" ng-click="viewItemDetail(item)"><i class="fa fa-eye"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="subChildItem{{item.Id}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                                    <td colspan="10">
+                                        <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                            <thead>
+                                                <tr>
+                                                    <th><span string-replace="itemname"></span></th>
+                                                    <th><span string-replace="itemBarcode"></span></th>
+                                                    <th><span string-replace="itemcode"></span> </th>
+                                                    <th><span string-replace="itemflavor"></span></th>
+                                                    <th><span string-replace="category"></span></th>
+                                                    <th><span string-replace="unit"></span></th>
+                                                    <th><span string-replace="isactive"></span></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="subItem in item.listOfChildProfileAC">
+                                                    <td>{{subItem.ItemNameEn}}</td>
+                                                    <td>{{subItem.Barcode}}</td>
+                                                    <td>{{subItem.Code}}</td>
+                                                    <td>{{subItem.FlavourEn}}</td>
+                                                    <td>{{subItem.ItemType}}</td>
+                                                    <td>{{subItem.Unit}}</td>
+                                                    <td>{{subItem.IsActive}}</td>
+                                                    <td class="action-td-width">
+                                                        <div class="action-td">
+                                                            <a title="View" name="item-view" ng-click="viewItemDetail(subItem)"><i class="fa fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-show="totalCollection.length >0" style="text-align:center">
+                        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary m-r-10" type="button" name="cancel-btn" ng-click="cancelButtonForItemPopup()"><span string-replace="cancelpos"></span></button>
+                </div>
+        </script>
+        <script type="text/ng-template" id="AddItemErrorPopup">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="closeItemAddErrorPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span string-replace="oops"></span></h4>
+                </div>
+                <div class="modal-body">
+                    {{itemAddedToRIMessage}}
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="DeleteItemPopup">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeDeleteItemPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <span string-replace="areyousureyouwanttodelete"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="deleteDestructionItem(Item)"><span string-replace="yes"></span></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeDeleteItemPopup()"><span string-replace="no"></span></button>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="supplierAlreadyExists">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="supplierPopupOk()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span string-replace="oops"></span></h4>
+                </div>
+                <div class="modal-body">
+                    {{ItemDestructed}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="supplierPopupOk()"><span string-replace="okay"></span></button>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="supplierExpireReturnAcceptPopup">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeSupplierExpireReturnAcceptPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span string-replace="oops"></span></h4>
+                </div>
+                <div class="modal-body">
+                    {{notAcceptExpiredItem}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="closeSupplierExpireReturnAcceptPopup()"><span string-replace="okay"></span></button>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="alreadyExistsItemDestruciton">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeAlreadyExistsItemDestructionPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{DestructionExists}}</h4>
+                </div>
+                <div class="modal-body">
+                    Destruction request for <b><span>"{{itemNameList}}"</span></b> is already in process,Are you sure you want to create another?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="clickOnYesButtonForItemDestruction()"><span string-replace="yes"></span></button>
+                    <button type="button" class="btn btn-primary" ng-click="closeAlreadyExistsItemDestructionPopup()"><span string-replace="no"></span></button>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="popupCreditNoteDetail">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeCreditNotePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span string-replace="createdcreditnotedetail"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <b> <span string-replace="suppliername"></span>: </b><label class="p-0 no-bold">{{supplierName}}</label>
+                    <br />
+                    <b><span string-replace="creditnotenumber"></span>:</b><label class="p-0 no-bold">{{creditNoteNumber}}</label>
+                    <br />
+                    <b><span string-replace="amount"></span>:</b><label class="p-0 no-bold">{{amount}}</label>
+                    <br />
+                    <br />
+                    <p style="font-size:12px">
+                        {{itemDestructionReceipt}}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="clickOnOkButton()"><span string-replace="okay"></span></button>
+                    <button class="btn btn-default" ng-click="closeCreditNotePopup()"><span string-replace="cancelpos"></span></button>
+                </div>
+            </div>
+        </script>
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

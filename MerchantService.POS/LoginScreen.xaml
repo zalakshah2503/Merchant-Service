@@ -1,0 +1,41 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+		mc:Ignorable="d" x:Class="MerchantService.POS.LoginScreen"
+        Title="Login" Height="320" Width="550" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"><!--Tag="loginpos"-->
+    <Window.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=txtPassword}"></KeyBinding>
+    </Window.InputBindings>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <toolkit:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="Authenticating">
+    <StackPanel x:Name="loginForm" Orientation="Horizontal"  Margin="0"  Background="#FFEFF0F2" >
+        <StackPanel Orientation="Vertical" Focusable="False" Margin="20">
+            <Label x:Name="lblError" Visibility="{Binding isAuthenticated, Converter={StaticResource BoolToVis}, FallbackValue=''}" Foreground="Red" Height="30"></Label>
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                    <Label x:Name="lblUserName" Content="Username" HorizontalAlignment="Left" Height="28" FontSize="13" VerticalAlignment="Center" Width="75" TabIndex="0"/> <!--Tag="usernamepos"-->
+                    <TextBox Width="180" Height="35" VerticalContentAlignment="Center" BorderBrush="Transparent" FontSize="14" x:Name="txtUserName" TabIndex="1" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label x:Name="lblPassword" Content="Password" HorizontalAlignment="Left" Height="28" FontSize="13"  VerticalAlignment="Center" Width="75" /> <!--Tag="passwordpos"-->
+                    <PasswordBox Width="180" VerticalContentAlignment="Center" BorderBrush="Transparent" Height="35" x:Name="txtPassword" FontSize="14" TabIndex="2"></PasswordBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label x:Name="lblLanguage" Content="Language" HorizontalAlignment="Left" Height="28" FontSize="13"  VerticalAlignment="Center" Width="75" />
+                    <!--Tag="passwordpos"-->
+                    <ComboBox Width="180" VerticalContentAlignment="Center" BorderBrush="Transparent" Height="35" x:Name="txtLanguage" FontSize="14" TabIndex="3" ItemsSource="{Binding Path=LanguageList}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding Path=Language}"></ComboBox>
+            </StackPanel>
+                <Button Margin="20,20,0,0" Width="120" Height="35"  Background="#FFB44F3D" Content="Login"  Foreground="White" FontWeight="Bold" x:Name="btnLogin"   TabIndex="3" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=txtPassword}"/> <!--Tag="loginpos"-->
+
+            </StackPanel>
+        
+        <StackPanel Margin="20">
+            <Image Source=".\Resource\more-megastore.jpg"  Height="150" ></Image>
+        </StackPanel>
+
+    </StackPanel>
+    </toolkit:BusyIndicator>
+</Window>

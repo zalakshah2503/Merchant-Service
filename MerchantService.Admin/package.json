@@ -1,0 +1,15 @@
+{
+  "name": "angular",
+  "description": "Merchant service Admin",
+  "version": "1.4.8",
+  "scripts": {
+    "tslint": "tslint -c tslint.json ./app/**/*.ts"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tslint": "4.5.1",
+    "typescript": "2.0.10"
+  },
+  "repository": {}
+}

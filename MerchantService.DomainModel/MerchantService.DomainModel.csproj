@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{61200D42-0980-4DA4-A17E-0BD8CCF0D6CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MerchantService.DomainModel</RootNamespace>
+    <AssemblyName>MerchantService.DomainModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContext\LogEntry.cs" />
+    <Compile Include="DataContext\MerchantServiceDataContext.cs" />
+    <Compile Include="Enums\AccountGroup.cs" />
+    <Compile Include="Enums\BarcodeSection.cs" />
+    <Compile Include="Enums\CustomerStatus.cs" />
+    <Compile Include="Enums\ICRStatus.cs" />
+    <Compile Include="Enums\InventoryType.cs" />
+    <Compile Include="Enums\CreditNoteType.cs" />
+    <Compile Include="Enums\OperationTypes.cs" />
+    <Compile Include="Enums\PaymentMode.cs" />
+    <Compile Include="Enums\PaymentTypes.cs" />
+    <Compile Include="Enums\POSBillPaymentType.cs" />
+    <Compile Include="Enums\POSBillType.cs" />
+    <Compile Include="Enums\POSSessionStatus.cs" />
+    <Compile Include="Enums\PriceCategory.cs" />
+    <Compile Include="Enums\Purpose.cs" />
+    <Compile Include="Enums\RewardPointType.cs" />
+    <Compile Include="Enums\RolePermission.cs" />
+    <Compile Include="Enums\SPOReceivingStatus.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Accounting\DoubleEntry.cs" />
+    <Compile Include="Models\Accounting\Group.cs" />
+    <Compile Include="Models\Accounting\GroupType.cs" />
+    <Compile Include="Models\Accounting\Ledgers.cs" />
+    <Compile Include="Models\Accounting\ReceiptPaymentDetail.cs" />
+    <Compile Include="Models\Accounting\ReceiptPaymentVoucher.cs" />
+    <Compile Include="Models\Accounting\SalesPurchaseDetail.cs" />
+    <Compile Include="Models\Accounting\SalesPurchaseVoucher.cs" />
+    <Compile Include="Models\Branch\AdditionalService.cs" />
+    <Compile Include="Models\Branch\BranchCPOConfiguration.cs" />
+    <Compile Include="Models\Branch\BranchDetail.cs" />
+    <Compile Include="Models\Company\BalanceBarcodeConfiguration.cs" />
+    <Compile Include="Models\Company\BalanceBarcodeSection.cs" />
+    <Compile Include="Models\Company\CompanyBarcodeConfiguration.cs" />
+    <Compile Include="Models\CreditNote\CreditNoteDetail.cs" />
+    <Compile Include="Models\CreditNote\CreditNoteItem.cs" />
+    <Compile Include="Models\CreditNote\CreditNotePayment.cs" />
+    <Compile Include="Models\CreditNote\RecevingCreditNotePaymentDetail.cs" />
+    <Compile Include="Models\CustomAttributes\CustomAttribute.cs" />
+    <Compile Include="Models\CustomAttributes\ModelDictionary.cs" />
+    <Compile Include="Models\Customer\UpdateCustomerInfo.cs" />
+    <Compile Include="Models\Globalization\CurrencyDetail.cs" />
+    <Compile Include="Models\Globalization\ModuleInfo.cs" />
+    <Compile Include="Models\Globalization\SecondaryLanguage.cs" />
+    <Compile Include="Models\Global\Permission.cs" />
+    <Compile Include="Models\IncidentReport\CashierIncidentReport.cs" />
+    <Compile Include="Models\IncidentReport\IncidentReport.cs" />
+    <Compile Include="Models\IncidentReport\PosIncidentReport.cs" />
+    <Compile Include="Models\ItemChangeRequest\IcrPrice.cs" />
+    <Compile Include="Models\ItemDestruction\Destruction.cs" />
+    <Compile Include="Models\ItemDestruction\ItemDestructionDetail.cs" />
+    <Compile Include="Models\ItemDestruction\ItemDestructionDetailApprovalAC.cs" />
+    <Compile Include="Models\ItemDestruction\ItemDestructionreditNote.cs" />
+    <Compile Include="Models\Item\AutomaticPODetail.cs" />
+    <Compile Include="Models\Item\Category.cs" />
+    <Compile Include="Models\Company\CompanyConfiguration.cs" />
+    <Compile Include="Models\Company\CompanyDetail.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CPOAdditionalCost.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CPOBill.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CPODownPayment.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CPOItem.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CPOPayment.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CPOPaymentType.cs" />
+    <Compile Include="Models\CustomerPurchaseOrder\CustomerPurchaseOrder.cs" />
+    <Compile Include="Models\Customer\CustomerProfile.cs" />
+    <Compile Include="Models\Item\ItemQuantityList.cs" />
+    <Compile Include="Models\PayLoad.cs" />
+    <Compile Include="Models\POS\POSNonSaleTransaction.cs" />
+    <Compile Include="Models\RewardPoint\RewardPoint.cs" />
+    <Compile Include="Models\Role\Role.cs" />
+    <Compile Include="Models\SupplierPayment\POBillPayment.cs" />
+    <Compile Include="Models\SupplierPayment\POSupplierBill.cs" />
+    <Compile Include="Models\SupplierPayment\SPOBillDaysLimit.cs" />
+    <Compile Include="Models\SupplierPurchaseOrder\PurchaseOrderBranch.cs" />
+    <Compile Include="Models\SupplierPurchaseOrder\PurchaseOrderItem.cs" />
+    <Compile Include="Models\SupplierPurchaseOrder\SupplierPurchaseOrder.cs" />
+    <Compile Include="Models\LogInfo.cs" />
+    <Compile Include="Models\SupplierPurchaseOrder\SupplierPurchaseOrderLog.cs" />
+    <Compile Include="Models\SystemParameters\SystemParameter.cs" />
+    <Compile Include="Models\UserAccess\Form.cs" />
+    <Compile Include="Models\Globalization\GlobalizationDetail.cs" />
+    <Compile Include="Models\Global\MerchantServiceBase.cs" />
+    <Compile Include="Models\InventoryTransfer\InventoryTransfer.cs" />
+    <Compile Include="Models\InventoryTransfer\ItemInventoryTransfer.cs" />
+    <Compile Include="Models\IssueInventory\InventoryRecorder.cs" />
+    <Compile Include="Models\IssueInventory\InventoryUnmatchedItem.cs" />
+    <Compile Include="Models\IssueInventory\IssueInventory.cs" />
+    <Compile Include="Models\IssueInventory\ItemInventory.cs" />
+    <Compile Include="Models\ItemChangeRequest\IcrQuantity.cs" />
+    <Compile Include="Models\Item\ItemProfile.cs" />
+    <Compile Include="Models\ItemChangeRequest\IcrDetail.cs" />
+    <Compile Include="Models\Item\ItemOffer.cs" />
+    <Compile Include="Models\Item\ItemOfferCreditNote.cs" />
+    <Compile Include="Models\Item\ItemQuantity.cs" />
+    <Compile Include="Models\Item\ItemSupplier.cs" />
+    <Compile Include="Models\Globalization\Language.cs" />
+    <Compile Include="Models\SupplierPayment\PaymentType.cs" />
+    <Compile Include="Models\SupplierPayment\PaymentTypeCreditNote.cs" />
+    <Compile Include="Models\SupplierPayment\SupplierPaymentDetail.cs" />
+    <Compile Include="Models\SupplierReturn\SupplierReturnCreditNote.cs" />
+    <Compile Include="Models\SupplierReturn\SupplierReturnDetail.cs" />
+    <Compile Include="Models\SupplierReturn\SupplierReturnItem.cs" />
+    <Compile Include="Models\POS\POSBill.cs" />
+    <Compile Include="Models\POS\POSBillItem.cs" />
+    <Compile Include="Models\POS\POSBillPayment.cs" />
+    <Compile Include="Models\POS\POSLoginSession.cs" />
+    <Compile Include="Models\POS\POSReturnBill.cs" />
+    <Compile Include="Models\POS\POSReturnBillItem.cs" />
+    <Compile Include="Models\POS\POSSession.cs" />
+    <Compile Include="Models\POS\POSTempTrans.cs" />
+    <Compile Include="Models\POS\POSTempTransItem.cs" />
+    <Compile Include="Models\SystemParameters\Param.cs" />
+    <Compile Include="Models\SystemParameters\ParamType.cs" />
+    <Compile Include="Models\SystemParameters\ParentRecord.cs" />
+    <Compile Include="Models\ItemChangeRequest\POItemIcr.cs" />
+    <Compile Include="Models\Supplier\SupplierContactPerson.cs" />
+    <Compile Include="Models\Supplier\SupplierDaysLimit.cs" />
+    <Compile Include="Models\Supplier\SupplierProfile.cs" />
+    <Compile Include="Models\UserAccess\UserAccessDetail.cs" />
+    <Compile Include="Models\UserDetail\UserDetail.cs" />
+    <Compile Include="Models\WorkFlow\ChildPermission.cs" />
+    <Compile Include="Models\WorkFlow\ConditionalOperator.cs" />
+    <Compile Include="Models\WorkFlow\ParentPermission.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\WorkFlow\RolePermission.cs" />
+    <Compile Include="Models\WorkFlow\StatusType.cs" />
+    <Compile Include="Models\WorkFlow\WorkFlowAction.cs" />
+    <Compile Include="Models\WorkFlow\WorkFlowDetail.cs" />
+    <Compile Include="Models\WorkFlow\WorkFlowLog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MerchantService.Utility\MerchantService.Utility.csproj">
+      <Project>{f20ec415-a1ad-412d-a96c-aaa0c9b83eeb}</Project>
+      <Name>MerchantService.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StoredProcedures\GetInsertesByCraetedDateTime.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StoredProcedures\GetUpdatesByModifiedDateTime.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

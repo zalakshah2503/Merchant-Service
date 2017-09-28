@@ -1,0 +1,123 @@
+﻿<FlowDocumentScrollViewer xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="PosBillReceipt" 
+                          Padding="0"
+                         FontSize="6" HorizontalScrollBarVisibility="Hidden" 
+                          VerticalScrollBarVisibility="Hidden" FontFamily="Arial" Height="Auto" Width="350" >   
+    <FlowDocument x:Name="FD">
+        <BlockUIContainer>
+            <Grid Width="321" x:Name="grd" Background="White" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--<Image x:Name="Barcode" Height="20" Width="100" Grid.Row="0" Grid.ColumnSpan="2"></Image>-->
+                <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
+                    <TextBlock FontFamily="Arial" Margin="0,5,0,0" FontSize="11" FontWeight="Bold" TextAlignment="Center" Tag="retailinvoicepos"></TextBlock>
+                    <TextBlock FontFamily="Arial"  Margin="0,5,0,0" x:Name="CompanyName" FontSize="10" TextAlignment="Center"/>
+                    <TextBlock FontFamily="Arial"  Margin="0,5,0,0" x:Name="Address" Width="200" TextWrapping="WrapWithOverflow" FontSize="10" TextAlignment="Center"/>
+                </StackPanel>
+                <Grid Grid.ColumnSpan="2" Grid.Row="2" Margin="0,10,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontFamily="Arial" x:Name="Date" FontSize="10" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" HorizontalAlignment="Left"><Run Text="24-02-2016 14:20"/></TextBlock>
+                    <TextBlock FontFamily="Arial" x:Name="lblDate" FontSize="10" Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" HorizontalAlignment="Left"><Run Text="Date:" Tag="datepos"/></TextBlock>
+                    <TextBlock FontFamily="Arial" x:Name="MembershipNo" FontSize="10" Margin="0,5,0,0" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"><Run Text="123456"/></TextBlock>
+                    <TextBlock FontFamily="Arial" x:Name="lblMembershipNo" FontSize="10" Margin="5,5,0,0" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"><Run Text="Cust No:" Tag="customernopos"/></TextBlock>
+                    <TextBlock FontFamily="Arial" x:Name="InvoiceNo" FontSize="10" Margin="0,5,0,0" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left"><Run Text="987654321"/></TextBlock>
+                    <TextBlock FontFamily="Arial" x:Name="lblInvoiceNo" FontSize="10" Margin="5,5,0,0" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"><Run Text="Invoice No:" Tag="invoicenopos"/></TextBlock>
+                    <TextBlock FontFamily="Arial" Visibility="Collapsed" x:Name="CPONo" FontSize="10" Margin="5,5,0,0" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"><Run Text="123456"/></TextBlock>
+                    <TextBlock FontFamily="Arial" Visibility="Collapsed" x:Name="lblCPONo" FontSize="10" Margin="5,5,0,0" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"><Run Text="CPO No:" Tag="cponopos"/></TextBlock>
+                </Grid>
+                <Separator Grid.ColumnSpan="2" Grid.Row="3" Margin="0,2"/>
+                <Grid Grid.ColumnSpan="2" Grid.Row="4" Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontFamily="Arial" Margin="10,0,0,0" Grid.Row="0" Width="110" Grid.Column="0" FontWeight="Bold" FontSize="10"><Run Text="Name" Tag="namepos"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Right" FontFamily="Arial" Margin="0,0,0,0" Grid.Row="0" Grid.Column="1" FontWeight="Bold" FontSize="10"><Run Text="Price" Tag="pricepos"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Right" FontFamily="Arial" Margin="0,0,0,0" Grid.Row="0" Grid.Column="2" FontWeight="Bold" FontSize="10"><Run Text="Qty" Tag="quantitypos"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Right" FontFamily="Arial" Margin="0,0,15,0" Grid.Row="0" Grid.Column="3" FontWeight="Bold" FontSize="10"><Run Text="Total" Tag="totalpos"/></TextBlock>
+                    <Separator FontFamily="Arial" Height="1" Grid.ColumnSpan="4" Grid.Row="1" Margin="0,2"/>
+                    <Grid HorizontalAlignment="Stretch" Grid.ColumnSpan="4" Grid.Row="1" >
+                        <ListBox x:Name="lstItems" Margin="0,5,0,0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" BorderThickness="0" ItemsSource="{Binding Items}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="70"/>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontFamily="Arial" HorizontalAlignment="Stretch" FontSize="10" Grid.Row="0" Grid.Column="0" Text="{Binding ItemName}"  TextWrapping="Wrap"/>
+                                        <TextBlock FontFamily="Arial" HorizontalAlignment="Stretch" TextAlignment="Right"  FontSize="10" Grid.Row="0" Grid.Column="1" Text="{Binding ItemPrice}"  />
+                                        <TextBlock FontFamily="Arial" HorizontalAlignment="Stretch" TextAlignment="Right" FontSize="10" Grid.Row="0" Grid.Column="2" Text="{Binding ItemQuantity}" />
+                                        <TextBlock FontFamily="Arial" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,0,20,0"  FontSize="10" Grid.Row="0" Grid.Column="3" Text="{Binding Total}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Separator Grid.ColumnSpan="4" Grid.Row="2" Margin="0,2"/>
+                    <TextBlock FontFamily="Arial" TextAlignment="Right" x:Name="TotalQ" Width="50" Grid.Row="3" Grid.Column="2" FontSize="10"><Run Text="4"/></TextBlock>
+                    <TextBlock FontFamily="Arial" TextAlignment="Right" Width="70" Grid.Row="3" Grid.Column="1" FontSize="10"><Run Text="Total:" Tag="totalpos"/></TextBlock>
+                    <TextBlock FontFamily="Arial" TextAlignment="Right" x:Name="TotalAmount" Width="60" Margin="0,0,10,0" Grid.Row="3" Grid.Column="3" FontSize="10"><Run Text="100000.00"/></TextBlock>
+
+                </Grid>
+                <Separator Grid.ColumnSpan="2" Grid.Row="5" Margin="0,2"/>
+                <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Right" Grid.Row="6" Orientation="Horizontal">
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock FontFamily="Arial" Margin="2" FontSize="10" Text="Tax:" Tag="taxpos"/>
+                        <TextBlock FontFamily="Arial" Margin="2" FontSize="10" Text="Total:" Tag="totalpos"/>
+                        <TextBlock FontFamily="Arial" x:Name="lblSub" Visibility="Collapsed" Margin="2" FontSize="10" Text="Substitute:" Tag="substitutepos"/>
+                        <TextBlock FontFamily="Arial" x:Name="lbladc" Visibility="Collapsed" Margin="2" FontSize="10" Text="Add. Cost:" Tag="additionalcostpos"/>
+                        <TextBlock FontFamily="Arial" x:Name="lbldp" Visibility="Collapsed" Margin="2" FontSize="10" Text="DownPayment:" Tag="downpaymentpos"/>
+                        <TextBlock FontFamily="Arial" Margin="2" FontSize="10" Text="Discount:" Tag="discountpos"/>
+                        <TextBlock FontFamily="Arial" Margin="2" FontSize="10" Text="Cash:" Tag="cashpos"/>
+                        <TextBlock FontFamily="Arial" Margin="2" FontSize="10" Text="Cash Returned:" Tag="cashreturnedpos"/>
+                    </StackPanel>
+                    <StackPanel Width="70" Margin="0,0,6,0">
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" FontWeight="Bold" x:Name="Tax" Margin="2,2,10,2" FontSize="10"><Run Text="100000.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" FontWeight="Bold" x:Name="Total" Margin="2,2,10,2" FontSize="10"><Run Text="1000.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" Visibility="Collapsed" x:Name="Sub" Margin="2,2,10,2" FontSize="10"><Run Text="1234.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" Visibility="Collapsed" x:Name="AddCost" Margin="2,2,10,2" FontSize="10"><Run Text="999.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" Visibility="Collapsed" x:Name="DownPayment" Margin="2,2,10,2" FontSize="10"><Run Text="1.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" FontWeight="Bold" x:Name="Discount" Margin="2,2,10,2" FontSize="10"><Run Text="34.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" FontWeight="Bold" x:Name="Cash" Margin="2,2,10,2" FontSize="10"><Run Text="567.00"/></TextBlock>
+                        <TextBlock TextAlignment="Right" FontFamily="Arial" FontWeight="Bold" x:Name="CashReturn" Margin="2,2,10,2" FontSize="10"><Run Text="44764.00"/></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock FontFamily="Arial" Grid.Row="7" Grid.ColumnSpan="2" Margin="0,15" FontSize="11" FontWeight="Bold" TextAlignment="Center"><Run Text="Thank You!" Tag="thankyoupos"/></TextBlock>
+            </Grid>
+        </BlockUIContainer>
+
+    </FlowDocument>
+</FlowDocumentScrollViewer>

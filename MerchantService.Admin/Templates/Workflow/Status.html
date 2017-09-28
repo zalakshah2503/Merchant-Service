@@ -1,0 +1,73 @@
+﻿<div ng-controller="statusController">
+    <div class="panel panel-default" ng-init="getallStatus()">
+        <div class="panel-heading"><span ng-hide="newStatusPanel">Status List</span><span ng-show="newGroupPanel">Add New Status</span></div>
+        <div class="panel-body">
+            <div ng-hide="newStatusPanel">
+                <input type="button" value="Add New Status" class="btn btn-primary pull-right" ng-click="addNewStatus()" />
+                <div class="clearfix"></div>
+            </div>
+            <div ng-show="newStatusPanel">
+                <form name="status" novalidate>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4"><span>Name</span></label>
+                            <div class="col-sm-4" ng-class="{ 'has-error': status.statusname.$touched && status.statusname.$invalid }">
+                                <input type="text" name="statusname" class="form-control" ng-model="statusTypeDetails.Name" maxlength="50" required>
+                                <span class="error">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="status.statusname.$error" ng-if="status.statusname.$touched">
+                                <p ng-message="required" class="text-error">Name is required</p>
+                            </div>
+                            <div>
+                                <p class="text-error" ng-show="isStatusNameExist">Name has already been taken</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4"><span>Issue Closed</span></label>
+                            <div class="col-sm-4">
+                                <input type="checkbox" class="checkbox-inline" name="issueclosed" ng-model="statusTypeDetails.IsClosed">
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <input type="submit" value="Submit" name="submit-btn" class="btn btn-primary m-r-10" ng-hide="isUpdateStatus" ng-click="saveStatusDetails(statusTypeDetails)" ng-disabled="status.$invalid" />
+                                <input type="submit" value="Update" name="update-btn" class="btn btn-primary m-r-10" ng-show="isUpdateStatus" ng-click="updateStatusDetails(statusTypeDetails)" />
+                                <input type="submit" value="Cancel" name="cancel-btn" class="btn btn-default" ng-click="cancelStatusDetails()" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng-hide="newStatusPanel">
+                <div class="alert alert-success text-center" role="alert" ng-show="statusErrorErrorMessageDisplay">
+                    <span>{{errorMessage}}</span>
+                </div>
+                <br />
+                <div ng-hide="statusErrorErrorMessageDisplay">
+                    <table class="table table-striped table-bordered table-hover" name="status-grid">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Actoin</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="status in totalCollection">
+                            <tr>
+                                <td>{{status.Name}}</td>
+                                <td class="action-td-width">
+                                    <div class="action-td">
+                                        <a title="Edit" name="status-edit" ng-click="editStatus(status.StatusId)" name="role-edit"><i class=" fa fa-edit"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="totalCollection.length >0" style="text-align:center">
+                        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

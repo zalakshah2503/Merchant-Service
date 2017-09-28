@@ -1,0 +1,170 @@
+﻿<div ng-controller="ItemDestructionRequestDetailController">
+    <h3 class="page-title"><span string-replace="itemdestructiondetails"></span></h3>
+    <br />
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="requestno"></span>.:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.RequestNo" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="suppliername"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" maxlength="255" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.SupplierName" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="suppliercode"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.SupplierCode" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="branchname"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" maxlength="255" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.Branch" ng-disabled="true" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="requesteddate"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.RequestedDate" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="destructioncause"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.Cause" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="initiatedby"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="cash-text" ng-model="itemDestructionRequestDetail.initiatedBy" ng-disabled="true" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <label><span string-replace="destructiondetail"></span></label>
+        <hr />
+        <table class="table table-striped table-bordered table-hover" name="item-destruction-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="itemname"></span></th>
+                    <th><span string-replace="barcode"></span></th>
+                    <th><span string-replace="flavor"></span></th>
+                    <th><span string-replace="unit"></span></th>
+                    <th><span string-replace="costprice"></span></th>
+                    <th><span string-replace="quantity"></span></th>
+                    <th><span string-replace="total"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in totalCollection">
+                    <td>{{item.ItemNameEn}}</td>
+                    <td>{{item.Barcode}}</td>
+                    <td>{{item.FlavourEn}}</td>
+                    <td>{{item.Unit}}</td>
+                    <td>{{item.CostPrice}}</td>
+                    <td>{{item.DestructionQuantity}}</td>
+                    <td>{{item.TotalCostPrice}}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" ></td>
+                    <td><b><span string-replace="total"></span>:</b></td>
+                    <td>{{totalQuantity}}</td>
+                    <td>{{totalCost}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-show="totalCollection.length >0" style="text-align:center">
+            <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+        </div>
+        <br />
+        <label><span string-replace="action"></span></label>
+        <hr />
+        <table class="table table-striped table-bordered table-hover" name="item-action-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="stage"></span></th>
+                    <th><span string-replace="action"></span></th>
+                    <th><span string-replace="actiondate"></span></th>
+                    <th><span string-replace="userrole"></span></th>
+                    <th><span string-replace="username"></span></th>
+                    <th><span string-replace="comment"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="action in actionList">
+                    <td>{{action.Stage}}</td>
+                    <td>{{action.Action}}</td>
+                    <td class="date-time-td">{{action.ActionDate | date:'dd-MM-yyyy HH:mm'}}</td>
+                    <td>{{action.Role}}</td>
+                    <td>{{action.UserName}}</td>
+                    <td>{{action.Comments}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <div class="row">
+            <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+            <div class="col-lg-9">
+                <textarea class="form-control" name="comment" maxlength="350" ng-model="ItemDestructionDetailApprovalAC.Comment"></textarea>
+            </div>
+        </div>
+        <br />
+        <div class="row text-center">
+            <button class="btn btn-primary m-r-10" name="approve-btn" ng-show="isApproval" ng-click="approveButtonClick()"><span string-replace="approve"></span></button>
+            <button class="btn btn-primary m-r-10" name="return-btn" ng-show="isApproval" ng-click="returnButtonClick()"><span string-replace="return"></span></button>
+            <button class="btn btn-primary m-r-10" name="return-btn" ng-show="isEdit" ng-click="editButtonEvent()"><span string-replace="edit"></span></button>
+            <button class="btn btn-primary m-r-10" name="return-btn" ng-show="isEdit" ng-click="reSubmitEvent()"><span string-replace="resubmit"></span></button>
+            <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="rejectButtonClick()" ng-if="$root.merchatSettings.IsAllowRejectItemDestructionRequest && !isDeleted"><span string-replace="reject"></span></button>
+            <button class="btn btn-default" name="cancel-btn" ng-click="cancleButtonClick()"><span string-replace="cancelpos"></span></button>
+        </div>
+    </div>
+    <script type="text/ng-template" id="popupCreditNoteDetail">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeCreditNotePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span string-replace="createdcreditnotedetail"></span></h4>
+            </div>
+            <div class="modal-body">
+                <b> <span string-replace="suppliername"></span>: </b><label class="p-0 no-bold">{{supplierName}}</label>
+                <br />
+                <b><span string-replace="creditnotenumber"></span>:</b><label class="p-0 no-bold">{{creditNoteNumber}}</label>
+                <br />
+                <b><span string-replace="amount"></span>:</b><label class="p-0 no-bold">{{amount}}</label>
+                <br />
+                <br />
+                <p style="font-size:12px">
+                    {{itemDestructionReceipt}}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="clickOnOkButton()"><span string-replace="okay"></span></button>
+                <button class="btn btn-default" ng-click="closeCreditNotePopup()"><span string-replace="cancelpos"></span></button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="rejectItemDestructionPopup">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeRejectPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{rejectConfirm}}</h4>
+            </div>
+            <div class="modal-body">
+                {{rejectConfirmation}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="rejectItemDestruction()"><span string-replace="yes"></span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeRejectPopup()"><span string-replace="no"></span></button>
+            </div>
+        </div>
+    </script>
+</div>

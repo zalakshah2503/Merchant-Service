@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.Web", "MerchantService.Web\MerchantService.Web.csproj", "{E3AD80F2-A91E-4AF1-B166-00C7DD13D372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.DomainModel", "MerchantService.DomainModel\MerchantService.DomainModel.csproj", "{61200D42-0980-4DA4-A17E-0BD8CCF0D6CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.Repository", "MerchantService.Repository\MerchantService.Repository.csproj", "{A7B391A9-4A5E-49A6-9D04-110B1C71D055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.Core", "MerchantService.Core\MerchantService.Core.csproj", "{A7DF5785-1711-42F8-9181-A51B1CBEB6DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.Admin", "MerchantService.Admin\MerchantService.Admin.csproj", "{A0531CDA-BBDE-4805-9BF3-E896E5236940}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.Utility", "MerchantService.Utility\MerchantService.Utility.csproj", "{F20EC415-A1AD-412D-A96C-AAA0C9B83EEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchantService.POS", "MerchantService.POS\MerchantService.POS.csproj", "{D7768D58-A222-4F2E-B1D6-CD1CBFF402DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDBExtractor.Core", "LocalDBExtractor.Core\LocalDBExtractor.Core.csproj", "{6B47AD36-D85B-4028-9216-881BF27D1A74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3AD80F2-A91E-4AF1-B166-00C7DD13D372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3AD80F2-A91E-4AF1-B166-00C7DD13D372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3AD80F2-A91E-4AF1-B166-00C7DD13D372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3AD80F2-A91E-4AF1-B166-00C7DD13D372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61200D42-0980-4DA4-A17E-0BD8CCF0D6CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61200D42-0980-4DA4-A17E-0BD8CCF0D6CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61200D42-0980-4DA4-A17E-0BD8CCF0D6CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61200D42-0980-4DA4-A17E-0BD8CCF0D6CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7B391A9-4A5E-49A6-9D04-110B1C71D055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B391A9-4A5E-49A6-9D04-110B1C71D055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7B391A9-4A5E-49A6-9D04-110B1C71D055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7B391A9-4A5E-49A6-9D04-110B1C71D055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7DF5785-1711-42F8-9181-A51B1CBEB6DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DF5785-1711-42F8-9181-A51B1CBEB6DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DF5785-1711-42F8-9181-A51B1CBEB6DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DF5785-1711-42F8-9181-A51B1CBEB6DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0531CDA-BBDE-4805-9BF3-E896E5236940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0531CDA-BBDE-4805-9BF3-E896E5236940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0531CDA-BBDE-4805-9BF3-E896E5236940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0531CDA-BBDE-4805-9BF3-E896E5236940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20EC415-A1AD-412D-A96C-AAA0C9B83EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20EC415-A1AD-412D-A96C-AAA0C9B83EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20EC415-A1AD-412D-A96C-AAA0C9B83EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20EC415-A1AD-412D-A96C-AAA0C9B83EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7768D58-A222-4F2E-B1D6-CD1CBFF402DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7768D58-A222-4F2E-B1D6-CD1CBFF402DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7768D58-A222-4F2E-B1D6-CD1CBFF402DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7768D58-A222-4F2E-B1D6-CD1CBFF402DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B47AD36-D85B-4028-9216-881BF27D1A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B47AD36-D85B-4028-9216-881BF27D1A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B47AD36-D85B-4028-9216-881BF27D1A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B47AD36-D85B-4028-9216-881BF27D1A74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://server12:8085/tfs/merchantservice
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MerchantService.Web\\MerchantService.Web.csproj
+		SccProjectName1 = MerchantService.Web
+		SccLocalPath1 = MerchantService.Web
+		SccProjectUniqueName2 = MerchantService.DomainModel\\MerchantService.DomainModel.csproj
+		SccProjectName2 = MerchantService.DomainModel
+		SccLocalPath2 = MerchantService.DomainModel
+		SccProjectUniqueName3 = MerchantService.Repository\\MerchantService.Repository.csproj
+		SccProjectName3 = MerchantService.Repository
+		SccLocalPath3 = MerchantService.Repository
+		SccProjectUniqueName4 = MerchantService.Core\\MerchantService.Core.csproj
+		SccProjectName4 = MerchantService.Core
+		SccLocalPath4 = MerchantService.Core
+		SccProjectUniqueName5 = MerchantService.Admin\\MerchantService.Admin.csproj
+		SccProjectName5 = MerchantService.Admin
+		SccLocalPath5 = MerchantService.Admin
+		SccProjectUniqueName6 = MerchantService.Utility\\MerchantService.Utility.csproj
+		SccProjectName6 = MerchantService.Utility
+		SccLocalPath6 = MerchantService.Utility
+		SccProjectUniqueName7 = MerchantService.POS\\MerchantService.POS.csproj
+		SccProjectName7 = MerchantService.POS
+		SccLocalPath7 = MerchantService.POS
+		SccProjectUniqueName8 = LocalDBExtractor.Core\\LocalDBExtractor.Core.csproj
+		SccProjectName8 = LocalDBExtractor.Core
+		SccLocalPath8 = LocalDBExtractor.Core
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,52 @@
+﻿<div ng-controller="workFlowController">
+    <div class="panel panel-default" ng-init="getAllWorkFlowList()">
+        <div class="panel-heading">Work Flow</div>
+        <div class="panel-body">
+            <div>
+                <button name="add-new-btn" class="btn btn-primary pull-right" ng-click="addNewWorkFlow()">Add WorkFlow</button>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+            <br />
+            <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankWorkFlowList">
+                <span>{{errorMessage}}</span>
+            </div>
+            <div ng-hide="errorMessageDisplayForBlankWorkFlowList">
+                <br />
+                <label>WorkFlow List</label>
+                <hr />
+                <div class="table-div">
+                    <table class="table table-striped table-bordered table-hover" name="item-grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>WorkFlow Name</th>
+
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="workFlow in workFlowDetailsCollection">
+                            <tr>
+                                <td id="{{workFlow.WorkFlowId}}">
+                                    <a class="pointer" ng-click="getChildActivityList(workFlow.WorkFlowId)" name="plus-link">
+                                        <i attr="workFlow.WorkFlowId" ng-show="!workFlow.HasChildActivity" class="fa fa-plus action-icon"></i>
+                                        <i attr="workFlow.WorkFlowId" ng-hide="!workFlow.HasChildActivity" class="fa fa-minus action-icon"></i>
+                                    </a>
+                                </td>
+                                <td>{{workFlow.WorkFlowName}}</td>
+                            </tr>
+                            <tr id="subChild{{workFlow.WorkFlowId}}" ng-if="workFlow.HasChildActivity" class="isHide sub-grid-list">
+                                <td colspan="10">
+                                    <div class="step-structure">
+                                        <ul>
+                                            <li ng-repeat="item in stepList" ng-include="'Templates/Workflow/WorkFlowSteps2.html'"></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

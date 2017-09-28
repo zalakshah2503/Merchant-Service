@@ -1,0 +1,97 @@
+﻿<div class="panel panel-default" ng-controller="ReturnBillSearchController">
+    <div class="panel-heading"><span string-replace="returnbillsearch"></span></div>
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="255" name="cust-name" ng-model="search.CustomerName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0 label-multi"><span string-replace="returningdatefrom"></span>:</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" name="from-date" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" close-text="Close" ng-model="returnDate.resturningDateFrom" is-open="isReturningDateFrom">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openDateFromPickerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="membershipno"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="20" name="membership-number" ng-model="search.MembershipNumber">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="returningdateto"></span>:</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" name="from-date" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" close-text="Close" ng-model="returnDate.resturningDateTo" is-open="isReturningDateTo" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openDateToPickerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="billno"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="20" name="bill-no" ng-model="search.ReturnBillNumber">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" ng-click="searchButtonClick()"><span string-replace="search"></span></button>
+            </div>
+        </div>
+        <br />
+        <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplay">
+            <span>{{noItemFound}}</span>
+        </div>
+        <div ng-show="!errorMessageDisplay">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><span string-replace="customername"></span></th>
+                        <th><span string-replace="membershipno"></span> </th>
+                        <th><span string-replace="issueat"></span></th>
+                        <th><span string-replace="returnbillnopos"></span></th>
+                        <th><span string-replace="returningdate"></span></th>
+                        <th><span string-replace="processingdate"></span></th>
+                        <th><span string-replace="processedat"></span></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="returnBill in totalCollection">
+                    <tr>
+                        <td>{{returnBill.CustomerName}}</td>
+                        <td>{{returnBill.MembershipNumber}}</td>
+                        <td>{{returnBill.IssueAt}}</td>
+                        <td>{{returnBill.ReturnBillNumber}}</td>
+                        <td>{{returnBill.ReturningDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{returnBill.ProcessingDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{returnBill.ProcessAt}}</td>
+                        <td class="action-td-width">
+                            <div class="action-td">
+                                <a title="Print" name="item-delete"><i class="fa fa-print" ng-click="printReturnBill(returnBill.ReturnBillNumber)"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="totalCollection.length >0" style="text-align:center">
+                <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

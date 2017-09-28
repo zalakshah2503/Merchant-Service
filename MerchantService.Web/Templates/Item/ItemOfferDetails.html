@@ -1,0 +1,369 @@
+﻿<div ng-controller="itemOfferDetailsController">
+    <div class="panel panel-default item-offer-page">
+        <div class="panel-heading"><span string-replace="itemofferdetails"></span></div>
+        <div class="panel-body">
+            <form name="itemOffer" novalidate>
+                <br />
+                <label><span string-replace="itemdetails"></span></label>
+                <hr />
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" maxlength="255" class="form-control" name="itemName" ng-model="itemOfferDetail.ItemNameEn" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" maxlength="255" class="form-control" name="flavourEn" ng-model="itemOfferDetail.FlavourEn" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemtype"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="itemType" ng-model="itemOfferDetail.ItemType" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" maxlength="20" class="form-control" name="itemCode" ng-model="itemOfferDetail.ItemCode" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" maxlength="18" class="form-control" name="barcode" ng-model="itemOfferDetail.Barcode" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="unittype"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="unitType" ng-model="itemOfferDetail.UnitType" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="baseunitcount"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" class="form-control" name="unitCount" ng-model="itemOfferDetail.UnitCount" ng-disabled="true">
+                                    <div class="help-block" ng-messages="itemOffer.unitCount.$error" ng-if="itemOffer.unitCount.$touched">
+                                        <p ng-message="pattern" class="text-error">{{validBaseUnitCount}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="isofferitem"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="isOfferItem" ng-model="itemOfferDetail.IsOfferItem" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellprice"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" name="sellPrice" ng-model="itemOfferDetail.SellPrice" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpricea"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" name="sellPriceA" ng-model="itemOfferDetail.SellPriceA" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpriceb"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" name="sellPriceB" ng-model="itemOfferDetail.SellPriceB" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpricec"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" name="sellPriceC" ng-model="itemOfferDetail.SellPriceC" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpriced"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" name="sellPriceD" ng-model="itemOfferDetail.SellPriceD" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="costprice"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="13" ng-pattern="/^0*(?!0\d|$)\d{1,8}(\.\d{1,4})?$/" name="costPrice" ng-model="itemOfferDetail.CostPrice" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="systemquantity"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" name="systemQunatity" ng-model="itemOfferDetail.SystemQunatity" ng-disabled="true">
+                                    <div class="help-block" ng-messages="itemOffer.systemQunatity.$error" ng-if="itemOffer.systemQunatity.$touched">
+                                        <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="profitmargin"></span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" maxlength="3" name="systemQunatity" ng-model="itemOfferDetail.MarginProfit" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div>
+                    <label><span string-replace="offerdetails"></span></label>
+                    <hr />
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group start-date-div">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="startdate"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" name="startdate" disabled class="form-control" ng-model="itemOfferDetail.StartDate" datepicker-popup="dd-MMMM-yyyy" is-open="isStartPickerDateOpened" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openStartDatePickerDate($event)" ng-disabled="isStartDateIcon"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="help-block">
+                                            <p class="text-error" ng-show="isStartDate">{{startDateRequired}}</p>
+                                            <p class="text-error" ng-show="isStartDateHigher">{{startDateHigher}}</p>
+                                        </div>
+                                        <span ng-show="isNotValidDate" class="item-offer-detail-error" tooltip="{{notValidItemOfferStartDate}}" tooltip-placement="left"><i class="fa fa-warning text-error icon-big"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="starttime"></span>:</label>
+                                    <div class="col-sm-7" ng-show="isStartTimeEditing">
+                                        <div class="input-group">
+                                            <input type="text" name="start-time" disabled class="form-control" ng-model="itemOfferDetail.StartTime" />
+                                            <span class="input-group-btn">
+                                                <button type="button" disabled class="btn btn-default"><i class="glyphicon glyphicon-time"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7" ng-show="!isStartTimeEditing">
+                                        <timepicker-pop name="start-time" input-time="startTime" class="input-group" show-meridian='showMeridian'>
+                                        </timepicker-pop>
+                                        <div class="help-block">
+                                            <p class="text-error" ng-show="isStartTime">{{startTimeRequired}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="enddate"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" min-date="minEndDate" name="end-date" disabled class="form-control" ng-model="itemOfferDetail.EndDate" datepicker-popup="dd-MMMM-yyyy" is-open="isEndPickerDateOpened" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openEndDatePickerDate($event)" ng-disabled="isEndDateIcon"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="help-block">
+                                            <p class="text-error" ng-show="isendDate">{{endDateRequired}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="endtime"></span>:</label>
+                                    <div class="col-sm-7" ng-show="isEndTimeEditing">
+                                        <div class="input-group">
+                                            <input type="text" name="end-date" disabled class="form-control" ng-model="itemOfferDetail.EndTime" />
+                                            <span class="input-group-btn">
+                                                <button type="button" disabled class="btn btn-default"><i class="glyphicon glyphicon-time"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7" ng-show="!isEndTimeEditing">
+                                        <timepicker-pop name="end-time" input-time="endTime" class="input-group" show-meridian='showMeridianEndTime'>
+                                        </timepicker-pop>
+                                        <div class="help-block">
+                                            <p class="text-error" ng-show="isendTime">{{endTimeRequired}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="qunatitylimit"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error': itemOffer.qunatitylimit.$touched && itemOffer.qunatitylimit.$invalid }">
+                                        <input type="text" ng-disabled="isQuantityLimit" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" class="form-control" name="qunatitylimit" ng-model="itemOfferDetail.QuantityLimit" required>
+                                        <span class="error" ng-disabled="isSellpriceD">*</span>
+                                        <span ng-show="isQunatityLimitGreaterThenZero" tooltip="{{qunatityLimitGreaterThenZero}}" tooltip-placement="left"><i class="fa fa-warning text-error icon-big"></i></span>
+                                        <div class="help-block" ng-messages="itemOffer.qunatitylimit.$error" ng-if="itemOffer.qunatitylimit.$touched">
+                                            <p ng-message="required" class="text-error">{{quantiryLimitRequired}}</p>
+                                            <p class="text-error" ng-show="isNotValidQunatityLimit">{{qunatityLimitNotValid}}</p>
+                                            <p ng-message="required" class="text-error">{{validQuantityError}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="discount"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error': itemOffer.discount.$touched && itemOffer.discount.$invalid }">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" maxlength="6" ng-pattern="/^[0-9]{0,2}(\.[0-9]{1,2})?$|^(100)(\.[0]{1,2})?$/" ng-disabled="isDiscount" name="discount" ng-change="changeEventForDiscount()" ng-model="itemOfferDetail.Discount" required><span class="input-group-addon">%</span>
+                                        </div>
+                                        <div class="help-block" ng-messages="itemOffer.discount.$error" ng-if="itemOffer.discount.$touched">
+                                            <p ng-message="required" class="text-error">{{ValidDiscountMessage}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellprice"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{  'has-error': itemOffer.sellprice.$touched && itemOffer.sellprice.$invalid }">
+                                        <input type="text" ng-disabled="isSellprice" maxlength="13" class="form-control" name="sellprice" ng-model="itemOfferDetail.NewSellPrice" required ng-change="changeSellPrice()" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        <span class="error" ng-disabled="isSellpriceD">*</span>
+                                        <span ng-show="isAllowSellPriceLowerMarginProfit" tooltip="{{allowSellPriceLowerMarginProfit}}" tooltip-placement="bottom"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                        <span ng-show="isSellPriceNotValid" tooltip="{{sellPriceNotValid}}" tooltip-placement="left"><i class="fa fa-warning text-error icon-big"></i></span>
+                                        <div class="help-block" ng-messages="itemOffer.sellprice.$error" ng-if="itemOffer.sellprice.$touched">
+                                            <p ng-message="required" class="text-error">{{sellPriceRequired}}</p>
+                                            <p ng-message="pattern" class="text-error"><span>{{itemValidSellPrice}}</span></p>
+                                        </div>
+                                        <p class="text-error margin-set" ng-show="isSellPriceNotValidForOldPrice">{{sellPriceNotValidForOldPrice}}</p>
+                                        <p class="text-warn margin-set" ng-show="isAllowSellPriceLowerCostPrice">{{allowSellPriceLowerCostPrice}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpricea"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error': itemOffer.sellpricea.$touched && itemOffer.sellpricea.$invalid }">
+                                        <input type="text" ng-disabled="isSellpriceA" maxlength="13" class="form-control" id="" name="sellpricea" ng-model="itemOfferDetail.NewSellPriceA" required ng-change="changeSellPrice()" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        <span class="error" ng-disabled="isSellpriceD">*</span>
+                                        <span ng-show="isAllowSellPriceALowerMarginProfit" tooltip="{{allowSellPriceLowerMarginProfit}}" tooltip-placement="bottom"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                        <span ng-show="isSellPriceANotValid" tooltip="{{sellPriceANotValid}}" tooltip-placement="left"><i class="fa fa-warning text-error icon-big"></i></span>
+                                        <div class="help-block" ng-messages="itemOffer.sellpricea.$error" ng-if="itemOffer.sellpricea.$touched">
+                                            <p ng-message="required" class="text-error">{{sellPriceARequired}}</p>
+                                            <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceA}}</span></p>
+                                        </div>
+                                        <p class="text-error margin-set" ng-show="isSellPriceANotValidForOldPrice">{{sellPriceANotValidForOldPrice}}</p>
+                                        <p class="text-warn margin-set" ng-show="isAllowSellPriceALowerCostPrice">{{allowSellPriceLowerCostPrice}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpriceb"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error': itemOffer.sellpriceb.$touched && itemOffer.sellpriceb.$invalid }">
+                                        <input type="text" ng-disabled="isSellpriceB" maxlength="13" class="form-control" id="" name="sellpriceb" ng-model="itemOfferDetail.NewSellPriceB" required ng-change="changeSellPrice()" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        <span class="error" ng-disabled="isSellpriceD">*</span>
+                                        <span ng-show="isAllowSellPriceBLowerMarginProfit" tooltip="{{allowSellPriceLowerMarginProfit}}" tooltip-placement="bottom"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                        <span ng-show="isSellPriceBNotValid" tooltip="{{sellPriceBNotValid}}" tooltip-placement="bottom"><i class="fa fa-warning text-error icon-big"></i></span>
+                                        <div class="help-block" ng-messages="itemOffer.sellpriceb.$error" ng-if="itemOffer.sellpriceb.$touched">
+                                            <p ng-message="required" class="text-error">{{sellPriceBRequired}}</p>
+                                            <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceB}}</span></p>
+                                        </div>
+                                        <p class="text-error margin-set" ng-show="isSellPriceBNotValidForOldPrice">{{sellPriceBNotValidForOldPrice}}</p>
+                                        <p class="text-warn margin-set" ng-show="isAllowSellPriceBLowerCostPrice">{{allowSellPriceLowerCostPrice}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpricec"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error': itemOffer.sellpricec.$touched && itemOffer.sellpricec.$invalid }">
+                                        <input type="text" ng-disabled="isSellpriceC" maxlength="13" class="form-control" id="" name="sellpricec" ng-model="itemOfferDetail.NewSellPriceC" required ng-change="changeSellPrice()" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        <span class="error" ng-disabled="isSellpriceD">*</span>
+                                        <span ng-show="isAllowSellPriceCLowerMarginProfit" tooltip="{{allowSellPriceLowerMarginProfit}}" tooltip-placement="bottom"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                        <span ng-show="isSellPriceCNotValid" tooltip="{{sellPriceCNotValid}}" tooltip-placement="left"><i class="fa fa-warning text-error icon-big"></i></span>
+                                        <div class="help-block" ng-messages="itemOffer.sellpricec.$error" ng-if="itemOffer.sellpricec.$touched">
+                                            <p ng-message="required" class="text-error">{{sellPriceCRequired}}</p>
+                                            <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceC}}</span></p>
+                                        </div>
+                                        <p class="text-error margin-set" ng-show="isSellPriceCNotValidForOldPrice">{{sellPriceCNotValidForOldPrice}}</p>
+                                        <p class="text-warn margin-set" ng-show="isAllowSellPriceCLowerCostPrice">{{allowSellPriceLowerCostPrice}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpriced"></span>:</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error': itemOffer.sellpriced.$touched && itemOffer.sellpriced.$invalid }">
+                                        <input type="text" ng-disabled="isSellpriceD" maxlength="13" class="form-control" id="" name="sellpriced" ng-model="itemOfferDetail.NewSellPriceD" required ng-change="changeSellPrice()" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        <span class="error" ng-disabled="isSellpriceD">*</span>
+                                        <span ng-show="isAllowSellPriceDLowerMarginProfit" tooltip="{{allowSellPriceLowerMarginProfit}}" tooltip-placement="bottom"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                        <span ng-show="isSellPriceDNotValid" tooltip="{{sellPriceDNotValid}}" tooltip-placement="left"><i class="fa fa-warning text-error icon-big"></i></span>
+                                        <div class="help-block" ng-messages="itemOffer.sellpriced.$error" ng-if="itemOffer.sellpriced.$touched">
+                                            <p ng-message="required" class="text-error">{{sellPriceDRequired}}</p>
+                                            <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceD}}</span></p>
+                                        </div>
+                                        <p class="text-error margin-set" ng-show="isSellPriceDNotValidForOldPrice">{{sellPriceDNotValidForOldPrice}}</p>
+                                        <p class="text-warn margin-set" ng-show="isAllowSellPriceDLowerCostPrice">{{allowSellPriceLowerCostPrice}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div>
+                    <label><span string-replace="action"></span></label>
+                    <hr />
+                    <table class="table table-striped table-bordered table-hover" name="action-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="stage"></span></th>
+                                <th><span string-replace="actiondate"></span></th>
+                                <th><span string-replace="role"></span></th>
+                                <th><span string-replace="username"></span></th>
+                                <th><span string-replace="comment"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="records in actionList">
+                                <td>{{records.Stage}}</td>
+                                <td class="date-time-td">
+                                    {{records.ActionDate|date:'dd-MM-yyyy HH:mm'}}
+                                </td>
+                                <td>{{records.Role}}</td>
+                                <td>{{records.UserName}}</td>
+                                <td>{{records.Comments}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label text-right col-sm-2 p-0"><span string-replace="comment"></span>:</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" name="comment" maxlength="350" ng-model="itemOfferDetail.Comments"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row text-center">
+                    <div class="display-inline" ng-show="isAprroveReject">
+                        <button class="btn btn-primary m-r-10" name="approve-btn" ng-click="approveItemOffer()" ng-show="$root.merchatSettings.IsAllowToReview && !isApproveButton"><span string-replace="approve"></span></button>
+                        <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="rejectItemOffer()" ng-show="$root.merchatSettings.IsAllowToReview && !isRejectButton"><span string-replace="reject"></span></button>
+                    </div>
+                    <div class="display-inline" ng-show="isUpdate">
+                        <button class="btn btn-primary m-r-10" name="reject-btn" ng-disabled="itemOffer.$invalid" ng-click="updateItemOffer()"><span string-replace="update"></span></button>
+                    </div>
+                    <div class="display-inline" ng-show="isResumeStoped">
+                        <button class="btn btn-primary m-r-10" name="reject-btn" ng-disabled="itemOffer.$invalid" ng-show="$root.merchatSettings.IsAllowToUpdateItemOffer && isUpdateVisible" ng-click="updateItemOffer()"><span string-replace="update"></span></button>
+                        <button class="btn btn-primary m-r-10" name="stop-btn" ng-click="stoppedOffer()" ng-show="$root.merchatSettings.IsAllowedToStopItemOffer && isStopButton"><span string-replace="stop"></span></button>
+                        <button class="btn btn-primary m-r-10" name="resume-btn" ng-click="resumeOffer()" ng-show="$root.merchatSettings.IsAllowedToResumeItemOffer && isResumeButton"><span string-replace="resume"></span></button>
+                    </div>
+                    <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="deleteButtonClick()" ng-show="$root.merchatSettings.IsAllowToDeleteItemOffer && isDeleted"><span string-replace="delete"></span></button>
+                    <button class="btn btn-default" name="cancel-btn" ng-click="cancleButtonEvent()"><span string-replace="cancelpos"></span></button>
+                </div>
+                <script type="text/ng-template" id="deleteItemOffer">
+                    <div class="modal-header">
+                        <h3 class="modal-title"><span string-replace="deleteitemoffer"></span></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <p>
+                                <span string-replace="areyousureyouwanttodelete"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" name="yes-btn" type="button" ng-click="deleteItemOffer()"><span string-replace="yes"></span></button>
+                        <button class="btn btn-default" name="no-btn" type="button" ng-click="cancelDeleteItemOfferPopup()"><span string-replace="no"></span></button>
+                    </div>
+                </script>
+            </form>
+        </div>
+    </div>
+</div>

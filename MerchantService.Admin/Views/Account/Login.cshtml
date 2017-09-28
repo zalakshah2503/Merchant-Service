@@ -1,0 +1,56 @@
+﻿@using MerchantService.Repository.ApplicationClasses
+@model LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html class="login-html">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*@System.Web.Optimization.Scripts.Render("~/bundles/jqueryval")*@
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Styles.Render("~/Content/Maincss")
+    <title>Login</title>
+</head>
+<body>
+    <div class="login-div content-center">
+        <div class="login-logo text-center">
+            <img />
+        </div>
+        <h2>Login</h2>
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <hr />
+                
+                <div class="form-group">
+                    <label class="col-md-3 control-label">User Name</label>
+                    <div class="col-md-9">
+                        @*<input type="text" class="form-control" id="" placeholder="User name">*@
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control",placeholder =Html.DisplayNameFor(x=>x.UserName) })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-error" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Password</label>
+                    <div class="col-md-9">
+                        @*<input type="password" class="form-control" id="" placeholder="password">*@
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control",placeholder =Html.DisplayNameFor(x=>x.Password)  })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-error" })
+                    </div>
+                </div>
+              
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-10">
+                        @Html.ValidationSummary(true, "", new { @class = "text-error" })
+                        <input type="submit" value="Log in" class="btn btn-info" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</body>
+</html>

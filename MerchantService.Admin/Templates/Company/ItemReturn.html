@@ -1,0 +1,207 @@
+﻿<div ng-class="{'disabled':isPaymentMode}">
+    <br />
+    <fieldset>
+        <legend>Item Return </legend>
+        <div class="row m-l-20">
+            <label class="checkbox-inline">
+                <input type="checkbox" name="allow-return" ng-mode="companyDetail.ReturnItem">Allow Return Item To Other Branch
+            </label>
+        </div>
+    </fieldset>
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">Invoice Prefix
+            <a href="" class="pull-right help-icon" tooltip="{{itemReturn}}"><span class="fa fa-question-circle"></span></a>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">Invoice Prefix:</label>
+                            <div class="col-md-6" ng-class="{ 'has-error': addCompany.invoiceno.$touched && addCompany.invoiceno.$invalid }">
+                                <input type="text" name="invoiceno" class="form-control" id="" ng-pattern="/^[a-zA-Z0-9-]*$/" ng-model="companyDetail.InvoiceNo" placeholder="Invoice Prefix" maxlength="3" required>
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.invoiceno.$error" ng-if="addCompany.invoiceno.$touched">
+                                    <p ng-message="required" class="text-error">{{invoiceRequired}}</p>
+                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">No. of Digit:</label>
+                            <div class="col-md-7" ng-class="{ 'has-error': addCompany.invoicedigit.$touched && addCompany.invoicedigit.$invalid }">
+                                <input type="number" name="invoicedigit" ng-min="1" ng-model="companyDetail.InvoiceDigit" class="input-width form-control" id="" required ng-max="6">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.invoicedigit.$error" ng-if="addCompany.invoicedigit.$touched">
+                                    <p ng-message="required" class="text-error">{{invoicedigitRequired}}</p>
+                                    <p ng-message="max" class="text-error"><span>Value should be Maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="min" class="text-error"><span>Value should be Maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">Return Invoice Prefix:</label>
+                            <div class="col-md-6" ng-class="{ 'has-error': addCompany.returninvoice.$touched && addCompany.returninvoice.$invalid }">
+                                <input type="text" name="returninvoice" maxlength="3" class="form-control" ng-pattern="/^[a-zA-Z0-9-]*$/" ng-model="companyDetail.ReturnInvoiceNo" required id="" placeholder="Return Invoice Prefix">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.returninvoice.$error" ng-if="addCompany.returninvoice.$touched">
+                                    <p ng-message="required" class="text-error">{{returnInvoiceRequired}}</p>
+                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">No. of Digit:</label>
+                            <div class="col-md-7" ng-class="{ 'has-error': addCompany.returninvoicedigit.$touched && addCompany.returninvoicedigit.$invalid }">
+                                <input type="number" name="returninvoicedigit" ng-min="1" max="6" ng-max="6" required ng-model="companyDetail.ReturnInvoiceDigit" class="input-width form-control" id="">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.returninvoicedigit.$error" ng-if="addCompany.returninvoicedigit.$touched">
+                                    <p ng-message="required" class="text-error">{{returnInvoicedigitRequired}}</p>
+                                    <p ng-message="max" class="text-error"><span>Value should be Maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="min" class="text-error"><span>Value should be Maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">CPO Invoice Prefix:</label>
+                            <div class="col-md-6" ng-class="{ 'has-error': addCompany.cpoinvoice.$touched && addCompany.cpoinvoice.$invalid }">
+                                <input type="text" name="cpoinvoice" maxlength="3" required ng-model="companyDetail.CPOInvoiceNo" ng-pattern="/^[a-zA-Z0-9-]*$/" class="form-control" id="" placeholder="CPO Invoice Prefix">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.cpoinvoice.$error" ng-if="addCompany.cpoinvoice.$touched">
+                                    <p ng-message="required" class="text-error">{{cpoInvoiceRequired}}</p>
+                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">No. of Digit:</label>
+                            <div class="col-md-7" ng-class="{ 'has-error': addCompany.cpoinvoicedigit.$touched && addCompany.cpoinvoicedigit.$invalid }">
+                                <input type="number" name="cpoinvoicedigit" ng-min="1" max="6" ng-max="6" required ng-model="companyDetail.CPOInvoiceDigit" class="input-width form-control" id="">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.cpoinvoicedigit.$error" ng-if="addCompany.cpoinvoicedigit.$touched">
+                                    <p ng-message="required" class="text-error">{{cpodigitRequired}}</p>
+                                    <p ng-message="max" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                                    <p ng-message="min" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">SPO Invoice Prefix:</label>
+                            <div class="col-md-6" ng-class="{ 'has-error': addCompany.spoinvoice.$touched && addCompany.spoinvoice.$invalid }">
+                                <input type="text" name="spoinvoice" maxlength="3" ng-pattern="/^[a-zA-Z0-9-]*$/" required ng-model="companyDetail.SPOInvoiceNo" class="form-control" id="" placeholder="SPO Invoice Prefix">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.spoinvoice.$error" ng-if="addCompany.spoinvoice.$touched">
+                                    <p ng-message="required" class="text-error">{{spoInvoiceRequired}}</p>
+                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">No. of Digit:</label>
+                            <div class="col-md-7" ng-class="{ 'has-error': addCompany.spoinvoicedigit.$touched && addCompany.spoinvoicedigit.$invalid }">
+                                <input type="number" name="spoinvoicedigit" ng-min="1" max="6" ng-max="6" required ng-model="companyDetail.SPOInvoiceDigit" class="input-width form-control" id="">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.spoinvoicedigit.$error" ng-if="addCompany.spoinvoicedigit.$touched">
+                                    <p ng-message="required" class="text-error">{{spodigitRequired}}</p>
+                                    <p ng-message="max" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="min" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">Item Destruction Receipt Prefix:</label>
+                            <div class="col-md-6" ng-class="{ 'has-error': addCompany.itemdestruction.$touched && addCompany.itemdestruction.$invalid }">
+                                <input type="text" name="itemdestruction" maxlength="3" required ng-pattern="/^[a-zA-Z0-9-]*$/" class="form-control" ng-model="companyDetail.ItemDestructionNo" id="" placeholder="Item Destruction Receipt Prefix">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.itemdestruction.$error" ng-if="addCompany.itemdestruction.$touched">
+                                    <p ng-message="required" class="text-error">{{itemDestructionRequired}}</p>
+                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">No. of Digit:</label>
+                            <div class="col-md-7" ng-class="{ 'has-error': addCompany.itemdestructiondigit.$touched && addCompany.itemdestructiondigit.$invalid }">
+                                <input type="number" name="itemdestructiondigit" ng-min="1" max="6" ng-max="6" required ng-model="companyDetail.ItemDestructionDigit" class="input-width form-control" id="">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.itemdestructiondigit.$error" ng-if="addCompany.itemdestructiondigit.$touched">
+                                    <p ng-message="required" class="text-error">{{itemdigitRequired}}</p>
+                                    <p ng-message="max" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="min" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">Supplier Return Receipt Prefix:</label>
+                            <div class="col-md-6" ng-class="{ 'has-error': addCompany.supplierreturnreceipt.$touched && addCompany.supplierreturnreceipt.$invalid }">
+                                <input type="text" name="supplierreturnreceipt" maxlength="3" ng-pattern="/^[a-zA-Z0-9-]*$/" required class="form-control" ng-model="companyDetail.SupplierReturnNo" id="" placeholder="Supplier Return Receipt Prefix">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.supplierreturnreceipt.$error" ng-if="addCompany.supplierreturnreceipt.$touched">
+                                    <p ng-message="required" class="text-error">{{supplierReturnReceiptRequired}}</p>
+                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">No. of Digit:</label>
+                            <div class="col-md-7" ng-class="{ 'has-error': addCompany.supplierreturnreceiptdigit.$touched && addCompany.supplierreturnreceiptdigit.$invalid }">
+                                <input type="number" name="supplierreturnreceiptdigit" ng-min="1" max="6" ng-max="6" required ng-model="companyDetail.SupplierReturnDigit" class="form-control input-width" id="">
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addCompany.supplierreturnreceiptdigit.$error" ng-if="addCompany.supplierreturnreceiptdigit.$touched">
+                                    <p ng-message="required" class="text-error">{{supplierdigitRequired}}</p>
+                                    <p ng-message="max" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="min" class="text-error"><span>Value should be maximum 6  and minimum 1.</span></p>
+                                    <p ng-message="number" class="text-error">Please enter a valid number.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="text-center color-example-gray">
+        <span>(E.g. "Invoice Prefix" = IN , No.Of Digit = 3, Barcode for Invoice = IN23102015001...IN23102015999</span>
+        <span>Where IN = Prefix, 23102015 = Current Date, 001...999 = Entries)</span>
+    </div>
+</div>
+

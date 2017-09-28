@@ -1,0 +1,246 @@
+﻿<div ng-controller="SpoPaymentController" ng-init="initialize()">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="supplierpurchaseorderbillpayment"></span></div>
+        <div class="panel-body">
+            <div>
+                <div class="form-horizontal">
+                    <label string-replace="searchfilter"></label>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="suppliername"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="search.SupplierId" name="suppliername" required>
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="supplier.Id as supplier in supplierList | filter: $select.search">
+                                            <div ng-bind-html="supplier.Name | highlight: $select.search" name="{{supplier.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="purchaseorderno"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="search.PurchaseOrderNo" required id="" maxlength="16" name="sponumber">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="billno"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" ng-model="search.BillNumber" maxlength="20" name="billno">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-disabled="!(search.PurchaseOrderNo && search.SupplierId)" ng-click="searchBill()"><span string-replace="search"></span></button>
+                </div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="emptyBillList">
+                    <span>{{billNotFound}}</span>
+                </div>
+            </div>
+            <form name="SPOPayment">
+                <div ng-show="isBillVisible">
+
+                    <br />
+                    <label><span string-replace="itemdetails"></span></label>
+                    <table class="table table-striped table-bordered table-hover" name="item-detail-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="barcode"></span></th>
+                                <th><span string-replace="code"></span></th>
+                                <th><span string-replace="unit"></span></th>
+                                <th><span string-replace="itemname"></span></th>
+                                <th><span string-replace="systemquantity"></span></th>
+                                <th><span string-replace="systemcostprice"></span></th>
+                                <th><span string-replace="freequantity"></span></th>
+                                <th><span string-replace="discountpos"></span></th>
+                                <th><span string-replace="ordercostprice"></span></th>
+                                <th><span string-replace="orderquantity"></span></th>
+                                <th><span string-replace="receivingcostprice"></span></th>
+                                <th><span string-replace="receivingquantity"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody dir-paginate="item in poItemList| itemsPerPage: 5">
+                            <tr>
+                                <td class="grid-width">{{item.Barcode}}</td>
+                                <td class="grid-width">{{item.Code}}</td>
+                                <td class="grid-width">{{item.Type}}</td>
+                                <td class="grid-width">{{item.ItemNameEn}}</td>
+                                <td class="grid-width">{{item.ActualQuantity}}</td>
+                                <td class="grid-width">{{item.CostPrice}}</td>
+                                <td class="grid-width">{{item.FreeQuantity}}</td>
+                                <td class="grid-width">{{item.PercentageDiscount}}</td>
+                                <td class="grid-width">{{item.OrderCostPrice}}</td>
+                                <td class="grid-width">{{item.OrderQuantity}}</td>
+                                <td class="grid-width">{{item.ReceiveCostPrice}}</td>
+                                <td class="grid-width">{{item.ReceiveQuantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="poItemList.length >0" style="text-align:center">
+                        <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                    </div>
+
+                    <label><span string-replace="billlist"></span></label>
+                    <hr />
+                    <table class="table table-striped table-bordered table-hover" name="item-list-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="pono"></span>.</th>
+                                <th><span string-replace="branch"></span></th>
+                                <th><span string-replace="suppliername"></span></th>
+                                <th><span string-replace="billno"></span>.</th>
+                                <th><span string-replace="amount"></span></th>
+                                <th><span string-replace="discountpos"></span></th>
+                                <th><span string-replace="suppliertype"></span></th>
+                                <th><span string-replace="pay"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="bill in billList">
+                                <td>{{bill.PurchaseOrderNo}}</td>
+                                <td>{{bill.BranchName}}</td>
+                                <td>{{bill.SupplierName}}</td>
+                                <td>{{bill.BillNumber}}</td>
+                                <td>{{bill.Amount}}</td>
+                                <td>{{bill.Discount}}</td>
+                                <td>{{bill.SupplierType}}</td>
+                                <td>
+                                    <input type="checkbox" ng-model="bill.IsSelected" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-default pull-right" name="cancel-btn" ng-click="billSelect()"><span string-replace="pay"></span></button>
+                </div>
+
+                <div ng-show="isBillVisible">
+                    <br />
+                    <label><span string-replace="payment"></span></label>
+                    <hr />
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4 p-0"><span string-replace="creditnote"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" disabled ng-model="spoPayment.Credit" name="creditnote">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4 p-0"><span string-replace="cash"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-disabled="!isCashPO" ng-change="calculateDifference()" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="spoPayment.Cash" id="" name="cash">
+                                                <div class="help-block" ng-messages="SPOPayment.cash.$error" ng-if="SPOPayment.cash.$touched">
+                                                    <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="voucherno"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="" maxlength="20" ng-model="spoPayment.VoucherNo" name="voucherno">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4 p-0"><span string-replace="cheque"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-disabled="isCashPO" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="calculateDifference()" ng-model="spoPayment.Cheque" id="" name="cheque">
+                                                <div class="help-block" ng-messages="SPOPayment.cheque.$error" ng-if="SPOPayment.cheque.$touched">
+                                                    <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4 p-0"><span string-replace="chequeno"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-disabled="isCashPO" maxlength="20" id="" ng-model="spoPayment.ChequeNo" name="chequeno">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 p-0"><span string-replace="total"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="" disabled ng-model="spoPayment.Amount" name="total">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 p-0"><span string-replace="difference"></span>:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="" disabled ng-model="difference" name="difference">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" ng-show="(creditNoteList.length > 0)">
+                                <label><span string-replace="suppliercreditnote"></span></label>
+                                <table class="table table-striped table-bordered table-hover" name="return-req-grid">
+                                    <thead>
+                                        <tr>
+                                            <th><span string-replace="creditnoteno"></span></th>
+                                            <th><span string-replace="amount"></span></th>
+                                            <th><span string-replace="pay"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="note in creditNoteList">
+                                            <td>{{note.CreditNoteNo}}</td>
+                                            <td>{{note.ActualAmount}}</td>
+                                            <td>
+                                                <input type="checkbox" ng-model="note.IsSelected" ng-change="creditNoteSelect()" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                        <div class="col-lg-9">
+                            <textarea class="form-control" ng-model="comment.Comment" maxlength="350" name="comment"></textarea>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="row text-center">
+                        <button class="btn btn-primary m-r-10" name="submit-btn" ng-disabled="isPayButtonDisabled()" ng-click="saveSPOPayment()"><span string-replace="pay"></span></button>
+                        <button class="btn btn-default" name="cancel-btn" ng-click="refreshSPO()"><span string-replace="cancelpos"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

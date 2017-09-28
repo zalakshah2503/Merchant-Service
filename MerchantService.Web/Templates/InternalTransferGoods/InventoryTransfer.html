@@ -1,0 +1,130 @@
+﻿<div>
+    <div class="panel panel-default" ng-controller="internalTransferGoodsController">
+        <div class="panel-heading"><span string-replace="inventorytransfer"></span></div>
+        <div class="panel-body">
+            <div class="alert alert-success text-center" role="alert" ng-show="isDisplayErrorMessage">
+                <span>{{noRecordFound}}</span>
+            </div>
+            <div class="form-horizontal" ng-hide="isDisplayErrorMessage">
+                <form name="inventory">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="targetbranch"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="transferGoodsDetails.TargetBranchId" name="targerbranch" ng-disabled="isBranchDisabled" ng-change="changeBranchName(transferGoodsDetails.TargetBranchId)">
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="branch.BranchId as branch in branchList | filter: $select.search">
+                                            <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="requesttype"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="transferGoodsDetails.RequestTypeId" name="requesttype" ng-disabled="isRequestDisabled" ng-change="changeRequestType(transferGoodsDetails.TargetBranchId,transferGoodsDetails.RequestTypeId)">
+                                        <ui-select-match placeholder="Select">{{$select.selected.ValueEn}}</ui-select-match>
+                                        <ui-select-choices repeat="requestType.ParamTypeId as requestType in requestTypeCollection | filter: $select.search">
+                                            <div ng-bind-html="requestType.ValueEn | highlight: $select.search" name="{{requestType.ValueEn}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="duedate"></span>:</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group change-pos">
+                                        <input type="text" name="duedate" min-date="minStartDate" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="transferGoodsDetails.DueDate" is-open="isDueDatePickerOpened" ng-required="true" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="dueDatePickerOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="barcode" maxlength="18" ng-disabled="isBarcodeDisabled" ng-model="transferGoodsDetails.Barcode" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary" name="add-item-btn" ng-disabled="isBarcodeDisabled" ng-click="getItemDetailsByItemBarcode(transferGoodsDetails.Barcode)"><span string-replace="additem"></span></button>
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary" ng-click="itemSearchDetails()" name="search-item-link" ng-disabled="isBarcodeDisabled"><span string-replace="searchitem"></span></button>
+                        </div>
+                    </div>
+                    <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                        <span>{{noRecordFound}}</span>
+                    </div>
+                    <br />
+                    <table ng-if="isDispalyItemTransferDetails" class="table table-striped table-bordered table-hover" name="inventory-transfer-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="barcode"></span></th>
+                                <th><span string-replace="name"></span></th>
+                                <th><span string-replace="flavourpos"></span></th>
+                                <th><span string-replace="unit"></span></th>
+                                <th><span string-replace="baseunitcount"></span></th>
+                                <th ng-if="IsSendInventory"><span string-replace="senderbranchquantity"></span></th>
+                                <th ng-if="IsSendInventory"><span string-replace="receiverbranchquantity"></span></th>
+                                <th ng-if="!IsSendInventory"><span string-replace="receiverbranchquantity"></span></th>
+                                <th ng-if="!IsSendInventory"><span string-replace="senderbranchquantity"></span></th>
+                                <th><span string-replace="requestquantity"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in inventoryItemCollection">
+                                <td>{{item.Barcode}}</td>
+                                <td>{{item.ItemName}}</td>
+                                <td>{{item.Flavour}}</td>
+                                <td>{{item.Unit}}</td>
+                                <td>{{item.BaseUnitCount}}</td>
+                                <td><span>{{item.CurrentBranchQunatitytoolTip}}</span></td>
+                                <td><span>{{item.TargetBranchQuantityToolTip}}</span></td>
+                                <td>
+                                    <input type="text" ng-min="1" class="form-control req-qty" id="" ng-model="item.RequestQuantity" name="requestqty_{{$index}}" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-blur="checkNullRequestQuantity(item)" required />
+                                    <span tooltip="Minimum quantity of sending branch is {{item.MinimumQunatity}}" tooltip-placement="bottom" ng-if="item.IsWarningMesssage && item.IsSendInventory"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                    <span tooltip="Maximum quantity of receiving branch is {{item.MinimumQunatity}}" tooltip-placement="bottom" ng-if="item.IsWarningMesssage && !item.IsSendInventory"><i class="fa fa-warning text-warn icon-big"></i></span>
+                                    <span tooltip="Sender branch have only {{item.SystemQuantity}} quantity to send" tooltip-placement="bottom" ng-if="item.IsErrorMessage"><i class="fa fa-warning text-danger icon-big"></i></span>
+                                    <div class="help-block" ng-messages="inventory['requestqty_' + $index].$error" ng-if="inventory['requestqty_' + $index].$touched">
+                                        <p ng-message="required" class="text-error">{{validQuantityError}}</p>
+                                        <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a title="Delete" class="pointer" name="transferinventory-delete" ng-click="removeItemConfirmation($index,item)"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="row">
+                        <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                        <div class="col-lg-9">
+                            <textarea class="form-control" maxlength="350" ng-model="transferGoodsDetails.InitiationComment" name="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <button type="submit" ng-if="isDispalyItemTransferDetails" class="btn btn-primary" name="submit-btn" ng-disabled="checkRequestQuantityForItems()?false:true" ng-click="submitInventoryTranserRequest(transferGoodsDetails)" string-replace="submitpos"></button>
+                        <button class="btn btn-default" name="cancel-btn" ng-click="clearTransferInventory()" string-replace="cancelpos"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,841 @@
+﻿<div class="company-page" ng-controller="CompanyController">
+    <tabset>
+        <tab heading="Company Details" active="isCompanyDetailPanel" disabled="!isCompanyDetailPanel">
+            <br />
+            <div class="form-horizontal">
+                <form name="companyDetails" novalidate>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Company Name:</label>
+                        <div class="col-md-5" ng-class="{ 'has-error': companyDetails.companyName.$touched && companyDetails.companyName.$invalid }">
+                            <input type="text" maxlength="255" name="companyName" class="form-control" id="" placeholder="Company Name" ng-model="companyDetail.Name" auto-focus="isFocusIn" required>
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="companyDetails.companyName.$error" ng-if="companyDetails.companyName.$touched">
+                                <p ng-message="required" class="text-error">{{compantNameRequired}}</p>
+                            </div>
+                            <div class="help-block" role="alert" ng-show="isCompanyNameExist">
+                                <span class="text-error">{{companyErrorMessage}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Company Name SL:</label>
+                        <div class="col-md-5">
+                            <input type="text" maxlength="255" name="companyNameSL" class="form-control" id="" placeholder="Company Name" ng-model="companyDetail.NameSL">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Address:</label>
+
+                        <div class="col-md-5" ng-class="{ 'has-error': companyDetails.google_places_ac.$touched && companyDetails.google_places_ac.$invalid }">
+                            <google-places location=location></google-places>
+                            <span class="error error-textbox">*</span>
+                            <div class="help-block" ng-messages="companyDetails.google_places_ac.$error" ng-if="companyDetails.google_places_ac.$touched">
+                                <p ng-message="required" class="text-error">{{addressRequired}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Zip Code:</label>
+                        <div class="col-md-5" ng-class="{ 'has-error': companyDetails.zipcode.$touched && companyDetails.zipcode.$invalid }">
+                            <input type="text" class="form-control" name="zipcode" id="" placeholder="Zip Code" ng-model="companyDetail.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                            <div class="help-block" ng-messages="companyDetails.zipcode.$error" ng-if="companyDetails.zipcode.$touched">
+                                <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Email:</label>
+                        <div class="col-md-5" ng-class="{ 'has-error': companyDetails.email.$touched && companyDetails.email.$invalid }">
+
+                            <input type="email" name="email" class="form-control" id="" placeholder="Email" ng-model="companyDetail.Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" required>
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="companyDetails.email.$error" ng-if="companyDetails.email.$touched">
+                                <p ng-message="pattern" class="text-error">{{emailInvalid}}</p>
+                                <p ng-message="required" class="text-error">{{emailRequired}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Phone:</label>
+                        <div class="col-sm-5" ng-class="{ 'has-error': companyDetails.mobile.$touched && companyDetails.mobile.$invalid }">
+                            <input type="text" name="mobile" class="form-control" ng-model="companyDetail.PhoneNumber" placeholder="Phone" ng-pattern="/^[- +()]*[0-9][- +()0-9]*$/" ng-minlength="10" ng-maxlength="15" required>
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="companyDetails.mobile.$error" ng-if="companyDetails.mobile.$touched">
+                                <p ng-message="required" class="text-error">{{phoneRequired}}</p>
+                                <p ng-message="pattern" class="text-error">{{phoneInvalid}}</p>
+                                <p ng-message="maxlength" class="text-error">Phone number should be minimum 10 digit and maximum 15 digit</p>
+                                <p ng-message="minlength" class="text-error">Phone number should be minimum 10 digit and maximum 15 digit</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row" style="width:60%;margin:30px auto">
+                    <button class="btn btn-primary pull-right" name="next-btn" ng-click="redirectToNextTab()" ng-disabled="companyDetails.$invalid">Next</button>
+                </div>
+            </div>
+        </tab>
+        <tab heading="Barcode Configuration" active="isCompanyBarcodePaymentPanel" disabled="!isCompanyBarcodePaymentPanel">
+            <br />
+            <div>
+                <form name="balanceBarcodeForm" novalidate ng-if="isShowForm">
+                    <div class="form-group">
+                        <div class="">
+                            <fieldset>
+                                <legend>Balance barcode</legend>
+                                <button class="btn btn-primary pull-right" name="add-button" ng-click="addBalanceBarcodeSection(balanceBarcodeSection)" ng-disabled="balanceBarcodeForm.$invalid">{{isButtonText}}</button>
+                                <br /><br />
+                                <table class="table table-striped table-bordered table-hover" name="balance-barcode-grid">
+                                    <thead>
+                                        <tr>
+                                            <th>Barcode Section</th>
+                                            <th>Start Position</th>
+                                            <th>Length</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label>Prefix</label>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.prefixStartPosition.$touched && balanceBarcodeForm.prefixStartPosition.$invalid }">
+                                                    <input type="text" name="prefixStartPosition" class="form-control" ng-model="balanceBarcodeSection.PrefixStartPosition" required maxlength="2" ng-pattern="/^[0-9]*$/" tabindex="1"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.prefixStartPosition.$error" ng-if="balanceBarcodeForm.prefixStartPosition.$touched">
+                                                        <p ng-message="required" class="text-error">{{startPositionRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.prefixStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.prefixLength.$touched && balanceBarcodeForm.prefixLength.$invalid }">
+                                                    <input type="text" class="form-control" ng-model="balanceBarcodeSection.PrefixLength" name="prefixLength" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="2"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.prefixLength.$error" ng-if="balanceBarcodeForm.prefixLength.$touched">
+                                                        <p ng-message="required" class="text-error">{{lengthRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.prefixLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Sub-Barcode</label>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.subBarcodeStartPosition.$touched && balanceBarcodeForm.subBarcodeStartPosition.$invalid }">
+                                                    <input type="text" name="subBarcodeStartPosition" class="form-control" ng-model="balanceBarcodeSection.SubBarcodeStartPosition" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="3"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.subBarcodeStartPosition.$error" ng-if="balanceBarcodeForm.subBarcodeStartPosition.$touched">
+                                                        <p ng-message="required" class="text-error">{{startPositionRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.subBarcodeStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.subBarcodeLength.$touched && balanceBarcodeForm.subBarcodeLength.$invalid }">
+                                                    <input type="text" class="form-control" ng-model="balanceBarcodeSection.SubBarcodeLength" name="subBarcodeLength" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="4"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.subBarcodeLength.$error" ng-if="balanceBarcodeForm.subBarcodeLength.$touched">
+                                                        <p ng-message="required" class="text-error">{{lengthRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.subBarcodeLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Weight</label>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.weightStartPosition.$touched && balanceBarcodeForm.weightStartPosition.$invalid }">
+                                                    <input type="text" name="weightStartPosition" class="form-control" ng-model="balanceBarcodeSection.WeightStartPosition" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="5"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.weightStartPosition.$error" ng-if="balanceBarcodeForm.weightStartPosition.$touched">
+                                                        <p ng-message="required" class="text-error">{{startPositionRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.weightStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.weightLength.$touched && balanceBarcodeForm.weightLength.$invalid }">
+                                                    <input type="text" name="weightLength" class="form-control" ng-model="balanceBarcodeSection.WeightLength" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="6"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.weightLength.$error" ng-if="balanceBarcodeForm.weightLength.$touched">
+                                                        <p ng-message="required" class="text-error">{{lengthRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.weightLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Weight Decimal Point</label>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.weightDecimalStartPosition.$touched && balanceBarcodeForm.weightDecimalStartPosition.$invalid }">
+                                                    <input type="text" name="weightDecimalStartPosition" class="form-control" ng-model="balanceBarcodeSection.WeightDecimalStartPosition" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="7"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.weightDecimalStartPosition.$error" ng-if="balanceBarcodeForm.weightDecimalStartPosition.$touched">
+                                                        <p ng-message="required" class="text-error">{{startPositionRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.weightDecimalStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{ 'has-error': balanceBarcodeForm.weightDecimalLength.$touched && balanceBarcodeForm.weightDecimalLength.$invalid }">
+                                                    <input type="text" name="weightDecimalLength" class="form-control" ng-model="balanceBarcodeSection.WeightDecimalLength" required ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="8"/>
+                                                    <span class="error">*</span>
+                                                    <div class="help-block" ng-messages="balanceBarcodeForm.weightDecimalLength.$error" ng-if="balanceBarcodeForm.weightDecimalLength.$touched">
+                                                        <p ng-message="required" class="text-error">{{lengthRequired}}</p>
+                                                    </div>
+                                                    <div ng-if="balanceBarcodeForm.weightDecimalLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Weight Unit</label>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="weightUnitStartPosition" class="form-control" ng-model="balanceBarcodeSection.WeightUnitStartPosition" maxlength="2" ng-pattern="/^[0-9]*$/" tabindex="9"/>
+                                                    <div ng-if="balanceBarcodeForm.weightUnitStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="weightUnitLength" class="form-control" ng-model="balanceBarcodeSection.WeightUnitLength" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="10"/>
+                                                    <div ng-if="balanceBarcodeForm.weightUnitLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Amount</label>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="amountStartPosition" class="form-control" ng-model="balanceBarcodeSection.AmountStartPosition" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="11"/>
+                                                    <div ng-if="balanceBarcodeForm.amountStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" class="form-control" ng-model="balanceBarcodeSection.AmountLength" name="amountLength" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="12"/>
+                                                    <div ng-if="balanceBarcodeForm.amountLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Amount Decimal Point</label>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="amountDecimalStartPosition" class="form-control" ng-model="balanceBarcodeSection.AmountDecimalStartPosition" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="13"/>
+                                                    <div ng-if="balanceBarcodeForm.amountDecimalStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="amountDecimalLength" class="form-control" ng-model="balanceBarcodeSection.AmountDecimalLength" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="14"/>
+                                                    <div ng-if="balanceBarcodeForm.amountDecimalLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Suffix</label>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="suffixStartPosition" class="form-control" ng-model="balanceBarcodeSection.SuffixStartPosition" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="15"/>
+                                                    <div ng-if="balanceBarcodeForm.suffixStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="suffixLength" class="form-control" ng-model="balanceBarcodeSection.SuffixLength" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="16"/>
+                                                    <div ng-if="balanceBarcodeForm.suffixLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Checksum</label>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="checkSumStartPosition" class="form-control" ng-model="balanceBarcodeSection.CheckSumStartPosition" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="17"/>
+                                                    <div ng-if="balanceBarcodeForm.checkSumStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="checkSumLength" class="form-control" ng-model="balanceBarcodeSection.CheckSumLength" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="18"/>
+                                                    <div ng-if="balanceBarcodeForm.checkSumLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>Others</label>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="otherStartPosition" class="form-control" ng-model="balanceBarcodeSection.OtherStartPosition" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="19"/>
+                                                    <div ng-if="balanceBarcodeForm.otherStartPosition.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="otherLength" class="form-control" ng-model="balanceBarcodeSection.OtherLength" ng-pattern="/^[0-9]*$/" maxlength="2" tabindex="20"/>
+                                                    <div ng-if="balanceBarcodeForm.otherLength.$error.pattern">
+                                                        <p class="text-error">{{patternValidationMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br />
+                                <table class="table table-striped table-bordered table-hover" name="barcode-configuration">
+                                    <thead>
+                                        <tr>
+                                            <th>configuration</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="balanceBarcodeConfiguration in listOfBalanceBarcodeConfiguration">
+                                        <tr>
+                                            <td>{{balanceBarcodeConfiguration.Name}}</td>
+                                            <td class="action-td-width">
+                                                <div class="action-td">
+                                                    <a title="Edit" name="balance-barcode-edit"><i class="fa fa-edit" ng-click="editBalanceBarcodeSection($index)"></i></a>
+                                                    <a title="Delete" name="balance-barcode-delete" ng-click="deleteBalanceBarcodeSection($index)"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+                <br />
+                <form name="companyAndNormalbarcode" novalidate>
+                    <fieldset>
+                        <legend>Company Barcode</legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Start With</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" name="startWith" class="form-control" ng-model="companyBarcodeConfiguration.StartWith" ng-pattern="/^[0-9]*$/" tabindex="21" />
+                                        </div>
+                                        <div ng-if="companyAndNormalbarcode.startWith.$error.pattern">
+                                            <p class="text-error">{{patternValidationMessage}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">To Length:</label>
+                                        <div class="col-sm-6" ng-class="{ 'has-error': companyAndNormalbarcode.toCompanyBarcode.$touched && companyAndNormalbarcode.toCompanyBarcode.$invalid }">
+                                            <input type="text" name="toCompanyBarcode" class="form-control" ng-model="companyBarcodeConfiguration.To" required ng-pattern="/^[0-9]*$/" maxlength="2" ng-blur="checkCompanyBarcodeIsValidorNot()" tabindex="23"/>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="companyAndNormalbarcode.toCompanyBarcode.$error" ng-if="companyAndNormalbarcode.toCompanyBarcode.$touched">
+                                                <p ng-message="required" class="text-error">{{toNormalBarcodeRequired}}</p>
+                                            </div>
+                                            <div ng-if="companyAndNormalbarcode.toCompanyBarcode.$error.pattern">
+                                                <p class="text-error">{{patternValidationMessage}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Form Length:</label>
+                                        <div class="col-sm-6" ng-class="{ 'has-error': companyAndNormalbarcode.fromCompanyBarcode.$touched && companyAndNormalbarcode.fromCompanyBarcode.$invalid }">
+                                            <input type="text" name="fromCompanyBarcode" class="form-control" ng-model="companyBarcodeConfiguration.From" required ng-pattern="/^[0-9]*$/" maxlength="2" ng-blur="checkCompanyBarcodeIsValidorNot()" tabindex="22"/>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="companyAndNormalbarcode.fromCompanyBarcode.$error" ng-if="companyAndNormalbarcode.fromCompanyBarcode.$touched">
+                                                <p ng-message="required" class="text-error">{{fromNormalBarcodeRequired}}</p>
+                                            </div>
+                                            <div ng-if="companyAndNormalbarcode.fromCompanyBarcode.$error.pattern">
+                                                <p class="text-error">{{patternValidationMessage}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset>
+                        <legend>Normal barcode</legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Form:</label>
+                                        <div class="col-sm-6" ng-class="{ 'has-error': companyAndNormalbarcode.fromNormalBarcode.$touched && companyAndNormalbarcode.fromNormalBarcode.$invalid }">
+                                            <input type="text" name="fromNormalBarcode" class="form-control" ng-model="normalBarcodeModel.From" required ng-pattern="/^[0-9]*$/" maxlength="2" ng-blur="checkNormalBarcodeIsValidorNot()" tabindex="24"/>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="companyAndNormalbarcode.fromNormalBarcode.$error" ng-if="companyAndNormalbarcode.fromNormalBarcode.$touched">
+                                                <p ng-message="required" class="text-error">{{fromNormalBarcodeRequired}}</p>
+                                            </div>
+                                            <div ng-if="companyAndNormalbarcode.fromNormalBarcode.$error.pattern">
+                                                <p class="text-error">{{patternValidationMessage}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">To:</label>
+                                        <div class="col-sm-6" ng-class="{ 'has-error': companyAndNormalbarcode.toNormalBarcode.$touched && companyAndNormalbarcode.toNormalBarcode.$invalid }">
+                                            <input type="text" name="toNormalBarcode" class="form-control" ng-model="normalBarcodeModel.To" required ng-pattern="/^[0-9]*$/" maxlength="2" ng-blur="checkNormalBarcodeIsValidorNot()" tabindex="25"/>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="companyAndNormalbarcode.toNormalBarcode.$error" ng-if="companyAndNormalbarcode.toNormalBarcode.$touched">
+                                                <p ng-message="required" class="text-error">{{toNormalBarcodeRequired}}</p>
+                                            </div>
+                                            <div ng-if="companyAndNormalbarcode.toNormalBarcode.$error.pattern">
+                                                <p class="text-error">{{patternValidationMessage}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="row" style="width:60%;margin:30px auto">
+                    <button ng-if="tabCount != 1" class="btn btn-primary pull-left" name="prev-btn" ng-click="redirectToPreviousTab()">Previous</button>
+                    <button class="btn btn-primary pull-right" ng-disabled="companyAndNormalbarcode.$invalid || !(listOfBalanceBarcodeConfiguration.length > 0)" ng-click="redirectToNextTab()" name="next-btn">Next</button>
+                </div>
+            </div>
+            <script type="text/ng-template" id="deleteBarcodePopup">
+                <div class="modal-header">
+                    <h3 class="modal-title">Delete Balance Barcode Configuration</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <p>
+                            Are you sure you want to delete?
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" name="yes-btn" type="button" ng-click="deleteBalanceBarcodeDeletePopup()">Yes</button>
+                    <button class="btn btn-default" name="no-btn" type="button" ng-click="cancelBalanceBarcodeDeletePopup()">No</button>
+                </div>
+            </script>
+        </tab>
+        <tab heading="Payment Mode" active="isPaymentModePanel" disabled="!isPaymentModePanel">
+            <br />
+            <div class="text-center">
+                <div>
+                    <br />
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Payment Mode</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group m-l-20">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="paymentmode-creditcard" ng-model="companyDetail.CreditCardPayment">Credit Card
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="paymentmode-cheque" ng-model="companyDetail.ChequePayment">Cheque Payment
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="paymentmode-credit-account" ng-model="companyDetail.CreditAccountPayment" ng-change="changeCreditAccount(companyDetail.CreditAccountPayment)">Credit Account
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="paymentmode-debitcard" ng-model="companyDetail.DebitCardPayment">Debit Card
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="paymentmode-coupon" ng-model="companyDetail.CoupanPayment">Coupon
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="paymentmode-coupon" ng-model="companyDetail.CashPayment" ng-disabled="true">Cash
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <legend>Customer Purchase Order </legend>
+                        <div class="row m-l-20">
+                            <div class="col-lg-6">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="cpo" ng-disabled="isAllowCreditAccountLimit" ng-model="companyDetail.AllowCreditAccountLimit">Allow Credit Account Customer to use his limit in Purchase Order
+                                </label>
+                            </div>
+                            <div class="col-lg-6 form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label label-multi col-sm-5 p-0">Customer Purchase Order Down Payment:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="6" max="100.00" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset>
+                        <legend>CPO Additional Cost</legend>
+                        <form name="cpoDetails" novalidate autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">CPO Additional Cost Type:</label>
+                                <div class="col-md-5">
+                                    <input type="text" name="cpoAdditionalCostType" maxlength="255" ng-model="$root.companyDetail.AdditionalCostType" class="form-control" id="" placeholder="CPO Additional Cost Type" required>
+                                    <span class="error">*</span>
+                                    <p ng-show="isAdditionalCostTypeExist" class="text-error">{{constant.selected.Value}}{{additionalCostTypeExist}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <button class="btn btn-primary m-r-10" name="submit-btn" ng-click="saveAdditionalCostType()" ng-disabled="cpoDetails.$invalid">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                        <br />
+                        <br />
+                        <div class="alert alert-success text-center" role="alert" ng-show="$root.companyDetail.CPOConfigurations.length == '0'">
+                            <span>{{noDataFound}}</span>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" ng-show="$root.companyDetail.CPOConfigurations.length != '0'">
+                            <thead>
+                                <tr>
+                                    <th>Additional Cost Type<span></span>:</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="cpoConfiguration in $root.companyDetail.CPOConfigurations">
+                                <tr>
+                                    <td align="left">{{cpoConfiguration.AdditionalCostType}}</td>
+                                    <td class="action-td-width">
+                                        <div class="action-td">
+                                            <a title="Edit" id="edit" name="parameter-edit" ng-click="editAdditionalCostType(cpoConfiguration.Id)"><i class="fa fa-edit"></i></a>
+                                            <a title="Delete" id="delete" name="parameter-delete" ng-click="deleteAdditionalCostType(cpoConfiguration.Id)"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+                <div class="row" style="width:60%;margin:30px auto">
+                    <button class="btn btn-primary pull-right" ng-click="redirectToNextTab()" name="next-btn">Next</button>
+                    <button ng-if="tabCount != 1" class="btn btn-primary pull-left" name="prev-btn" ng-click="redirectToPreviousTab()">Previous</button>
+                </div>
+            </div>
+
+        </tab>
+        <tab heading="Item Return & Invoice Prefix" active="isItemReturnPanel" disabled="!isItemReturnPanel">
+            <br />
+            <div ng-class="{'disabled':isPaymentMode}">
+                <br />
+                <fieldset>
+                    <legend>Item Return </legend>
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="allow-return" ng-model="companyDetail.ReturnItem">Allow Return Item To Other Branch
+                                </label>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-6 p-0">Valid Due Days To Return Purchased</label>
+                                    <div class="col-sm-4" ng-class="{ 'has-error': itemReturn.ValidDueDaysToReturnPurchasedRequired.$touched && itemReturn.ValidDueDaysToReturnPurchasedRequired.$invalid }">
+                                        <input type="text" class="form-control" name="ValidDueDaysToReturnPurchased" ng-model="companyDetail.ValidNumberOfDaysForReturnItem" maxlength="3" ng-pattern="/^0*(?:[0-9][0-9]?|100)$/" max="100" required>
+                                        <span class="error">*</span>
+                                        <div class="help-block" ng-messages="itemReturn.ValidDueDaysToReturnPurchased.$error" ng-if="itemReturn.ValidDueDaysToReturnPurchased.$touched">
+                                            <p ng-message="required" class="text-error">{{validDueDaysToReturnPurchasedRequired}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <br />
+                <form name="itemOffer">
+                    <fieldset>
+                        <legend>Item Offer</legend>
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0">Upper Bound</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="upperBound" ng-model="companyDetail.UpperBound" maxlength="6" ng-pattern="/^[0-9]{0,2}(\.[0-9]{1,2})?$|^(100)(\.[0]{1,2})?$/">
+                                            <div class="help-block" ng-messages="itemOffer.upperBound.$error" ng-if="itemOffer.upperBound.$touched">
+                                                <p ng-message="pattern" class="text-error">Maximum value is 100.00 and Minimum value is greater then 0 with 2 decimal point</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4 p-0">Lower Bound</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="lowerBound" ng-model="companyDetail.LowerBound" maxlength="6" ng-pattern="/^[0-9]{0,2}(\.[0-9]{1,2})?$|^(100)(\.[0]{1,2})?$/">
+                                            <div class="help-block" ng-messages="itemOffer.lowerBound.$error" ng-if="itemOffer.lowerBound.$touched">
+                                                <p ng-message="pattern" class="text-error">Maximum value is 100.00 and Minimum value is greater then 0 with 2 decimal point</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <br />
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Invoice Prefix
+                        <a class="pull-right help-icon" tooltip="{{itemReturnhelp}}"><span class="fa fa-question-circle"></span></a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <form name="itemReturn" novalidate>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Invoice Prefix:</label>
+                                            <div class="col-md-6" ng-class="{ 'has-error': itemReturn.invoiceno.$touched && itemReturn.invoiceno.$invalid }">
+                                                <input type="text" name="invoiceno" class="form-control" id="" ng-pattern="/^[a-zA-Z0-9-]*$/" ng-model="companyDetail.InvoiceNo" placeholder="Invoice Prefix" maxlength="3" required>
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="itemReturn.invoiceno.$error" ng-if="itemReturn.invoiceno.$touched">
+                                                    <p ng-message="required" class="text-error">{{invoiceRequired}}</p>
+                                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Return Invoice Prefix:</label>
+                                            <div class="col-md-6" ng-class="{ 'has-error': itemReturn.returninvoice.$touched && itemReturn.returninvoice.$invalid }">
+                                                <input type="text" name="returninvoice" maxlength="3" class="form-control" ng-pattern="/^[a-zA-Z0-9-]*$/" ng-model="companyDetail.ReturnInvoiceNo" required id="" placeholder="Return Invoice Prefix">
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="itemReturn.returninvoice.$error" ng-if="itemReturn.returninvoice.$touched">
+                                                    <p ng-message="required" class="text-error">{{returnInvoiceRequired}}</p>
+                                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">CPO Invoice Prefix:</label>
+                                            <div class="col-md-6" ng-class="{ 'has-error': itemReturn.cpoinvoice.$touched && itemReturn.cpoinvoice.$invalid }">
+                                                <input type="text" name="cpoinvoice" maxlength="3" required ng-model="companyDetail.CPOInvoiceNo" ng-pattern="/^[a-zA-Z0-9-]*$/" class="form-control" id="" placeholder="CPO Invoice Prefix">
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="itemReturn.cpoinvoice.$error" ng-if="itemReturn.cpoinvoice.$touched">
+                                                    <p ng-message="required" class="text-error">{{cpoInvoiceRequired}}</p>
+                                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">SPO Invoice Prefix:</label>
+                                            <div class="col-md-6" ng-class="{ 'has-error': itemReturn.spoinvoice.$touched && itemReturn.spoinvoice.$invalid }">
+                                                <input type="text" name="spoinvoice" maxlength="3" ng-pattern="/^[a-zA-Z0-9-]*$/" required ng-model="companyDetail.SPOInvoiceNo" class="form-control" id="" placeholder="SPO Invoice Prefix">
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="itemReturn.spoinvoice.$error" ng-if="itemReturn.spoinvoice.$touched">
+                                                    <p ng-message="required" class="text-error">{{spoInvoiceRequired}}</p>
+                                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Item Destruction Receipt Prefix:</label>
+                                            <div class="col-md-6" ng-class="{ 'has-error': itemReturn.itemdestruction.$touched && itemReturn.itemdestruction.$invalid }">
+                                                <input type="text" name="itemdestruction" maxlength="3" required ng-pattern="/^[a-zA-Z0-9-]*$/" class="form-control" ng-model="companyDetail.ItemDestructionNo" id="" placeholder="Item Destruction Receipt Prefix">
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="itemReturn.itemdestruction.$error" ng-if="itemReturn.itemdestruction.$touched">
+                                                    <p ng-message="required" class="text-error">{{itemDestructionRequired}}</p>
+                                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Supplier Return Receipt Prefix:</label>
+                                            <div class="col-md-6" ng-class="{ 'has-error': itemReturn.supplierreturnreceipt.$touched && itemReturn.supplierreturnreceipt.$invalid }">
+                                                <input type="text" name="supplierreturnreceipt" maxlength="3" ng-pattern="/^[a-zA-Z0-9-]*$/" required class="form-control" ng-model="companyDetail.SupplierReturnNo" id="" placeholder="Supplier Return Receipt Prefix">
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="itemReturn.supplierreturnreceipt.$error" ng-if="itemReturn.supplierreturnreceipt.$touched">
+                                                    <p ng-message="required" class="text-error">{{supplierReturnReceiptRequired}}</p>
+                                                    <p ng-message="pattern" class="text-error">{{specialCharacter}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row" style="width:60%;margin:30px auto">
+                                <button class="btn btn-primary pull-right" name="next-btn" ng-click="redirectToNextTab()" ng-disabled="itemReturn.$invalid">Next</button>
+                                <button ng-if="tabCount != 1" class="btn btn-primary pull-left" name="prev-btn" ng-click="redirectToPreviousTab()">Previous</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--<!--<div class="text-center color-example-gray">
+                    <span>(E.g. "Invoice Prefix" = IN , No.Of Digit = 3, Barcode for Invoice = IN23102015001...IN23102015999</span>
+                    <span>Where IN = Prefix, 23102015 = Current Date, 001...999 = Entries)</span>
+                </div>-->
+
+            </div>
+
+        </tab>
+        <tab heading="Language" active="isLanguagePanlel" disabled="!isLanguagePanlel">
+            <br /><div ng-class="{'disabled':isPaymentMode}">
+                <br />
+                <div class="panel panel-default">
+                    <div class="panel-heading">Language</div>
+                    <form name="languages" novalidate>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Select Secondary Language:</label>
+                                    <div class="col-md-4" ng-class="{ 'has-error': languages.language.$touched && languages.language.$invalid }">
+                                        <ui-select name="language" ng-model="companyDetail.LanguageId" required>
+                                            <ui-select-match placeholder="Select Language">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="Language.LanguageId as Language in languageCollection | filter: $select.search">
+                                                <div ng-bind-html="Language.Name | highlight: $select.search" name="{{Language.Name}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="error">*</span>
+                                        <div class="help-block" ng-messages="languages.language.$error" ng-if="languages.language.$touched">
+                                            <p ng-message="required" class="text-error">{{languageSelectRequired}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Select Currency:</label>
+                                    <div class="col-md-4" ng-class="{ 'has-error': languages.currency.$touched && languages.currency.$invalid }">
+                                        <ui-select name="currency" ng-model="companyDetail.CurrencyId" required>
+                                            <ui-select-match placeholder="Select Currency">{{$select.selected.CurrencyType}}</ui-select-match>
+                                            <ui-select-choices repeat="currency.Id as currency in currencyCollection | filter: $select.search">
+                                                <div ng-bind-html="currency.CurrencyType | highlight: $select.search" name="{{currency.CurrencyType}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="error">*</span>
+                                        <div class="help-block" ng-messages="languages.currency.$error" ng-if="languages.currency.$touched">
+                                            <p ng-message="required" class="text-error">Please select currency</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" style="width:60%;margin:30px auto">
+                    <button ng-if="tabCount != 1" class="btn btn-primary pull-left" name="prev-btn" ng-click="redirectToPreviousTab()">Previous</button>
+                    <button class="btn btn-primary pull-right" name="next-btn" ng-click="redirectToNextTab()" ng-disabled="languages.$invalid">Next</button>
+                </div>
+            </div>
+
+        </tab>
+        <tab heading="Profit Margin" active="isProfitMarginPanel" disabled="!isProfitMarginPanel">
+            <br />
+            <div ng-class="{'disabled':isPaymentMode}">
+                <br />
+                <form name="profitMargin" novalidate>
+                    <fieldset>
+                        <legend>Profit Margin </legend>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Profit Margin:</label>
+                                <div class="col-md-4" ng-class="{ 'has-error': profitMargin.profitmargin.$touched && profitMargin.profitmargin.$invalid }">
+                                    <input placeholder="Enter value in %" type="number" name="profitmargin" class="form-control" id="" ng-model="companyDetail.ProfitMargin" required min="1" max="999" ng-max="999">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="profitMargin.profitmargin.$error" ng-if="profitMargin.profitmargin.$touched">
+                                        <p ng-message="required" class="text-error">{{profitMarginRequired}}</p>
+                                        <p ng-message="number" class="text-error">Please enter a valid number</p>
+                                        <p ng-message="max" class="text-error"><span>Profit margin should be maximum 999 percentage</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="row" style="width:60%;margin:30px auto">
+                    <button ng-if="tabCount != 1" class="btn btn-primary pull-left" name="prev-btn" ng-click="redirectToPreviousTab()">Previous</button>
+                    <button ng-if="tabCount == 6" class="btn btn-primary pull-right" name="finish-btn" ng-click="addCompanyDetail(companyDetail)" ng-disabled="profitMargin.$invalid">Finish</button>
+                    <!--<button class="btn btn-primary pull-right" ng-click="redirectToNextTab()" ng-disabled="profitMargin.$invalid" name="next-btn">Next</button>-->
+                </div>
+            </div>
+
+
+        </tab>
+    </tabset>
+    <br />
+</div>

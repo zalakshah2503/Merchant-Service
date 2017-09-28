@@ -1,0 +1,100 @@
+﻿<div class="panel panel-default" ng-controller="POSBillSearchController">
+    <div class="panel-heading"><span string-replace="billsearch"></span></div>
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="customernopos"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="20" name="customerNumber" ng-model="searchList.CustomerNumber">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="billnofromdate"></span>:</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" name="from-date" disabled class="form-control" ng-model="searchForDateAmount.StartDate" datepicker-popup="dd-MMMM-yyyy" is-open="isStartPickerDateOpened" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openStartDatePickerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="fromamount"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="13" name="fromAmount" ng-model="searchForDateAmount.FromAmount" pattern="^\d{1,8}(\.\d{1,4})?$">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="selectbranch"></span></label>
+                        <div class="col-sm-7">
+                            <ui-select name="branchName" ng-model="searchList.BranchId">
+                                <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                    <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="billnotodate"></span>:</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" name="To-date" disabled class="form-control" ng-model="searchForDateAmount.EndDate" datepicker-popup="dd-MMMM-yyyy" is-open="isEndPickerDateOpened" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openEndDatePickerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="toamount"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="13" name="To Amount" ng-model="searchForDateAmount.ToAmount" pattern="^\d{1,8}(\.\d{1,4})?$">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <button class="btn btn-primary m-r-40" name="search-btn" ng-click="clickOnsearchButton()"><span string-replace="search"></span></button>
+            </div>
+        </div>
+        <br />
+        <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplay">
+            <span>{{noItemFound}}</span>
+        </div>
+        <div ng-show="!errorMessageDisplay">
+            <hr />
+            <table class="table table-striped table-bordered table-hover" name="bill-list-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="billno"></span></th>
+                        <th><span string-replace="amount"></span></th>
+                        <th><span string-replace="billdate"></span></th>
+                        <th><span string-replace="branchname"></span></th>
+                        <th><span string-replace="cashiername"></span></th>
+                        <th><span string-replace="customernopos"></span></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="billDetail in totalCollection">
+                    <tr>
+                        <td>{{billDetail.BillNumber}}</td>
+                        <td>{{billDetail.Amount}}</td>
+                        <td>{{billDetail.BillDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{billDetail.Branch}}</td>
+                        <td>{{billDetail.CashierName}}</td>
+                        <td>{{billDetail.CustomerNumber}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="totalCollection.length >0" style="text-align:center">
+                <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

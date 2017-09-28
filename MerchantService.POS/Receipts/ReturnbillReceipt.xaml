@@ -1,0 +1,109 @@
+﻿<FlowDocumentScrollViewer xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="PosBillReceipt" 
+                          Padding="0"
+                         FontSize="6" Width="350" HorizontalScrollBarVisibility="Hidden" 
+                          VerticalScrollBarVisibility="Hidden"  Height="Auto" >
+    <FlowDocument x:Name="FD">
+        <BlockUIContainer>
+            <Grid Background="White" Margin="0,0,0,0" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="Barcode" Height="20" Width="100" Grid.Row="0" Grid.ColumnSpan="2"></Image>
+                <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
+                    <TextBlock FontSize="12" TextAlignment="Center">Retail Invoice</TextBlock>
+                    <TextBlock x:Name="CompanyName" FontSize="12" TextAlignment="Center"></TextBlock>
+                    <TextBlock x:Name="Address" FontSize="12" TextAlignment="Center"></TextBlock>
+                </StackPanel>
+                <Grid Grid.ColumnSpan="2" Grid.Row="2" Margin="0,10,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="Date" FontSize="10" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0">24-02-2016 14:20</TextBlock>
+                    <TextBlock x:Name="lblDate" FontSize="10" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right">: Date</TextBlock>
+                    <TextBlock x:Name="ReturnBill" FontSize="10" Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">123456</TextBlock>
+                    <TextBlock x:Name="lblReturnBillNo" FontSize="10" Margin="0,5,0,0" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right">: ReturnBill No</TextBlock>
+                    <TextBlock x:Name="InvoiceNo" FontSize="10" Margin="0,5,0,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">987654321</TextBlock>
+                    <TextBlock x:Name="lblInvoiceNo" FontSize="10" Margin="0,5,0,0" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right">: Invoice No</TextBlock>
+                </Grid>
+                <Separator Grid.ColumnSpan="2" Grid.Row="3" Margin="0,2"></Separator>
+                <Grid x:Name="ItemGrid" Grid.ColumnSpan="2" Grid.Row="4" Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Width="130" Grid.Column="0" FontSize="11">Name</TextBlock>
+                    <TextBlock Grid.Row="0" Width="40" Grid.Column="1" FontSize="11">Qty</TextBlock>
+                    <TextBlock Grid.Row="0" Width="60" Grid.Column="2" FontSize="11">Price</TextBlock>
+                    <TextBlock Grid.Row="0" Width="70" Grid.Column="3" FontSize="11">Total</TextBlock>
+                    <ListBox x:Name="lstItems" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding Items}" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Width="130" FontSize="10" Grid.Row="0" Grid.Column="0" Text="{Binding Name}"  TextWrapping="NoWrap"></TextBlock>
+                                    <TextBlock Width="40"  FontSize="10" Grid.Row="0" Grid.Column="1" Text="{Binding Qty}" ></TextBlock>
+                                    <TextBlock Width="60"  FontSize="10" Grid.Row="0" Grid.Column="2" Text="{Binding Price}"  ></TextBlock>
+                                    <TextBlock Width="70"  FontSize="10" Grid.Row="0" Grid.Column="3" Text="{Binding Total}" ></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Separator Grid.ColumnSpan="4" Grid.Row="2" Margin="0,2"></Separator>
+                    <TextBlock x:Name="TotalQ" Grid.Row="3" Grid.Column="2" FontSize="10">totalQ</TextBlock>
+                    <TextBlock x:Name="TotalAmount" Grid.Row="3" Grid.Column="3" FontSize="10">totalAm</TextBlock>
+
+                </Grid>
+                <Separator Grid.ColumnSpan="2" Grid.Row="5" Margin="0,2"></Separator>
+                <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Right" Grid.Row="6" Orientation="Horizontal">
+                    <StackPanel>
+                        <TextBlock Margin="2" FontSize="10" Text="Tax"></TextBlock>
+                        <TextBlock Margin="2" FontSize="10" Text="Total"></TextBlock>
+                        <TextBlock Margin="2" FontSize="10" Text="Discount"></TextBlock>
+                        <TextBlock Margin="2" FontSize="10" Text="Cash"></TextBlock>
+                        <TextBlock Margin="2" FontSize="10" Text="Cash Returned"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Width="100">
+                        <TextBlock x:Name="Tax" Margin="2,2,10,2" FontSize="10"></TextBlock>
+                        <TextBlock x:Name="Total" Margin="2,2,10,2" FontSize="10"></TextBlock>
+                        <TextBlock x:Name="Discount" Margin="2,2,10,2" FontSize="10"></TextBlock>
+                        <TextBlock x:Name="Cash" Margin="2,2,10,2" FontSize="10"></TextBlock>
+                        <TextBlock x:Name="CashReturn" Margin="2,2,10,2" FontSize="10"></TextBlock>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+        </BlockUIContainer>
+        <Paragraph TextAlignment="Center">Thank You!</Paragraph>
+    </FlowDocument>
+</FlowDocumentScrollViewer>

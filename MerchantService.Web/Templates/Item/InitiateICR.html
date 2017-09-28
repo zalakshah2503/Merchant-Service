@@ -1,0 +1,409 @@
+﻿<div ng-controller="icrController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="initiateicr"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal" ng-hide="isEdit">
+                <label><span string-replace="searchitem"></span></label>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="itemname"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" maxlength="255" class="form-control" ng-model="search.ItemNameEn" id="" name="itemname">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="selectCategory"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="search.CategoryId" name="select-category">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="category.Id as category in categoryList | filter: $select.search">
+                                        <div ng-bind-html="category.Name | highlight: $select.search" name="category.Name"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="brand"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="search.BrandId" name="brand-name">
+                                    <ui-select-match placeholder="Select Brand">{{$select.selected.BrandName}}</ui-select-match>
+                                    <ui-select-choices repeat="brand.BrandId as brand in brandList | filter: $select.search">
+                                        <div ng-bind-html="brand.BrandName | highlight: $select.search" name="{{brand.BrandName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" maxlength="18" class="form-control" ng-model="search.Barcode" id="" name="barode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="selectUnit"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="search.UnitParamTypeId" name="select-unit">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="unit.Id as unit in unitList | filter: $select.search">
+                                        <div ng-bind-html="unit.Name | highlight: $select.search" name="unit.Name"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="supplier"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="supplier.SupplierId" name="supplier" ng-required="!isEdit">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="supplier.Id as supplier in supplierList | filter: $select.search">
+                                        <div ng-bind-html="supplier.Name | highlight: $select.search" name="{{supplier.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" maxlength="255" class="form-control" ng-model="search.FlavourEn" id="" name="item-flavour">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" maxlength="20" class="form-control" ng-model="search.Code" id="" name="item-code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchItem()"><span string-replace="search"></span></button>
+                </div>
+            </div>
+            <br />
+            <div class="alert alert-success text-center" role="alert" ng-show="itemNotFoundError">
+                <span>{{noItemFound}}</span>
+            </div>
+            <div ng-show="isItemListVisible">
+                <br />
+                <label><span string-replace="itemlist"></span></label>
+                <hr />
+                <table class="table table-striped table-bordered table-hover" name="item-grid">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><span string-replace="itemname"></span></th>
+                            <th><span string-replace="barcode"></span></th>
+                            <th><span string-replace="type"></span></th>
+                            <th><span string-replace="systemquantity"></span></th>
+                            <th><span string-replace="costpricepos"></span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody dir-paginate="item in itemProfileCollection| itemsPerPage: 5">
+                        <tr>
+                            <td id="{{item.Id}}"><a class="pointer" ng-click="getSubItemList(item.Id)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                            <td class="grid-width">{{item.ItemNameEn}}</td>
+                            <td class="grid-width">{{item.Barcode}}</td>
+                            <td class="grid-width">{{item.ItemType}}</td>
+                            <td class="grid-width">{{item.ActualQuantity}}</td>
+                            <td class="grid-width">{{item.CostPrice}}</td>
+                            <td class="action-td-width">
+                                <div class="action-td">
+                                    <a title="Add" name="add-icon" ng-click="addItem(item)"><i class="fa fa-plus-circle"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="subChild{{item.Id}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                            <td colspan="10">
+                                <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                    <thead>
+                                        <tr>
+                                            <th><span string-replace="itemname"></span></th>
+                                            <th><span string-replace="barcode"></span></th>
+                                            <th><span string-replace="type"></span></th>
+                                            <th><span string-replace="systemquantity"></span></th>
+                                            <th><span string-replace="costpricepos"></span></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="subItem in item.listOfChildProfileAC">
+                                            <td class="grid-width">{{subItem.ItemNameEn}}</td>
+                                            <td class="grid-width">{{subItem.Barcode}}</td>
+                                            <td class="grid-width">{{subItem.ItemType}}</td>
+                                            <td class="grid-width">{{subItem.ActualQuantity}}</td>
+                                            <td class="grid-width">{{subItem.CostPrice}}</td>
+                                            <td class="action-td-width">
+                                                <div class="action-td">
+                                                    <a title="Add" name="add-icon" ng-click="addItem(subItem)"><i class="fa fa-plus-circle"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="itemProfileCollection.length >0" style="text-align:center">
+                    <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                </div>
+            </div>
+            <div ng-if="IsDetailVisible">
+                <br />
+                <label><span string-replace="itemdetails"></span></label>
+                <hr />
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="255" class="form-control" disabled ng-model="addNewItemProfile.ItemNameEn" id="" name="itemname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemflavour"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="255" class="form-control" disabled ng-model="addNewItemProfile.FlavourEn" id="" name="itemflavour">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemtype"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.ItemType" id="" name="itemtype">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="20" class="form-control" disabled ng-model="addNewItemProfile.Code" id="" name="itemcode">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="18" class="form-control" disabled ng-model="addNewItemProfile.Barcode" id="" name="barcode">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="unittype"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.Unit" id="" name="unittype">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="baseunitcount"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="6" class="form-control" disabled ng-model="addNewItemProfile.BaseUnit" id="" name="baseunitcount">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="isitemoffer"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" value="Yes" disabled ng-if="addNewItemProfile.IsOfferItem" id="" name="isitemoffer">
+                                    <input type="text" class="form-control" disabled value="No" ng-if="!addNewItemProfile.IsOfferItem" id="" name="isitemoffer">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellprice"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.SellPrice" id="" name="sellprice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpricea"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.SellPriceA" id="" name="sellpricea" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpriceb"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.SellPriceB" id="" name="sellpriceb" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpricec"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.SellPriceC" id="" name="sellpricec" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpriced"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.SellPriceD" id="" name="sellpriced" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="costprice"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled ng-model="addNewItemProfile.CostPrice" id="" name="costprice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="systemquantity"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="6" class="form-control" disabled ng-model="addNewItemProfile.ActualQuantity" id="" name="systemquantity">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="profitmargin"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="3" class="form-control" disabled ng-model="addNewItemProfile.ProfitMargin" id="" name="profitmargin">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <hr />
+                        <label class="col-sm-4"><span string-replace="changerequest"></span>:</label>
+                        <div class="clearfix"></div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="requesttype"></span>:</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline" ng-hide="itemChangedDetails.HideQuantity"> <input type="radio" ng-click="setChange()" ng-model="choice.Change" name="optionsRadiosInline" value="Quantity" id="optionsRadiosInline1" value="Quantity" autocomplete="off" checked="checked"><span string-replace="itemquantitychangerequest"></span></label>
+                                <label class="radio-inline" ng-hide="addNewItemProfile.IsItemChangeRequestGenerated && !itemChangedDetails.HideQuantity"> <input type="radio" ng-disabled="itemChangedDetails.HideQuantity" ng-click="setChange()" ng-model="choice.Change" name="optionsRadiosInline" value="Price" id="optionsRadiosInline2" value="Price" autocomplete="off"><span string-replace="itempricechangerequest"></span></label>
+                            </div>
+                        </div>
+                    </div><br />
+                    <div ng-if="isQuantityChange">
+                        <table class="table table-striped table-bordered table-hover" name="item-detail-grid" ng-show="itemQuantityList.length>0">
+                            <thead>
+                                <tr>
+                                    <th><span string-replace="branchname"></span></th>
+                                    <th><span string-replace="systemquantity"></span></th>
+                                    <th><span string-replace="action"></span></th>
+                                    <th><span string-replace="quantity"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="detail in itemQuantityList">
+                                    <td class="grid-width">{{detail.BranchName}}</td>
+                                    <td class="grid-width">{{detail.ActualQuantity}}</td>
+                                    <td class="grid-width" style="width:150px">
+                                        <ui-select ng-model="detail.Action" name="action" class="icr-select" ng-disabled="detail.IsICRGenerated">
+                                            <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="list.Id as list in choiceList | filter: $select.search">
+                                                <div ng-bind-html="list.Name | highlight: $select.search" name="list.Name"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </td>
+                                    <td class="grid-width">
+                                        <input type="text" ng-disabled="detail.IsICRGenerated" maxlength="6" class="form-control" ng-pattern="/^[0-9]*$/" ng-model="detail.ModifyingQuantity" id="" name="modifyingquantity">
+                                        <span tooltip="ICR is already generated for {{detail.BranchName}}" tooltip-placement="bottom" ng-if="detail.IsICRGenerated"><i class="fa fa-warning text-error icon-big"></i></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2 p-0"><span string-replace="comment"></span>:</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control" maxlength="250" name="comment" ng-model="itemChangedDetails.Comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <label ng-show="$root.merchatSettings.IsAllowedToInitiateICR">
+                                <button class="btn btn-primary m-r-10" name="submit-btn" ng-disabled="checkItemQuantity()" ng-click="getCompanyConfiguration(itemChangedDetails)"><span string-replace="submitpos"></span></button>
+                            </label>
+                            <button class="btn btn-default" name="cancel-btn" ng-hide="isEdit" ng-click="cancel()"><span string-replace="cancelpos"></span></button>
+
+                            <button class="btn btn-default" name="cancel-btn" ng-show="isEdit" ng-click="cancelEdit()"><span string-replace="cancelpos"></span></button>
+                        </div>
+                    </div>
+                    <div ng-model="itemChangedDetails">
+                        <div class="row" ng-if="!isQuantityChange">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellprice"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="checkModifyingPrice()" ng-model="itemChangedDetails.ModifyingSellPrice" id="" name="sell-price">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpricea"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="checkModifyingPrice()" ng-model="itemChangedDetails.ModifyingSellPriceA" id="" name="sell-price-a">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpriceb"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="checkModifyingPrice()" ng-model="itemChangedDetails.ModifyingSellPriceB" id="" name="sell-price-b">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpricec"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="checkModifyingPrice()" ng-model="itemChangedDetails.ModifyingSellPriceC" id="" name="sell-price-c">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="sellpriced"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="checkModifyingPrice()" ng-model="itemChangedDetails.ModifyingSellPriceD" id="" name="sell-price-d">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0"><span string-replace="costprice"></span>:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-disabled="isPOItemICR" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="checkModifyingPrice()" ng-model="itemChangedDetails.ModifyingCostPrice" id="" name="cost-price">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2 p-0"><span string-replace="comment"></span>:</label>
+                                    <div class="col-lg-8">
+                                        <textarea class="form-control" maxlength="350" name="comment" ng-model="itemChangedDetails.Comment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <label ng-show="$root.merchatSettings.IsAllowedToInitiateICR">
+                                    <button class="btn btn-primary m-r-10" name="submit-btn" ng-disabled="(checkItemPrice(itemChangedDetails)?false:true)" ng-click="getCompanyConfiguration(itemChangedDetails)"><span string-replace="submitpos"></span></button>
+                                </label>
+                                <button class="btn btn-default" name="cancel-btn" ng-hide="isEdit" ng-click="cancel()"><span string-replace="cancelpos"></span></button>
+                                <button class="btn btn-default" name="cancel-btn" ng-show="isEdit" ng-click="cancelEdit()"><span string-replace="cancelpos"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="SPlessThanCPPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeSPlessThanCPPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="oops"></span></h4>
+        </div>
+        <div class="modal-body">
+            {{errorMessage}}
+        </div>
+        <div class="modal-footer" ng-show="IsICRCreatedBelowCostPrice">
+            <button type="button" class="btn btn-primary" ng-click="spLessConfirmation()"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-primary" ng-click="closeSPlessThanCPPopup()"><span string-replace="no"></span></button>
+        </div>
+        <div class="modal-footer" ng-hide="IsICRCreatedBelowCostPrice">
+            <button type="button" class="btn btn-primary" ng-click="closeSPlessThanCPPopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>
+

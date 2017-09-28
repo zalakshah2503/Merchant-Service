@@ -1,0 +1,198 @@
+﻿<div ng-controller="ReceiptPaymentController" ng-init="getLedgerList(true)">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="receiptvoucher"></span></div>
+        <div class="panel-body">
+            <form name="addReceipt" novalidate>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-lg-2"><span string-replace="receiptno"></span>.:</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{{receiptVoucherCount}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-2"><span string-replace="account"></span>:</label>
+                        <div class="col-lg-4" ng-class="{ 'has-error': addReceipt.accountName.$touched && addReceipt.accountName.$invalid }">
+                            <ui-select name="accountName" ng-model="receiptPaymentVoucher.AccountId" ng-change="getSelectedAccount(receiptPaymentVoucher)" required>
+                                <ui-select-match placeholder="Select Account">{{$select.selected.LedgerName}}</ui-select-match>
+                                <ui-select-choices repeat="ledgers.LedgerId as ledgers in ledgerList | filter: $select.search">
+                                    <div ng-bind-html="ledgers.LedgerName | highlight: $select.search" name="{{ledgers.LedgerName}}"></div>
+
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="addReceipt.accountName.$error" ng-if="addReceipt.accountName.$touched">
+                                <p ng-message="required" class="text-error">{{accountRequired}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div class="form-horizontal">
+                <div>
+                    <div class="row form-group">
+                        <div class="col-lg-3">
+                            <label class="control-label"><span string-replace="ledgeraccount"></span>:</label>
+                            <p class="text-error m-b-0" ng-show="isSelected"> {{ledgerAccountRequired}} </p>
+                            <p class="text-error m-b-0" ng-show="isLedgerExists"> {{ledgerAccountExsits}} </p>
+                            <p class="text-error m-b-0" ng-show="isAddLedgerAccount"> {{addLedgerAccont}} </p>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="control-label"><span string-replace="amount"></span>:</label>
+                            <p class="text-error m-b-0" ng-show="isAmount"> {{amountRequired}} </p>
+                            <p class="text-error m-b-0" ng-show="isAmountZero"> {{amountZero}} </p>
+                            <p class="text-error m-b-0" ng-hide="isAmountValid"> <span>{{validAmountError}}</span> </p>
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-3">
+                            <ui-select ng-model="receiptPaymentDetail.AccountId" name="acount" ng-change="receiptLedgerSelectedChange($index,receiptPaymentDetail.AccountId,$select.selected.LedgerName)">
+                                <ui-select-match placeholder=" Select Ledger">
+                                    {{$select.selected.LedgerName}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="receiptPayment.LedgerId as receiptPayment in receiptPaymentLedgerList  | filter: $select.search">
+                                    <div ng-bind-html="receiptPayment.LedgerName  | highlight: $select.search" name="{{receiptPayment.LedgerName}}"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" id="" name="amount-text" placeholder="0" ng-model="amount" class="form-control" maxlength="9" />
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary" name="add-btn" ng-click="addNewLedger(receiptPaymentDetail.AccountId,amount)"><span string-replace="add"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div ng-repeat="test in receiptPaymentDetails">
+                    <div class="row form-group">
+                        <div class="col-lg-3">
+                            <ui-select ng-model="test.LedgerId" name="ledger-select" ng-change="receiptLedgerSelectedChange($index,test.LedgerId)">
+                                <ui-select-match placeholder="Select Ledger">{{$select.selected.LedgerName}}</ui-select-match>
+                                <ui-select-choices repeat="receiptPayment.LedgerId as receiptPayment in receiptPaymentLedgerList | filter: $select.search">
+                                    <div ng-bind-html="receiptPayment.LedgerName | highlight: $select.search" name="{{receiptPayment.LedgerName}}"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" id="" name="amount-text" placeholder="0" ng-model="test.Amount" class="form-control" ng-change="calculateAmount(test.Amount,$index)" maxlength="8" />
+                            <div class="help-block" ng-if="checkIntegerAmount(test.Amount,$index)">
+                                <p class="text-error"><span>{{validQuantityError}}</span></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary" name="remove-btn" ng-click="removeLedger($index)"><span string-replace="remove"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-3">
+                        <label><span string-replace="total"></span>:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <label>{{receiptPaymentVoucher.totalAmount}}</label>
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div ng-show="panelBank">
+                <label><span string-replace="bankdetails"></span></label>
+                <hr />
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="">
+                            <div class="col-lg-4 p-0">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4 p-0"><span string-replace="ledgername"></span>:</label>
+                                    <div class="col-lg-7">
+                                        <ui-select name="voucher-select" ng-model="receiptPaymentVoucher.ReceivedFromId" ng-change="changeReceivedFromLedger($select.selected.LedgerName,receiptPaymentVoucher.ReceivedFromId)">
+                                            <ui-select-match placeholder="Select Ledger">{{$select.selected.LedgerName}}</ui-select-match>
+                                            <ui-select-choices repeat="receiptPayment.LedgerId as receiptPayment in receiptPaymentDetails | filter: $select.search">
+                                                <div ng-bind-html="receiptPayment.LedgerName | highlight: $select.search" name="{{receiptPayment.LedgerName}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <p class="text-error m-b-0" ng-show="isReceivedFrom">{{ledgerAccountRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 p-0">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4 p-0"><span string-replace="receivedfrom"></span>:</label>
+                                    <div class="col-lg-7">
+                                        <label class="control-label" ng-model="receiptPaymentVoucher.ReceivedFromId">{{receivedFrom}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 p-0">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-5 p-0"><span string-replace="transactiontype"></span>:</label>
+                                    <div class="col-lg-7">
+                                        <ui-select ng-model="receiptPaymentVoucher.ParamTypeId" name="transaction-type">
+                                            <ui-select-match placeholder="Select Type">{{$select.selected.ValueEn}}</ui-select-match>
+                                            <ui-select-choices repeat="params.Id as params in paramTypes  | filter: $select.search">
+                                                <div ng-bind-html="params.ValueEn | highlight: $select.search" name="{{params.ValueEn}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="error">*</span>
+                                        <p class="text-error m-b-0" ng-show="isTranscationType">{{transcationTypeRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 p-0">
+                            <div class="form-group">
+                                <label class="control-label col-lg-4 p-0"><span string-replace="date"></span>:</label>
+                                <div class="col-lg-7">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="date" ng-model="receiptPaymentVoucher.ChequeDate" datepicker-popup="{{format}}" datepicker-popup="dd-MMMM-yyyy" is-open="isDatePikcerOpened" ng-required="true" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4 p-0"><span string-replace="chequeno"></span>.:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" name="cheque-no" class="form-control" ng-model="receiptPaymentVoucher.ChequeNo" maxlength="15" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 p-0">
+                            <div class="form-group">
+                                <label class="control-label col-lg-4 p-0"><span string-replace="bankname"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" name="bank-name" class="form-control" ng-model="receiptPaymentVoucher.BankName" maxlength="50" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 p-0">
+                            <div class="form-group">
+                                <label class="control-label col-lg-5 p-0"><span string-replace="branch"></span>:</label>
+                                <div class="col-lg-7">
+                                    <input type="text" name="branch" class="form-control" ng-model="receiptPaymentVoucher.BankBranch" maxlength="120" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div>
+                <label class="control-label col-lg-2"><span string-replace="narration"></span>:</label>
+                <textarea class="form-control" ng-model="receiptPaymentVoucher.narration" name="narration" maxlength="250"></textarea>
+            </div>
+            <br />
+            <div class="text-center">
+                <button string-replace="submitpos" name="submit-btn" class="btn btn-primary m-r-10" ng-click="saveReceiptVoucher(receiptPaymentVoucher,receiptPaymentDetails,true)" ng-disabled="addReceipt.$invalid"></button>
+                <button class="btn btn-primary m-r-10" name="cancel-btn" ng-click="ClearControl()"><span string-replace="cancelpos"></span> </button>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>

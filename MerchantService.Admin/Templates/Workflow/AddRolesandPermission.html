@@ -1,0 +1,52 @@
+﻿<div class="roles-permission-page" ng-controller="RolePermissionController">
+    <form name="addRole">
+        <div class="panel panel-default">
+            <div class="panel-heading">Add Roles and Permission</div>
+            <div class="panel-body">
+                <div class="alert alert-success text-center" role="alert" ng-show="permissionErrorErrorMessageDisplay">
+                    <span>{{errorMessage}}</span>
+                </div>
+                <div ng-hide="permissionErrorErrorMessageDisplay">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4 p-0">Role</label>
+                                    <div class="col-sm-8">
+                                        <ui-select ng-model="roleDetails.Id" required ng-change="checkRoleAndPermission(roleDetails.Id)" ng-disabled="isAdminRoleDisabled" name="role">
+                                            <ui-select-match placeholder="Select Role Name">{{$select.selected.RoleName}}</ui-select-match>
+                                            <ui-select-choices repeat="roleDetails.Id as roleDetails in roleList | filter: $select.search">
+                                                <div ng-bind-html="roleDetails.RoleName | highlight: $select.search" name="{{roleDetails.RoleName}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <label>Permissions</label>
+                        <hr />
+                        <div ng-repeat="rolepermission in permissionCollection">
+                            <div ng-repeat="permission in rolepermission.Permission">
+                                <fieldset>
+                                    <legend>{{permission.Name}}</legend>
+                                    <div class="row m-l-20" ng-repeat="childPermission in permission.Children">
+                                        <label class="checkbox-inline m-l-10">
+                                            <input type="checkbox" ng-model="childPermission.IsChecked">{{childPermission.Name}}
+                                        </label>
+                                    </div>
+                                </fieldset>
+                                <br />
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row text-center">
+                            <input type="submit" class="btn btn-primary" ng-click="saveRoleAndPermissionDetails(permissionCollection,roleDetails)" name="save-btn" value="Save" ng-disabled="addRole.$invalid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

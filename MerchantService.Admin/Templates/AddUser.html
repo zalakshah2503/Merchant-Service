@@ -1,0 +1,225 @@
+﻿<div ng-controller="UserDetailController">
+    <form name="addUser" ng-submit="addUser.$valid && addUserDetail()" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-heading">Add User</div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Full Name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="fullName" class="form-control" id="fullName" auto-focus="isFocusIn" ng-model="userDetail.FullName" maxlength="255">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Full Name Sl:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="fullNameSl" class="form-control" id="fullNameSl" ng-model="userDetail.FullNameSl" maxlength="255">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">User Name:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.userName.$touched && addUser.userName.$invalid }">
+                                    <input type="text" name="userName" class="form-control" ng-model="userDetail.UserName" ng-disabled="onlyRead" required maxlength="255">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addUser.userName.$error" ng-if="addUser.userName.$touched">
+                                        <p ng-message="required" class="text-error">{{userNameRequired}}</p>
+                                    </div>
+                                    <div>
+                                        <p ng-show="isUserNameExist && addUser.$valid" class="text-error">{{userNameUnique}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Email:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.email.$touched && addUser.email.$invalid }">
+                                    <input type="email" name="email" class="form-control" ng-model="userDetail.Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-disabled="onlyRead" required maxlength="254">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addUser.email.$error" ng-if="addUser.email.$touched">
+                                        <p ng-message="pattern" class="text-error">{{emailInvalid}}</p>
+                                        <p ng-message="required" class="text-error">{{emailRequired}}</p>
+                                    </div>
+                                    <div>
+                                        <p ng-show="isUserEmailExist && addUser.$valid" class="text-error">{{emailUnique}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="!superAdminRole">
+                                <div class="form-group" ng-if="$root.merchatSettings.IsAllowToAccessAllBranch">
+                                    <label class="control-label col-sm-4 p-0">Select Branch:</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error': addUser.branch.$touched && addUser.branch.$invalid }">
+                                        <ui-select name="branch" ng-model="userDetail.BranchId">
+                                            <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                                <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="!($root.merchatSettings.IsAllowToAccessAllBranch)">
+                                    <label class="control-label col-sm-4 p-0">Select Branch:</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error': addUser.branch.$touched && addUser.branch.$invalid }">
+                                        <ui-select name="branch" ng-model="userDetail.BranchId" required>
+                                            <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                                <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="error">*</span>
+                                        <div class="help-block" ng-messages="addUser.branch.$error" ng-if="addUser.branch.$touched">
+                                            <p ng-message="required" class="text-error">{{branchSelectRequired}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Select Role:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.role.$touched && addUser.role.$invalid }">
+                                    <ui-select ng-model="userDetail.RoleId" name="role" required ng-disabled="superAdminRole">
+                                        <ui-select-match placeholder="Select Role">{{$select.selected.RoleName}}</ui-select-match>
+                                        <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                            <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addUser.role.$error" ng-if="addUser.role.$touched">
+                                        <p ng-message="required" class="text-error">{{roleSelectRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Job Title:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="userDetail.JobTitle" name="job-title">
+                                        <ui-select-match placeholder="Select Job Title">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="jobTitle.Name as jobTitle in jobTitleList | filter: $select.search">
+                                            <div ng-bind-html="jobTitle.Name | highlight: $select.search" name="{{jobTitle.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Employee Id:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.employeeId.$touched && addUser.employeeId.$invalid }">
+                                    <input required type="text" name="employeeId" class="form-control" ng-model="userDetail.EmployeeId" maxlength="24">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addUser.employeeId.$error" ng-if="addUser.employeeId.$touched">
+                                        <p ng-message="required" class="text-error">{{employeeIdUnique}}</p>
+                                    </div>
+                                    <div>
+                                        <p ng-show="isEmployeeIdExist && addUser.$valid" class="text-error">{{employeeIdUnique}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Department:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="userDetail.Department" name="department">
+                                        <ui-select-match placeholder="Select Department">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="department.Name as department in departmentList | filter: $select.search">
+                                            <div ng-bind-html="department.Name  | highlight: $select.search" name="{{department.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Join Date:</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" disabled class="form-control" ng-change="dateChanged()" name="join-date" datepicker-popup="dd-MMMM-yyyy" ng-model="userDetail.JoinDate" is-open="isJointPickerDateOpened" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="openJointPickerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group" ng-show="onlyRead">
+                                <label class="control-label col-sm-4 p-0">Leave Date:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.leaveDate.$touched && addUser.leaveDate.$invalid }">
+                                    <div class="input-group">
+                                        <input type="text" id="leaveDate" disabled class="form-control" ng-change="dateChanged()" name="leave-date" datepicker-popup="dd-MMMM-yyyy" ng-model="userDetail.LeaveDate" is-open="isLeavePickerDateOpened" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="openLeavePickerDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                    <p ng-show="dateError" class="text-error">{{joinLeaveDateError}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Temporary Address:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.tempAddress.$touched && addUser.tempAddress.$invalid }">
+                                    <textarea class="form-control" id="tempAddress" name="permanentAddress" ng-keyup="changeIsPermanentAddress()" maxlength="350" rows="4" ng-model="userDetail.TemporaryAddress"></textarea>
+                                    <div>
+                                        <p ng-show="tempAddressMoreLines" class="text-error">{{tempAddressLong}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2 p-0"></label>
+                                <div class="col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" disabled="disabled" class="chkSameAsTempAdd" ng-change="changeIsPermanentAddress()" ng-model="userDetail.IsSamePermanentAddress">Permanent Address is same as Temporary Address
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Permanent Address:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.permanentAddress.$touched && addUser.permanentAddress.$invalid }">
+                                    <textarea id="permanentAddress" ng-disabled="userDetail.IsSamePermanentAddress" maxlength="350" ng-change="changePermanentAddress()" class="form-control" rows="4" ng-model="userDetail.PermanentAddress"></textarea>
+                                    <div>
+                                        <p ng-show="permanentAddressMoreLines" class="text-error">{{tempAddressLong}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Mobile Number:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.mobile.$touched && addUser.mobile.$invalid }">
+                                    <input type="text" name="mobile" class="form-control" ng-model="userDetail.MobileNumber" ng-minlength="10" maxlength="15" ng-pattern="/^[0-9-+(][0-9-+()]{1,14}$/" required>
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addUser.mobile.$error" ng-if="addUser.mobile.$touched">
+                                        <p ng-message="required" class="text-error">{{mobileRequired}}</p>
+                                        <p ng-message="pattern" class="text-error">{{mobileInvalid}}</p>
+                                        <p ng-message="minlength" class="text-error">{{mobileMinlength}}</p>
+                                    </div>
+                                    <div>
+                                        <p ng-show="isMobileNoExist && addUser.$valid" class="text-error">{{mobileUnique}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Contact Number:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addUser.contact.$touched && addUser.contact.$invalid }">
+                                    <input type="tel" class="form-control" name="contact" id="" ng-model="userDetail.PhoneNumber" ng-minlength="9" ng-pattern="/^[0-9-+(][0-9-+()]{1,14}$/">
+
+                                    <div class="help-block" ng-messages="addUser.contact.$error" ng-if="addUser.contact.$touched">
+                                        <p ng-message="pattern" class="text-error">{{contactInvalid}}</p>
+                                        <p ng-message="minlength" class="text-error">{{contactMinlength}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="onlyRead">
+                                <label class="control-label col-sm-4 p-0">Active:</label>
+                                <div class="col-sm-8">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="" ng-model="userDetail.IsActive" ng-checked="userDetail.IsActive">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <input type="submit" value="Submit" ng-click="submitted=true" class="btn btn-primary m-r-10" ng-disabled="addUser.$invalid || tempAddressMoreLines || permanentAddressMoreLines || dateError" />
+                    <input type="submit" value="Cancel" ng-click="cancel()" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

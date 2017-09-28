@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Exceptionless.NLog</name>
+    </assembly>
+    <members>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.Critical(NLog.Fluent.LogBuilder,System.Boolean)">
+            <summary>
+            Marks the event as being a critical occurrence.
+            </summary>
+        </member>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.Tag(NLog.Fluent.LogBuilder,System.String[])">
+            <summary>
+            Adds one or more tags to the event.
+            </summary>
+            <param name="builder">The log builder object.</param>
+            <param name="tags">The tags to be added to the event.</param>
+        </member>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.Identity(NLog.Fluent.LogBuilder,System.String)">
+            <summary>
+            Sets the user's identity (ie. email address, username, user id) that the event happened to.
+            </summary>
+            <param name="builder">The log builder object.</param>
+            <param name="identity">The user's identity that the event happened to.</param>
+        </member>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.Identity(NLog.Fluent.LogBuilder,System.String,System.String)">
+            <summary>
+            Sets the user's identity (ie. email address, username, user id) that the event happened to.
+            </summary>
+            <param name="builder">The log builder object.</param>
+            <param name="identity">The user's identity that the event happened to.</param>
+            <param name="name">The user's friendly name that the event happened to.</param>
+        </member>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.MarkUnhandled(NLog.Fluent.LogBuilder,System.String)">
+            <summary>
+            Marks the event as being a unhandled occurrence and sets the submission method.
+            </summary>
+            <param name="builder">The log builder object.</param>
+            <param name="submissionMethod">The submission method.</param>
+        </member>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.MarkAsUnhandledError(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Marks the event as being a unhandled error occurrence.
+            </summary>
+        </member>
+        <member name="M:Exceptionless.NLog.LogBuilderExtensions.SetSubmissionMethod(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Sets the submission method that created the event (E.G., UnobservedTaskException)
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,112 @@
+﻿<div ng-controller="CustomerController" ng-init="getAllCustomerList()">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="customerprofile"></span></div>
+        <div class="panel-body">
+            <div>
+                <button class="btn btn-primary pull-right" ng-if="$root.merchatSettings.IsAllowToCreateCustomerProfile" name="add-customer-btn" ng-click="addNewCustomer()"><span string-replace="addcustomer"></span></button>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" maxlength="255" class="form-control" id="" ng-model="search.Name" name="customer-name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="membership"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" maxlength="30" id="" ng-model="search.MembershipCode" name="membership">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="mobile"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="" maxlength="15" ng-model="search.Mobile" name="mobile-number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="phone"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" maxlength="15" id="" ng-model="search.Phone" name="phone-number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="pricecategory"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="search.PriceCategory" name="price-category">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Category}}</ui-select-match>
+                                    <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                        <div ng-bind-html="category.Category | highlight: $select.search" name="{{category.Category}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchcustomerDetails()"><span string-replace="search"></span></button>
+                </div>
+            </div>
+            <br />
+            <label><span string-replace="customerworklist"></span></label>
+            <hr />
+            <div class="alert alert-success text-center" role="alert" ng-show="customerErrorMessageDisplay">
+                <span>{{errorMessage}}</span>
+            </div>
+            <div ng-hide="customerErrorMessageDisplay">
+                <table class="table table-striped table-bordered table-hover" name="customer-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="name"></span></th>
+                            <th><span string-replace="arabicname"></span></th>
+                            <th><span string-replace="mobile"></span></th>
+                            <th><span string-replace="membership"></span></th>
+                            <th><span string-replace="pricecategory"></span></th>
+                            <th><span string-replace="amountlimit"></span></th>
+                            <th><span string-replace="balanceamount"></span></th>
+                            <th><span string-replace="remainingbalancelimit"></span></th>
+                            <th ng-if="$root.merchatSettings.IsAllowToCreateCustomerProfile || $root.merchatSettings.IsAllowToReview"></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="customer in totalCollection">
+                     <tr ng-class="{'reject-row':customer.IsDeleted === true && customer.IsActive === false }">
+                            <td>{{customer.Name}}</td>
+                            <td>{{customer.ArabicName}}</td>
+                            <td>{{customer.Mobile}}</td>
+                            <td>{{customer.MembershipCode}}</td>
+                            <td>{{customer.PriceCategoryName}}</td>
+                            <td>{{customer.AmountLimit}}</td>
+                            <td>{{customer.BalanceAmount}}</td>
+                            <td>{{customer.TransactionAmount}}</td>
+
+                            <td ng-if="$root.merchatSettings.IsAllowToCreateCustomerProfile || $root.merchatSettings.IsAllowToReview" class="action-td-width">
+                                <div class="action-td">
+                                    <a ng-if="$root.merchatSettings.IsAllowToReview ||$root.merchatSettings.IsAllowToCreateCustomerProfile" title="View" ng-click="viewCustomerInformation(customer)"><i class="fa fa-eye"></i></a>
+                                    <a ng-if="$root.merchatSettings.IsAllowToCreateCustomerProfile && customer.IsActive && customer.IsCurrentUser" title="Delete" ng-click="customerDetailsDialogBox(customer)"><i class="fa fa-trash-o"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="totalCollection.length >0" style="text-align:center">
+                    <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true"  previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+        <img src="/Content/Images/Loader.gif" />
+    </div>
+
+</div>
+

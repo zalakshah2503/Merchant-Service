@@ -1,0 +1,11 @@
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\MerchantService.Utility.dll.config
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\MerchantService.Utility.dll
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\MerchantService.Utility.pdb
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\Autofac.dll
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\Autofac.Extras.NLog.dll
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\NLog.dll
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\Autofac.xml
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\bin\Debug\NLog.xml
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\obj\Debug\MerchantService.Utility.csprojResolveAssemblyReference.cache
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\obj\Debug\MerchantService.Utility.dll
+D:\MerchantService\Source\MerchantService.Web\MerchantService.Utility\obj\Debug\MerchantService.Utility.pdb

@@ -1,0 +1,162 @@
+﻿/*========== Merchant Service Admin Style Sheet ==========*/
+/*========== Author: Krupa Patel ==========*/
+
+/*==========  Common Styles  ==========*/
+html, body {margin: 0;padding: 0;font-size: 15px;color:#444444;min-height:100%}
+a, a:active, a:hover, a:visited, a:focus {text-decoration: none;}
+.content-center{margin:0 auto}
+.oneline{white-space:nowrap}
+.m-r-0{margin-right:0!important}
+.disabled{pointer-events: none;opacity: 0.9;}
+.enabled{pointer-events:all}
+textarea{resize:vertical}
+.m-r-10{margin-right:10px}
+.m-l-10{margin-left:10px}
+.m-t-13{margin-top:13px!important}
+.m-l-0{margin-left:0!important}
+.p-0{padding:0}
+.m-b-0{margin-bottom:0}
+.text-error{color:#E10303;font-size:13px;font-weight: normal!important;}
+.nav > li > a{cursor:pointer}
+.label-multi{padding-top: 0!important;margin-top: -5px;}
+.has-error .form-control{border-color:#E10303}
+.error{color:#E10303}
+.error-textbox{line-height:50px;vertical-align: text-bottom;}
+.m-l-20{margin-left:20px}
+.ui-select-bootstrap .ui-select-toggle{text-align:left}
+.input-width{width:150px}
+.grid-width{max-width: 250px}
+hr {margin-top: 10px;}
+.help-block{margin:0!important}
+.help-block p{margin-bottom:0!important;margin-top:5px}
+.m-t-10{margin-top:10px}
+.verti-align-top{vertical-align:top}
+.dropdown-menu{z-index:10000}
+.ng-toast{z-index:100;margin-top:10px}
+.color-blue{color:cornflowerblue}
+.color-example-gray{color:gray}
+.ui-select-match-text, .ui-select-placeholder {overflow:hidden;width:90%;display:inline-block;}
+/*.ui-select-bootstrap>.ui-select-choices {width:initial;}*/
+.help-icon:hover{cursor:pointer;}
+.help-icon span.fa{font-size:24px;}
+/*toaster*/ 
+.toaster-div{top:50px!important;position:fixed!important;right:-10px!important;}
+.work-flow-icon{font-size:22px}
+.pointer{cursor:pointer}
+.ng-toast.ng-toast--right .ng-toast__list {left:0;width:300px;margin:0 auto;}
+.ng-toast.ng-toast--right .ng-toast__message{text-align:left;}
+.ng-toast .ng-toast__message .alert{min-width:300px;}
+.font-normal{font-weight:normal}
+.font-bold{font-weight:bold!important}
+.m-r-40{margin-right:40px}
+.m-r-30{margin-right:30px}
+.m-b-20{margin-bottom: 20px}
+.blue-step{background-color:rgba(51, 122, 183, 0.96);border-color:rgba(51, 122, 183, 0.96)}
+.green-step{background-color:#27ae60;border-color:#27ae60}
+.red-step{background-color:#D83928;border-color:#D83928}
+.brown-step{ background-color: #795548;border-color: #795548}
+.lime-step{ background-color: #F9A03A;border-color: #F9A03A}
+.cyan-step{ background-color: #00bcd4;border-color: #00bcd4}
+.border-lbl{ border: 1px solid #ccc;padding:6px}
+.arrow-icon-right{ font-size: 30px;    margin-top: 5px;}
+.google-text{vertical-align:top;margin-top:5px}
+.sub-title{margin-top: 0;
+background-color: #f5f5f5;
+border-color: #ddd;
+padding: 8px 15px;
+border-bottom: 1px solid #eee;
+border-top: 1px solid #eee;}
+.ui-select-bootstrap>.ui-select-choices{min-width:100%;width:auto}
+.form-control{width:92%;display:inline-block}
+.ui-select-container{width:92%;display:inline-block}
+.ui-select-container .form-control{width:100%}
+
+/*==========  Login page  ==========*/
+.login-div{width:450px}
+.validation-summary-errors ul{padding:0;list-style-type:none}
+.login-html body{background-color: #f8f8f8;}
+
+/*==========  Layout  ==========*/
+.navbar-right{margin-right:0!important}
+.sidebar{min-height:600px}
+#page-wrapper{padding:20px 30px;height:100%;margin-top:51px}
+.loggedin-user{margin:0 10px}
+.dropdown-toggle{cursor:pointer}
+.navbar-default{position:fixed;left:0;top:0;right:0}
+.panel-title a{display:block}
+.action-td-width{width:80px}
+tr td{word-break:break-word;}
+/*==========  Busy Indicator  ==========*/
+.busy-indicator {position: fixed;top: -8px;bottom: 0;right: 0;left: 0;z-index: 10000;background-color:rgba(0,0,0,0.1)}
+.busy-indicator img {position: fixed; top: 50%;left: 50%;}
+.busy-indicator.pos-abs {position: absolute !important;}
+.busy-indicator.pos-abs img {position: absolute !important;top: 200px;}
+
+/*==========  Toggle button  ==========*/
+.toggle-switch .switch-left{background:#337ab7}
+.toggle-switch .switch-off {left: -68%;}
+.toggle-switch > div {position: relative;width: 165px;}
+.toggle-switch{width:100px}
+.toggle-switch span{width:40%}
+.toggle-switch .knob{width:20%}
+
+/*==========  Manage Role  ==========*/
+.page-title{margin-top:10px}
+.action-td a{display:inline-block;padding:0 5px;cursor:pointer;}
+.action-td a i{font-size:20px;color:#337ab7}
+
+/*==========  Company Profile  ==========*/
+.radio-btns label:first-child{margin:0 20px 0 12px}
+.radio-btns label{font-weight:bold}
+.company-page fieldset,.roles-permission-page fieldset{padding: .35em .625em .75em;margin: 0 2px;border: 1px solid #c0c0c0;}
+.company-page fieldset legend,.roles-permission-page fieldset legend{display:inline;border-bottom:none;font-size: 17px;width:auto;padding:0 5px;}
+.roles-permission-page fieldset legend{margin-bottom:10px}
+.tab-content{min-height:400px;padding: 0 15px;border:1px solid #ddd;border-top:none}
+
+/*==========  Globlization  ==========*/
+.globlization-page .control-label{padding-top:0}
+
+/*==========  Branch page  ==========*/
+.branch-page fieldset{padding: .35em .625em .75em;margin: 0 20px;border: 1px solid #c0c0c0;}
+.branch-page fieldset legend{display:inline;border-bottom:none;font-size: 17px;}
+
+.main-workflow{margin-top:20px;padding-top:15px}
+
+/*==========  Step structure  ==========*/
+.step-structure {margin:0 20px;display: block;}
+.step-structure a{ width: 20px;display: inline-block;vertical-align: top;}
+.step-structure p{padding: 5px 20px;font-weight: normal;width: 50%;color: #F5F5F5;display: inline-block}
+.step-structure ul{list-style-type:none;padding-left:0;margin:0}
+.step-structure ul ul{list-style-type:none;margin:0 0 0 1em; padding:0;list-style:none;position:relative;margin-left:2em}
+.step-structure ul ul:before {content:"";display:block;width:0;position:absolute;top:0;bottom:0;left:0;border-left:2px solid #ccc;}
+.step-structure ul li{ padding-bottom: 10px;border-bottom: 1px solid #ABABAB;margin-bottom: 20px;margin-top:15px}
+.step-structure ul li:last-child{ padding-bottom:0;border-bottom: none;margin-bottom: 0}
+.step-structure ul ul li{border-bottom:none;margin:0;padding:0 30px;position:relative;}
+.step-structure ul ul li:before {content:"";display:block;width:30px; height:0;border-top:2px solid #ccc;margin-top:-1px;position:absolute;top:1em;left:0;}
+.step-structure ul ul li:last-child:before {background:white;height:auto;top:1em;bottom:0;}
+.table tr:hover .step-structure ul ul li:last-child:before {background:#f5f5f5;height:auto;top:1em;bottom:0;}
+.child {margin-left: 20px;}
+.leaf {margin-left: 40px;}
+.add-workflow-section{max-height: 320px;overflow-y: auto;top:112px;overflow-x: hidden;position: fixed;width: 77%;left: 281px; z-index: 1000000;background: #fff;height:100%;-webkit-box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.58);-moz-box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.58);box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.58);border:none;border-left:1px solid #ddd;border-right:1px solid #ddd}
+.workflow-section{min-height:450px;padding-top:45px}
+.out-fix-workflow{padding-top:330px}
+.fixed-header {position: fixed;width: 77%;top:70px;z-index: 1000001;border-top: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;}
+.border-top {border-top:none!important}
+.border-no{border:none}
+.wijmo-wijsplitter-horizontal .wijmo-wijsplitter-h-panel1-expanded{height:9px!important}
+.wijmo-wijsplitter-h-panel1-content,.wijmo-wijsplitter-h-panel2-content{overflow:auto;overflow-x:hidden!important}
+/*.wijmo-wijsplitter-h-panel1-content{height:370px}*/
+.step-delete{margin-right: 10px;font-size: 20px;margin-top: -20px;}
+.step-edit{font-size:20px}
+.workflow-edit{color:#f5f5f5!important}
+.workflow-edit:hover{color:#fff!important}
+.sm-picker{width:92%}
+.error-picker {position: absolute;right: 28px;top: 8px;}
+.end-step{background-color:#7f8c8d;border-color:#7f8c8d;border-radius: 11px;width: 100px!important;text-align: center;font-weight:bold}
+.wijmo-wijsplitter-horizontal{height:auto!important}
+.wijmo-wijsplitter-wrapper{height:auto!important}
+.wijmo-wijsplitter-h-panel2,.wijmo-wijsplitter-h-panel1{height:auto!important}
+.wijmo-wijsplitter-h-panel2-content,.wijmo-wijsplitter-h-panel1-content{height:100%!important}
+.exp-col{position:relative;text-align:center;padding:3px 0 0;margin-top:10px}
+.exp-col-ico i{font-size:25px;}
+.exp-col-ico{width: 100%;display: block;background-color: #E2E2E2;}

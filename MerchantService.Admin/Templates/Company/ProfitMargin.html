@@ -1,0 +1,21 @@
+﻿<div ng-class="{'disabled':isPaymentMode}">
+    <br />
+    <fieldset>
+        <legend>Profit Margin </legend>
+        <div class="row">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Profit Margin:</label>
+                <div class="col-md-4" ng-class="{ 'has-error': addCompany.profitmargin.$touched && addCompany.profitmargin.$invalid }">
+                    <input placeholder="Enter value in %" type="number" name="profitmargin" class="form-control" id="" ng-model="companyDetail.ProfitMargin" required min="1" max="999" ng-max="999">
+                    <span class="error">*</span>
+                    <div class="help-block" ng-messages="addCompany.profitmargin.$error" ng-if="addCompany.profitmargin.$touched">
+                        <p ng-message="required" class="text-error">{{profitMarginRequired}}</p>
+                        <p ng-message="number" class="text-error">Please enter a valid number</p>
+                        <p ng-message="max" class="text-error"><span>Profit margin should be maximum 99 percentage</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+

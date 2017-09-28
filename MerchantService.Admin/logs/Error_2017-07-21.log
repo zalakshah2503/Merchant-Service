@@ -1,0 +1,79 @@
+Time : 11:00:44.9500 
+Message : The required anti-forgery cookie "__RequestVerificationToken" is not present. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 11:01:21.2215 
+Message : 
+ErrorPath : /api/RolePermission/getAllRoleList
+RawUrl : /api/RolePermission/getAllRoleList
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Core
+StackTrace :    at MerchantService.Core.Controllers.WorkFlow.RolePermissionController.GetAllRoleList() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\WorkFlow\RolePermissionController.cs:line 107
+TargetSite : System.Web.Http.IHttpActionResult GetAllRoleList() 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 11:01:42.7197 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 11:01:45.8759 
+Message : 
+ErrorPath : /api/workFlow/getAllWorkFlowList
+RawUrl : /api/workFlow/getAllWorkFlowList
+Message : Non-static method requires a target.
+Source : mscorlib
+StackTrace :    at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimePropertyInfo.GetValue(Object obj, BindingFlags invokeAttr, Binder binder, Object[] index, CultureInfo culture)
+   at System.Reflection.RuntimePropertyInfo.GetValue(Object obj, Object[] index)
+   at System.Data.Entity.Core.Objects.ELinq.QueryParameterExpression.TryGetFieldOrPropertyValue(MemberExpression me, Object instance, Object& memberValue)
+   at System.Data.Entity.Core.Objects.ELinq.QueryParameterExpression.TryEvaluatePath(Expression expression, ConstantExpression& constantExpression)
+   at System.Data.Entity.Core.Objects.ELinq.QueryParameterExpression.EvaluateParameter(Object[] arguments)
+   at System.Data.Entity.Core.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__6()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.GetAllWorkFlowList(String currentUser) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 289
+TargetSite : Void CheckConsistency(System.Object) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 11:02:03.4036 
+Message : 
+ErrorPath : /api/workFlow/getAllWorkFlowList
+RawUrl : /api/workFlow/getAllWorkFlowList
+Message : Non-static method requires a target.
+Source : mscorlib
+StackTrace :    at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimePropertyInfo.GetValue(Object obj, BindingFlags invokeAttr, Binder binder, Object[] index, CultureInfo culture)
+   at System.Reflection.RuntimePropertyInfo.GetValue(Object obj, Object[] index)
+   at System.Data.Entity.Core.Objects.ELinq.QueryParameterExpression.TryGetFieldOrPropertyValue(MemberExpression me, Object instance, Object& memberValue)
+   at System.Data.Entity.Core.Objects.ELinq.QueryParameterExpression.TryEvaluatePath(Expression expression, ConstantExpression& constantExpression)
+   at System.Data.Entity.Core.Objects.ELinq.QueryParameterExpression.EvaluateParameter(Object[] arguments)
+   at System.Data.Entity.Core.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__6()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.GetAllWorkFlowList(String currentUser) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 310
+   at MerchantService.Core.Controllers.WorkFlow.WorkFlowController.GetAllWorkFlowList() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\WorkFlow\WorkFlowController.cs:line 347
+TargetSite : Void CheckConsistency(System.Object) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 11:02:09.8487 
+Message : Non-static method requires a target. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

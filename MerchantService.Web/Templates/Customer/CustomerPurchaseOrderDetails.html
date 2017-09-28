@@ -1,0 +1,286 @@
+﻿<div ng-controller="CustomerPOWorkListController"> 
+    <div>
+        <label><span string-replace="customerdetails"></span></label>
+        <hr />
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="255" name="customer" id="" ng-model="customerPO.Customer.Name" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="customertype"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="customertype" value="Credit" ng-if="isCreditCustomer" id="" ng-disabled="true">
+                            <input type="text" class="form-control" name="customertype" value="Non-Creit" ng-if="!isCreditCustomer" id="" ng-disabled="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="mobile"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="mobile" maxlength="15" id="" ng-model="customerPO.Customer.Mobile" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="pricecategory"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="pricecategory" id="" ng-model="customerPO.Customer.PriceCategoryName" ng-disabled="true">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 cust-page">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="membershipcode"></span>:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" maxlength="30" id="" ng-disabled="true" ng-model="customerPO.Customer.MembershipCode" name="membershipcode">
+                        </div>
+                    </div>
+
+                    <fieldset>
+                        <legend><span string-replace="amount"></span>:</legend>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="balance"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="" ng-disabled="true" ng-model="customerPO.Customer.BalanceAmt" name="membershipcode" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="limit"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="" ng-disabled="true" ng-model="customerPO.Customer.LimitAmt" name="membershipcode" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+        <label><span string-replace="customerpurchaseorderdetails"></span></label>
+        <hr />
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="orderno"></span>.:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-disabled="true" name="order-no" value="{{customerPO.PurchaseOrderNo}}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="duedate"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" ng-disabled="true" class="form-control" name="due-date" value="{{customerPO.DueDate | date:'dd-MM-yyyy'}}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="issuedate"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-disabled="true" name="issue-date" value="{{customerPO.InitiationDate | date:'dd-MM-yyyy'}}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="collectingbranch"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-disabled="true" name="collecting-branch" value="{{customerPO.CollectingBranchName}}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="issuingbranch"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" ng-disabled="true" class="form-control" name="issueing-branch" value="{{customerPO.InitiationBranchName}}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="totalamount"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" ng-disabled="true" class="form-control" name="totalamount" value="{{customerPO.TotalCPOAmount}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <label><span string-replace="item"></span></label>
+        <hr />
+        <a class="pointer pull-right" ng-click="openCPODetailListPopup()" ng-if="isCollected"><span string-replace="cpobillitems"></span></a>
+        
+        <div class="clearfix"></div>
+        <br />
+        <table class="table table-striped table-bordered table-hover" name="item-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="barcode"></span></th>
+                    <th><span string-replace="name"></span></th>
+                    <th><span string-replace="flavor"></span></th>
+                    <th><span string-replace="unit"></span>Unit</th>
+                    <th><span string-replace="pricepos"></span></th>
+                    <th><span string-replace="totalquantity"></span></th>
+                    <th><span string-replace="totalpos"></span></th>
+                    <th ng-if="isCollected"><span string-replace="status"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in customerPO.CPOItemAC">
+                    <td class="grid-width">{{item.Barcode}}</td>
+                    <td class="grid-width">{{item.ItemName}}</td>
+                    <td class="grid-width">{{item.Flavour}}</td>
+                    <td class="grid-width">{{item.Unit}}</td>
+                    <td class="grid-width">{{item.SellPrice}}</td>
+                    <td class="grid-width">{{item.Quantity}}</td>
+                    <td class="grid-width">{{item.ItemTotalCost}}</td>
+                    <td class="grid-width" ng-if="isCollected">{{item.Status}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <label><span string-replace="downpaymentdetails"></span></label>
+        <hr />
+        <div class="alert alert-success text-center" role="alert" ng-hide="(customerPO.CPOPayment.length >0)">
+            <span>{{downPaymentNotFound}}</span>
+        </div>
+        <table class="table table-striped table-bordered table-hover" name="payment-detail-grid" ng-show="(customerPO.CPOPayment.length >0)">
+            <thead>
+                <tr>
+                    <th><span string-replace="voucherno"></span>.</th>
+                    <th><span string-replace="mode"></span></th>
+                    <th><span string-replace="totalamount"></span></th>
+                    <th><span string-replace="date"></span></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="payment in customerPO.CPOPayment">
+                <tr>
+                    <td class="grid-width">{{payment.VoucherNo}}</td>
+                    <td class="grid-width">{{payment.Mode}}</td>
+                    <td class="grid-width">{{payment.TotalAmount + payment.ExcessAmount}}</td>
+                    <td class="grid-width">{{payment.CreatedDateTime | date:'dd-MM-yyyy'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <div ng-if="customerPO.CPOAdditionalCost.length > 0">
+            <label><span string-replace="additionalcostdetails"></span></label>
+            <hr />
+            <table class="table table-striped table-bordered table-hover" name="cost-detal-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="service"></span></th>
+                        <th><span string-replace="amount"></span></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="cost in customerPO.CPOAdditionalCost">
+                    <tr>
+                        <td class="grid-width">{{cost.AdditionalService.Name}}</td>
+                        <td class="grid-width">{{cost.Amount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+        </div>
+        <div class="row text-center">
+            <button class="btn btn-primary m-r-10" name="edit-btn" ng-hide="customerPO.IsCancel || customerPO.IsCollected" ng-click="editCPO()"><span string-replace="edit"></span></button>
+            <label ng-show="$root.merchatSettings.IsAllowedToCancelCPO">
+                <button class="btn btn-default m-r-10" name="cancel-order-btn" ng-hide="customerPO.IsCancel || customerPO.IsCollected" ng-click="openCancelCPOModal()"><span string-replace="cancelorder"></span></button>
+            </label>
+            <button class="btn btn-default" name="close-btn" ng-click="close()"><span string-replace="close"></span></button>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="CancelCPOModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeCancelCPOPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <div ng-show="isCancelConfirm">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0 no-bold"> <span string-replace="amounttobereturnedtocustomer"></span> :</label>
+                            <div class="col-sm-6">
+                                <label class="control-label col-sm-5 p-0" style="text-align:left">{{returnAmount}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="totalAdditionalCost>0">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="additionalCostToBeReturned" ng-change="onChangeAdditionalCostSetting(additionalCostReturned.additionalCostReturned,isAdditionalCostReturnVisible)" ng-model="isAdditionalCostReturnVisible" /><span string-replace="returnadditionalcost"></span>
+                            </label>
+                        </div>
+
+                        <div class="row" ng-show="isAdditionalCostReturnVisible">
+                            <div class="form-group">
+                                <label class="control-label col-sm-5 p-0 no-bold"><span string-replace="additionalCostToBeReturned"></span>:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" maxlength="13" style="font-weight:bold" name="additionalCostToBeReturned" ng-change="onCancelAdditionalCostChange(additionalCostReturned.additionalCostReturned,isAdditionalCostReturnVisible)" ng-model="additionalCostReturned.additionalCostReturned" pattern="^\d{1,8}(\.\d{1,4})?$"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-hide="isCancelConfirm">
+                {{cpoDeleteConfirmation}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-hide="isCancelConfirm" ng-click="cancelConfirm()"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-primary" ng-show="isCancelConfirm" ng-click="cancelCPO(returnAmount,additionalCostReturned,isAdditionalCostReturnVisible)"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeCancelCPOPopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="cpoItemDetailList">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeCancelPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{cpoItem}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-success text-center" role="alert" ng-show="notFoundItem">
+                <span>{{errorMessage}}</span>
+            </div>
+            <div ng-hide="notFoundItem">
+                <div class="table-div">
+                    <table class="table table-striped table-bordered table-hover" name="item-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="itemname"></span></th>
+                                <th><span string-replace="itemBarcode"></span></th>
+                                <th><span string-replace="pricepos"></span></th>
+                                <th><span string-replace="quantity"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody dir-paginate="item in totalCPOItemList| itemsPerPage: 5">
+                            <tr>
+                                <td>{{item.ItemName}}</td>
+                                <td>{{item.Barcode}}</td>
+                                <td>{{item.Price}}</td>
+                                <td>{{item.Quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="totalCPOItemList.length >0" style="text-align:center">
+                        <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeCancelPopup()"><span string-replace="cancelpos"></span></button>
+        </div>
+    </div>
+</script>

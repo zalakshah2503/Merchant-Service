@@ -1,0 +1,18 @@
+﻿
+<a name="plus-link" ng-show="item.IsCollapse">
+    <i attr="workFlow.WorkFlowId" ng-if="!item.IsCollapseActive" class="glyphicon glyphicon-option-horizontal"></i>
+    <i attr="workFlow.WorkFlowId" ng-if="item.IsCollapseActive" class="fa fa-minus action-icon"></i>
+</a>
+<p ng-class="{'green-step' : item.IsApprovePanel && !item.IsAllowOtherWorkFLow, 'red-step' :  item.IsRejectPanel && !item.IsAllowOtherWorkFLow,'blue-step' : !item.IsApprovePanel && !item.IsRejectPanel && !item.IsCondition,'brown-step' : item.IsCondition,'cyan-step' : item.IsApprovePanel && item.IsAllowOtherWorkFLow, 'lime-step' :  item.IsRejectPanel && item.IsAllowOtherWorkFLow}">
+    <label>{{ item.ActivityName }}</label>
+    <a ng-if="item.IsAllowEdit" title="Edit" class="pull-right pointer workflow-edit" name="action-edit" ng-click="editWorkFlowInformation(item)"><i class="fa fa-edit step-edit"></i></a>
+    <br>
+
+    <label ng-show="item.IsParentNode" class="m-r-30">Initiator :<span class="font-normal">{{item.Initiator}}</span></label>
+
+    <label>To Role: <span class="font-normal">{{item.Assigned}}</span></label>
+</p>
+<ul ng-if="item.Children" class="list">
+    <li ng-repeat="item in item.Children" ng-include="'Templates/Workflow/WorkFlowSteps.html'">
+    </li>
+</ul>

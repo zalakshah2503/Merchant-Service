@@ -1,0 +1,284 @@
+﻿<Window x:Class="MerchantService.POS.PosLandingScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:base="clr-namespace:MerchantService.POS.UserControls"
+        xmlns:conv="clr-namespace:MerchantService.POS.Utility"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PosLangingScreen" WindowState="Maximized">
+    <Window.Resources>
+        <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="Border" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" SnapsToDevicePixels="True"/>
+                            <Polygon x:Name="Arrow" Fill="Black" HorizontalAlignment="Right" Margin="8,8,3,3" Opacity="0.15" Points="0,10 10,10 10,0" Stretch="Uniform" VerticalAlignment="Bottom"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Stroke" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Visibility" TargetName="Arrow" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="#FF688CAF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                            <Grid Grid.Column="1" Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{Binding CustomerWindowCommand}"/>
+        <KeyBinding Key="F2" Command="{Binding PaymentWindowCommand}"/>
+        <KeyBinding Key="F3" Command="{Binding BarcodeCommand}"/>
+        <KeyBinding Key="F4" Command="{Binding ReturnBillNoCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding CustomerPOCommand}"/>
+        <KeyBinding Key="F6" Command="{Binding SuspendCommand}"/>
+        <KeyBinding Key="F7" Command="{Binding UnsuspendCommand}"/>
+        <KeyBinding Key="F8" Command="{Binding SelectItemCommand}"/>
+        <KeyBinding Key="F12" Command="{Binding LogOutCommand}"/>
+        <KeyBinding Key="Enter" Command="{Binding ItemProfileDataCommand}" />
+    </Window.InputBindings>
+
+    <Grid HorizontalAlignment="Stretch" Background="#FF2A2A2A" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Header" Grid.Row="0" Margin="5" Background="#FF081B22">
+            <Image x:Name="Image" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Source="Resource/people.png" />
+            <Label x:Name="Logout" Content="LogOut (F12)" Width="120" Height="40" Foreground="White" Background="#FFE64242" FontWeight="ExtraBlack"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5" HorizontalAlignment="Right" />
+        </Grid>
+        <Grid x:Name="Content" Grid.Row="1" Background="White" Margin="5,0,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="350" Width="*" />
+                <ColumnDefinition Width="350" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="75" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="20,0,0,0">
+                    <Label x:Name="BarcodeLabel" Content="Barcode (F3)" FontSize="14.667" />
+                    <base:BaseTextBox IsNumeric="True" MaxLength="30" Text="{Binding BarcodeNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" Height="40" Padding="8"  />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20,0,0,0">
+                    <Label x:Name="QtyLabel" Content="Quantity" FontSize="14.667" />
+                    <base:BaseTextBox IsNumeric="True" FontSize="15" MaxLength="5" Height="40" Padding="8" />
+                </StackPanel>
+                <Image x:Name="ItemImage" Margin="5" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Source="Resource/people.png" />
+            </Grid>
+            <Grid x:Name="Items" Grid.Row="1" Grid.Column="0" Margin="5">
+                <DataGrid  AutoGenerateColumns="False"
+					HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+					ScrollViewer.VerticalScrollBarVisibility="Auto" 				  
+					ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+					RowHeight="25"  ColumnHeaderHeight="35"  CanUserAddRows="False" IsReadOnly="True" Margin="20,0,0,10" 
+                     CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" Style="{DynamicResource DataGridStyle1}"  >
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Foreground" Value="White"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="Background" Value="#FF081B22"></Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="BARCODE" Width="*"  Binding="{Binding Barcode}"/>
+                        <DataGridTextColumn Header="NAME" Width="*"  Binding="{Binding ItemName}"/>
+                        <DataGridTextColumn Header="UNIT"  Width="*" Binding="{Binding Unit}" />
+                        <DataGridTextColumn Header="FLAVOUR" Width="*"  Binding="{Binding Flavour}" />
+                        <DataGridTextColumn Header="PRICE" Width="*"   Binding="{Binding ItemPrice}" />
+                        <DataGridTextColumn Header="QUANTITY"  Width="*" Binding="{Binding ItemQuantity}" />
+                        <DataGridTextColumn Header="TOTAL" Width="*"  Binding="{Binding Total}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <StackPanel x:Name="CustomerItemSummary" Grid.RowSpan="3" Grid.Column="1" Margin="5" DataContext="{Binding CustomerInformation}">
+                <StackPanel x:Name="CustomerSummary" Background="#FF081B22">
+                    <StackPanel Orientation="Vertical" Margin="10,10,0,0">
+                        <Label Content="Customer #" Foreground="White" FontSize="12" />
+                        <Label Content="{Binding Customer.MembershipNo}" Foreground="White"  FontSize="17.667" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,10,0,0">
+                        <Label Content="Customer Name" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding Customer.CustomerName}" Foreground="White"  FontSize="17.667" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,10,0,0" Visibility="{Binding Customer.IsCreditCustomer,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Label Content="Customer Balance" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding CustomerBalanceAmount,StringFormat=C2}" Foreground="White"  FontSize="17.667" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,10,0,0" Visibility="{Binding CustomerPurchaseOrder,Converter={StaticResource BoolToVisibilityConverter}}" >
+                        <Label Content="Customer PO #" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding CustomerPurchaseOrder.PurchaseOrderNo}" Foreground="White"  FontSize="17.667" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,10,0,0" Visibility="{Binding ReturnBill,Converter={StaticResource BoolToVisibilityConverter}}" >
+                        <Label Content="Return Bill #" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding ReturnBill.ReturnedBillNo}" Foreground="White"  FontSize="17.667" FontWeight="Bold" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel x:Name="Saperator" Height="20" />
+                <StackPanel x:Name="OrderSummary" Background="#FFEFF0F2"  DataContext="{Binding BillSummary}">
+                    <Label Background="#FF081B22"  Content="Summary" Foreground="White" FontSize="17" FontWeight="Bold" HorizontalContentAlignment="Center" />
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Order Amount" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.OrderAmount}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Discount" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.Discount}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Discount %" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.DiscountPerc}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Return Bill Cash" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.ReturnAmount}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Substitute Amount" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.Substitute}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Tax" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.Tax}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="DownPayment" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.DownPayment}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Height="5" Margin="10,5,0,0" Background="#FF000002" />
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Total Amount" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.TotalAmount}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,0">
+                        <Label Content="Amount to be Returned" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold"  FontSize="17"  />
+                        <Label Content="{Binding BillSummary.AmountToReturn}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="17" FontWeight="Bold" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+            <Grid x:Name="Buttons" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" x:Name="Customer" Foreground="White" Background="#FFB44F3D" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Margin="0" Source="Resource/POS_CustomerNo.png" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Customer No"/><LineBreak/><Run Text="(F1)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="1" x:Name="Payment" Foreground="White" Background="#FFAA8453" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_Payment.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Payment"/><LineBreak/><Run Text="(F2)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="2" x:Name="ReturnBill" Foreground="White" Background="#FF28759F" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_ReturnBillNo.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Return Bill"/><LineBreak/><Run Text="(F4)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="3" x:Name="CPO" Foreground="White" Background="#FF9F7B48" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_CustomerPO.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Customer PO"/><LineBreak/><Run Text="(F5)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="4" x:Name="Suspend" Foreground="White" Background="#FFB44F3D" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_Suspend.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Suspend"/><LineBreak/><Run Text="(F6)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="5" x:Name="Unsuspend" Foreground="White" Background="#FFA98555" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_Unsuspend.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Unsuspend"/><LineBreak/><Run Text="(F7)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="6" x:Name="ItemSelect" Foreground="White" Background="#FF28759F" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,15" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_SelectItem.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Select Item"/><LineBreak/><Run Text="(F8)"/></TextBlock>
+                    </StackPanel>
+                </Label>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

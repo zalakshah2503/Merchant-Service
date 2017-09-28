@@ -1,0 +1,51 @@
+﻿<div ng-controller="categoryController" ng-init="brandSearch=1">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="brandsearch"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="brandname"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="search.Brand" name="brand-name" id="search-brandname-dr-menu-e">
+                                    <ui-select-match placeholder="Select">{{$select.selected.BrandName}}</ui-select-match>
+                                    <ui-select-choices repeat="brand.BrandName as brand in brandList | filter: $select.search">
+                                        <div ng-bind-html="brand.BrandName | highlight: $select.search" name="{{brand.BrandName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <button class="btn btn-primary m-r-40" ng-click="searchCategory()" id="search-brand-btn-e" name="search-btn"><span string-replace="search"></span></button>
+                        <button class="btn btn-primary" id="show-all-brand-btn-e" ng-click="getCategoryList()" name="show-all-btn"><span string-replace="showall"></span></button>
+                    </div>
+                </div>
+            </div>
+            <br ng-show="isBrandSearchVisible" />
+            <div class="alert alert-success text-center" role="alert" ng-show="categoryErrorMessageDisplay">
+                <span>No category found</span>
+            </div>
+            <label ng-show="isBrandSearchVisible"><span string-replace="categorylist"></span></label>
+            <hr />
+            <table class="table table-striped table-bordered table-hover" ng-show="isBrandSearchVisible" name="brand-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="brandname"></span></th>
+                        <th><span string-replace="groupname"></span></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="category in totalCollections">
+                    <tr>
+                        <td>{{category.Brand}}</td>
+                        <td>{{category.Group}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="isBrandSearchVisible" style="text-align:center">
+                <pagination total-items="totalItems" id="search-brand-pagination-e" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

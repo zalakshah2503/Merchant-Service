@@ -1,0 +1,136 @@
+﻿<div ng-controller="CustomerController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="customerprofile"></span></div>
+        <div class="panel-body">
+            <br />
+            <form name="addCustomer" novalidate>
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="custname"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.name.$touched && addCustomer.name.$invalid}">
+                                    <input type="text" name="name" class="form-control" ng-model="customerProfile.Name" tabindex="1" maxlength="255" id="" required>
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addCustomer.name.$error" ng-if="addCustomer.name.$touched">
+                                        <p ng-message="required" class="text-error">{{customerNameRequired}}</p>
+                                    </div>
+                                    <div class="help-block" role="alert" ng-show="isCustomerNameExist">
+                                        <span class="text-error">{{customerErrorMessage}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="address"></span>:</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="address" maxlength="350" ng-model="customerProfile.Address" tabindex="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="membership"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="Membership" maxlength="30" class="form-control" id="" ng-model="customerProfile.MembershipCode" ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="email"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.email.$touched && addCustomer.email.$invalid}">
+                                    <input type="email" name="email" class="form-control" id="" maxlength="255" ng-model="customerProfile.Email" tabindex="5" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
+                                    <div class="help-block" ng-messages="addCustomer.email.$error" ng-if="addCustomer.email.$touched">
+                                        <p ng-message="pattern" class="text-error">{{emailIdInvalid}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="fax"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.fax.$touched && addCustomer.fax.$invalid}">
+                                    <input type="text" name="fax" class="form-control" id="" ng-model="customerProfile.Fax" tabindex="7" maxlength="15" pattern="^[0-9-+(][0-9-+()]{10,14}$">
+                                    <div class="help-block" ng-messages="addCustomer.fax.$error" ng-if="addCustomer.fax.$touched">
+                                        <p ng-message="pattern" class="text-error">{{faxInvalid}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="arabicname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="arabic-name" ng-model="customerProfile.ArabicName" maxlength="255" tabindex="2" class="form-control" id="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="mobile"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.mobile.$touched && addCustomer.mobile.$invalid}">
+                                    <input type="text" name="mobile" class="form-control" maxlength="15" tabindex="6" id="" ng-model="customerProfile.Mobile" ng-pattern="/^[- +()]*[0-9][- +()0-9]*$/" ng-minlength="10" ng-maxlength="15" required ng-blur="checkNumberAlreadyExistOrNot(customerProfile)">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addCustomer.mobile.$error" ng-if="addCustomer.mobile.$touched">
+                                        <p ng-message="required" class="text-error">{{phoneRequired}}</p>
+                                        <p ng-message="pattern" class="text-error">{{mobileNumberInvalid}}</p>
+                                        <p ng-message="maxlength" class="text-error">{{ValidMobileNoMessage}}</p>
+                                        <p ng-message="minlength" class="text-error">{{ValidMobileNoMessage}}</p>
+                                    </div>
+                                    <div class="help-block" role="alert" ng-show="isCustomerMobileNumberExist">
+                                        <span class="text-error">{{ExistMobileNoMesssage}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="phone"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.phone.$touched && addCustomer.phone.$invalid}">
+                                    <input type="text" name="phone" class="form-control" tabindex="8" maxlength="15" id="" ng-model="customerProfile.Phone" ng-pattern="/^[- +()]*[0-9][- +()0-9]*$/" ng-minlength="10" ng-maxlength="15">
+                                    <div class="help-block" ng-messages="addCustomer.phone.$error" ng-if="addCustomer.phone.$touched">
+                                        <p ng-message="pattern" class="text-error">{{phoneInvalid}}</p>
+                                        <p ng-message="maxlength" class="text-error">{{ValidPhoneNoMessage}}</p>
+                                        <p ng-message="minlength" class="text-error">{{ValidPhoneNoMessage}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="zipcode"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.zipCode.$touched && addCustomer.zipCode.$invalid}">
+                                    <input type="text" name="zipCode" class="form-control" tabindex="10" id="" ng-model="customerProfile.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                                    <div class="help-block" ng-messages="addCustomer.zipCode.$error" ng-if="addCustomer.zipCode.$touched">
+                                        <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="amountlimit"></span>:</label>
+                                <div class="col-sm-8" ng-class="{'has-error': addCustomer.amountLimit.$touched && addCustomer.amountLimit.$invalid}">
+                                    <input ng-disabled="isAmountLimitDisable" name="amountLimit" tabindex="11" type="text" class="form-control" id="" ng-model="customerProfile.AmountLimit"  pattern="^\d{1,8}(\.\d{1,4})?$" ng-change="changeAmountLimit(customerProfile.AmountLimit)" maxlength="13">
+                                    <div class="help-block" ng-messages="addCustomer.amountLimit.$error" ng-if="addCustomer.amountLimit.$touched">
+                                        <p ng-message="pattern" class="text-error">{{amountLimitInvalid}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="pricecategory"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="customerProfile.PriceCategory" name="price-category" tabindex="9">
+                                        <ui-select-match placeholder="Select Price Category">{{$select.selected.Category}}</ui-select-match>
+                                        <ui-select-choices repeat="category.Id as category in priceCategoryCollection | filter: $select.search">
+                                            <div ng-bind-html="category.Category | highlight: $select.search" name="{{category.Category}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="control-label col-sm-2 p-0"><span string-replace="comment"></span>:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" maxlength="350" name="comment" ng-model="customerProfile.Comments" tabindex="13"></textarea>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <br />
+                        <button class="btn btn-primary m-r-10" name="submit-btn" ng-click="addNewCustomerDetails(customerProfile)" ng-disabled="addCustomer.$invalid"><span string-replace="submitpos"></span></button>
+                        <button class="btn btn-default" name="cancel-btn" ng-click="cancelCunstomerInformation()"><span string-replace="cancelpos"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

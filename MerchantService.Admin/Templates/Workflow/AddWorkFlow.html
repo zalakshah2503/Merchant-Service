@@ -1,0 +1,609 @@
+﻿<div ng-controller="dynamicWorkFlowController">
+    <div class="panel panel-default">
+        <div class="panel-heading">Workflow</div>
+        <div class="panel-body p-0">
+            <div class="alert alert-success text-center" role="alert" ng-show="rolepermissionErrorErrorMessageDisplay">
+                <span>{{errorMessage}}</span>
+            </div>
+            <div ng-hide="rolepermissionErrorErrorMessageDisplay" class="">
+                <div class="form-horizontal">
+                    <div class="row m-t-10">
+                        <div class="col-lg-5" ng-class="{'disabled':isWorkFlowNameDisabled}">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span>WorkFlow Name</span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" maxlength="255" name="workflowname" class="form-control" id="" ng-model="workFlowDetails.WorkFLowName" ng-blur="checkWorkFlowNameAlreadyExistOrNot(workFlowDetails)">
+                                    <div class="help-block" ng-show="isWorkFlowNameExist">
+                                        <span class="text-error">{{errorMessage}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+
+                        <div class="col-lg-5">
+                            <div class="form-group" ng-class="{'disabled':isWorkFlowTypeDisabled}">
+                                <label class="control-label col-sm-4 p-0">Workflow Type:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="workFlowDetails.PermissionId" ng-change="addWorkFlow(workFlowDetails)" name="workflow-type">
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="workFlow.Id as workFlow in workFlowNameCollection | filter: $select.search">
+                                            <div ng-bind-html="workFlow.Name | highlight: $select.search" name="{{workFlow.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="isWorkFlowPanelDisplay">
+                    <div ng-hide="rolepermissionErrorErrorMessageDisplay" class="add-content-section">
+                        <div ng-show="!showDetails" ng-class="{'disabled':isWorkFlowNameExist}">
+                            <form name="workflow" novalidate>
+                                <div>
+                                    <div class="form-horizontal" ng-class="{'disabled':isWorkFlowPanelView}">
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                <div class="form-group" ng-if="!isEditWorkFlow">
+                                                    <label class="control-label col-sm-4 p-0">Activity:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-model="workFlowDetails.Permission.ActivityId" ng-disabled="isInitiateActivityEnabled" name="Activity" ng-change="changeActivityName(workFlowDetails.Permission.ActivityId)">
+                                                            <ui-select-match placeholder="Select Activity">{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="permission.PermissionId as permission in permissionCollection | filter: $select.search">
+                                                                <div ng-bind-html="permission.Name | highlight: $select.search" name="{{permission.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-if="!isEditWorkFlow">
+                                                    <label class="control-label col-sm-4 p-0">Initiator:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isWorkFlowPanelView || isInitiatorRoleDisabled" ng-model="workFlowDetails.Permission.InitiatorId" required name="InitiatorRole" ng-change="changeUserRole()">
+                                                            <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                            <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-if="isEditWorkFlow">
+                                                    <label class="control-label col-sm-4 p-0">Activity:</label>
+                                                    <div class="col-sm-8" ng-class="{'disabled':isAllowOtherWorkFlowCondition}">
+                                                        <ui-select ng-disabled="isWorkFlowPanelView" ng-model="workFlowDetails.Permission.NextActivityId" required name="NextActivity" ng-change="checkActivityCloseOrNot(workFlowDetails.Permission.NextActivityId)">
+                                                            <ui-select-match placeholder="Select Next Activity">{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="activity.PermissionId as activity in activityCollection | filter: $select.search">
+                                                                <div ng-bind-html="activity.Name | highlight: $select.search" name="{{activity.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 text-center">
+                                                <div class="form-group">
+                                                    <i class="fa fa-long-arrow-right fa-fw arrow-icon-right"></i>
+                                                </div>
+                                                <div class="form-group" ng-if="!isEditWorkFlow">
+                                                    <i class="fa fa-long-arrow-right fa-fw arrow-icon-right"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="form-group" ng-if="!isEditWorkFlow">
+                                                    <label class="control-label col-sm-4 p-0">Next Activity:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isWorkFlowPanelView || isNextActivityDisabled" ng-model="workFlowDetails.Permission.NextActivityId" ng-change="checkActivityCloseOrNot(workFlowDetails.Permission.NextActivityId)" required name="NextActivity">
+                                                            <ui-select-match placeholder="Select Next Activity">{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="activity.PermissionId as activity in activityCollection | filter: $select.search">
+                                                                <div ng-bind-html="activity.Name | highlight: $select.search" name="{{activity.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div ng-class="{'disabled':isAssignedRoleDisabled}">
+                                                    <label class="control-label col-sm-4 p-0">Assigned To:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isWorkFlowPanelView" ng-model="workFlowDetails.Permission.AssignedId" required name="AssignedRole" ng-change="changeAssignedUserRoleName()">
+                                                            <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                            <ui-select-choices repeat="role.Id as role in assignedRoleCollection | filter: $select.search">
+                                                                <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                                <div ng-if="isAllowOtherBranchUser">
+                                                    <label class="m-l-20 m-r-10">Allow other branch's role to continue workflow: </label>
+                                                    <input type="checkbox" class="m-t-13" style="vertical-align:text-bottom" ng-model="workFlowDetails.Permission.IsAllowOtherBranchUser" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" ng-if="!isCoditionalOperator">
+                                            <div ng-class="isShowCoditionalCheckBox ? 'col-sm-4' : 'col-sm-6'">
+                                                <div ng-if="!isCoditionalOperator">
+                                                    <div class="form-group" ng-class="{'disabled':isCheckBoxVisible}">
+                                                        <label class="control-label p-0" ng-class="isShowCoditionalCheckBox ? 'col-sm-10' : 'col-sm-7'">Does this activity requrie approval ?:</label>
+                                                        <div class="col-sm-2" ng-class="{'enabled':isWorkFlowPanelView}">
+                                                            <input type="checkbox" class="m-t-13" ng-disabled="workflow.$invalid" ng-change="checkApprovalConditon(workFlowDetails.Permission)" ng-model="workFlowDetails.Permission.IsApproval" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-class="isShowCoditionalCheckBox ? 'col-sm-4' : 'col-sm-6'">
+                                                <div ng-if="!isCoditionalOperator">
+                                                    <div class="form-group" ng-class="{'disabled':isCheckBoxVisible}">
+                                                        <label class="control-label p-0" ng-class="isShowCoditionalCheckBox ? 'col-sm-10' : 'col-sm-7'">Does this activity requrie review ? :</label>
+                                                        <div class="col-sm-2" ng-class="{'enabled':isWorkFlowPanelView}">
+                                                            <input type="checkbox" ng-disabled="workflow.$invalid" ng-change="checkReviewCondition(workFlowDetails.Permission)" ng-model="workFlowDetails.Permission.IsReview" class="m-t-13" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4" ng-if="isShowCoditionalCheckBox">
+                                                <div>
+                                                    <div class="form-group" ng-class="{'disabled':isCheckBoxVisible}">
+                                                        <label class="control-label col-sm-10 p-0">Does this activity requrie conditional check ?:</label>
+                                                        <div class="col-sm-2" ng-class="{'enabled':isWorkFlowPanelView}">
+                                                            <input type="checkbox" class="m-t-13" ng-disabled="workflow.$invalid" ng-change="checkConditionalOperator(workFlowDetails.Permission)" ng-model="workFlowDetails.Permission.IsCondition" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="form-horizontal" ng-if="isDisplayCondiotionPanel">
+                                <form name="workFlowPanel" novalidate>
+                                    <div ng-if="!isCoditionalOperator">
+                                        <div ng-if="workFlowPanelActionPanel">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" ng-if="isDeleteButtonVisible">&nbsp; <a ng-click="openDeleteWorkFlowDialogbox(workFlowDetails)"><i class="glyphicon glyphicon-trash pull-right"></i></a> </div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <h4 class="sub-title"> On Accept</h4>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div ng-repeat="eval in customActivityCollection" class="radio m-l-20">
+                                                                <label class="font-bold">
+                                                                    <input type="radio" ng-model="workFlowConditionDetails.Permission.NextActivityId" ng-change="onAcceptPermissionChangeEvent(eval,workFlowDetails.Permission)" name="activityOptions" value="{{eval.PermissionId}}">{{eval.AcceptPermission}}
+                                                                </label>
+                                                            </div>
+                                                            <br />
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-4 p-0">Assigned To:</label>
+                                                                <div class="col-sm-8">
+                                                                    <ui-select ng-disabled="isAcceptRoleDisabled" ng-model="workFlowConditionDetails.Permission.AssignedId" required name="AssignedRole">
+                                                                        <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                            <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" ng-if="isAcceptCondtionAllowOtherWorkFlow">
+                                                                <label class="control-label col-sm-4 p-0">WorkFlow :</label>
+                                                                <div class="col-sm-8">
+                                                                    <ui-select ng-model="workFlowConditionDetails.Permission.OtherWorkFlowId" required name="OnAcceptWorkFlowName" ng-change="onAcceptChangeWorkFlowName(workFlowConditionDetails.Permission.OtherWorkFlowId)">
+                                                                        <ui-select-match placeholder="Select Role From">{{$select.selected.WorkFlowName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="workFlow.WorkFlowId as workFlow in workFlowCollection | filter: $select.search">
+                                                                            <div ng-bind-html="workFlow.WorkFlowName | highlight: $select.search" name="{{workFlow.WorkFlowName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4" ng-if="isAllowOtherBranchUser">
+                                                            <label>Allow other branch's role to continue workflow: <input type="checkbox" style="vertical-align:text-bottom" ng-model="workFlowConditionDetails.Permission.IsAllowOtherBranchUser" />  </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <h4 class="sub-title"> On Reject</h4>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div ng-repeat="eval in customActivityCollection" class="radio m-l-20">
+                                                                <label class="font-bold">
+                                                                    <input type="radio" ng-model="workFlowCondition.Permission.NextActivityId" ng-change="onRejectPermissionChangeEvent(eval,workFlowDetails.Permission)" name="activity" value="{{eval.PermissionId}}">{{eval.RejectPermission}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-4 p-0">Assigned To:</label>
+                                                                <div class="col-sm-8">
+                                                                    <ui-select ng-disabled="isRejectRoleDisabled" ng-model="workFlowCondition.Permission.AssignedId" required name="AssignedRole">
+                                                                        <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                            <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" ng-if="isRejectCondtionAllowOtherWorkFlow">
+                                                                <label class="control-label col-sm-4 p-0">WorkFlow :</label>
+                                                                <div class="col-sm-8">
+                                                                    <ui-select ng-model="workFlowCondition.Permission.OtherWorkFlowId" required name="OnRejectWorkFlowName" ng-change="onRejectChangeWorkFlowName(workFlowCondition.Permission.OtherWorkFlowId)">
+                                                                        <ui-select-match placeholder="Select Role From">{{$select.selected.WorkFlowName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="workFlow.WorkFlowId as workFlow in workFlowCollection | filter: $select.search">
+                                                                            <div ng-bind-html="workFlow.WorkFlowName | highlight: $select.search" name="{{workFlow.WorkFlowName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4" ng-if="isAllowOtherBranchUser">
+                                                            <label>Allow other branch's role to continue workflow: <input type="checkbox" style="vertical-align:text-bottom" ng-model="workFlowCondition.Permission.IsAllowOtherBranchUser" /></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="!workFlowPanelActionPanel">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" ng-if="isDeleteButtonVisible">&nbsp; <a ng-click="openDeleteWorkFlowDialogbox(workFlowDetails)"><i class="glyphicon glyphicon-trash pull-right"></i></a> </div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <h4 class="sub-title">On Review</h4>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="radio m-l-20" ng-repeat="eval in customActivityCollection">
+                                                                <label class="font-bold">
+                                                                    <input type="radio" ng-model="reviewCollectionDetails.Permission.NextActivityId" ng-change="onReviewPermissionChangeEvent(eval,workFlowDetails.Permission)" name="activity" value="{{eval.PermissionId}}">{{eval.AcceptPermission}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-4 p-0">Assigned To:</label>
+                                                                <div class="col-sm-8">
+                                                                    <ui-select ng-disabled="isReviewRoleDisabled" ng-model="reviewCollectionDetails.Permission.AssignedId" required name="AssignedRole">
+                                                                        <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                            <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" ng-if="isReviewCondtionAllowOtherWorkFlow">
+                                                                <label class="control-label col-sm-4 p-0">WorkFlow :</label>
+                                                                <div class="col-sm-8">
+                                                                    <ui-select ng-model="reviewCollectionDetails.Permission.OtherWorkFlowId" required name="OnReviewWorkFlowName" ng-change="onReviewChangeWorkFlowName(reviewCollectionDetails.Permission.OtherWorkFlowId)">
+                                                                        <ui-select-match placeholder="Select Role From">{{$select.selected.WorkFlowName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="workFlow.WorkFlowId as workFlow in workFlowCollection | filter: $select.search">
+                                                                            <div ng-bind-html="workFlow.WorkFlowName | highlight: $select.search" name="{{workFlow.WorkFlowName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4" ng-if="isAllowOtherBranchUser">
+                                                            <label>Allow other branch's role to continue workflow: <input type="checkbox" ng-model="reviewCollectionDetails.Permission.IsAllowOtherBranchUser" style="vertical-align:text-bottom" /></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Condition Operator-->
+                                    <div ng-if="isCoditionalOperator">
+                                        <div ng-if="isAllowBoolenCondition">
+                                            <div class="row" ng-class="{'disabled':isDeleteButtonVisible}">
+                                                <div class="col-lg-1">
+                                                </div>
+                                                <div class="col-lg-11">
+                                                    <div class="radio m-l-20">
+                                                        <label class="m-r-40">
+                                                            <input type="radio" ng-value="true" name="boolean-true" checked ng-model="myValue" ng-change="changeConditionalOperator(true)" />  Does this activity require Boolean conditional check?
+                                                        </label>
+                                                        <label><input type="radio" ng-value="false" name="boolean-false" ng-change="changeConditionalOperator(false)" ng-model="myValue" />Does this activity require Operator conditional check?</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <div class="panel panel-default" ng-if="isShowConditionalOperator" style="border-radius: 0 ">
+                                            <div class="panel-heading" ng-if="isDeleteButtonVisible">&nbsp; <a ng-click="openDeleteWorkFlowDialogbox(workFlowDetails)"><i class="glyphicon glyphicon-trash pull-right"></i></a> </div>
+                                            <div class="panel-body">
+
+                                                <div ng-if="isBoolenCondtion">
+                                                    <div class="row m-b-20" style="border-bottom: 1px solid #ccc">
+                                                        <div class="col-lg-2">
+                                                            <label>Variable</label>
+                                                        </div>
+                                                        <div class="col-lg-1">
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="isShowConditionalOperatorCollection" ng-class="{'disabled':isShowConditionalOperatorCollection}">
+
+                                                        <div ng-repeat="condition in conditionalOperatorCollection">
+                                                            <div class="row text-center" ng-if="condition.ConditionInfo!=null">
+                                                                <div class="col-lg-2">
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label border-lbl">{{condition.ConditionInfo}}</label>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label">{{condition.Variable1}}</label>
+                                                                </div>
+                                                                <div class="col-lg-3"></div>
+                                                                <div class="col-lg-1" ng-class="{'enabled':isShowConditionalOperatorCollection}">
+                                                                    <a title="Remove" class="pointer" ng-click="removeConditionalOperator($index)"><i class="fa fa-minus-circle work-flow-icon"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row text-center">
+                                                        <div class="col-lg-2">
+
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group" ng-if="isConditionOptioShow">
+                                                                <div class="col-sm-9">
+                                                                    <ui-select ng-model="workFlowDetails.Permission.ConditionalOperator.ConditionInfo" name="BoolenCondition" ng-change="changeConditionValue()">
+                                                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                                        <ui-select-choices repeat="attribute.value as attribute in operatorCollection | filter: $select.search">
+                                                                            <div ng-bind-html="attribute.Name | highlight: $select.search" name="{{attribute.Name}}">{{attribute.Name}}</div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                        </div>
+                                                        <div class="col-lg-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-class="{'disabled':isConditonalOperatorDisadbled}">
+                                                        <div class="col-lg-2">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <ui-select ng-model="workFlowDetails.Permission.ConditionalOperator.Variable1" name="BoolenVariable" ng-change="changeAttributeValue(workFlowDetails.Permission.ConditionalOperator.Variable1)">
+                                                                        <ui-select-match placeholder="Select Variable">{{$select.selected.VariableName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="attribute.VariableName as attribute in boolenAttributeCollection | filter: $select.search">
+                                                                            <div ng-bind-html="attribute.VariableName | highlight: $select.search" name="{{attribute.VariableName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-1" ng-class="{'disabled':isDisabledAddConditionalButton}">
+                                                            <a title="Add" class="pointer" ng-click="addConditionalOperator(workFlowDetails.Permission.ConditionalOperator)"><i class="fa fa-plus-circle work-flow-icon"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="!isBoolenCondtion">
+                                                    <div class="row" style="border-bottom: 1px solid #ccc">
+                                                        <div class="col-lg-2">
+                                                            <label>Variable</label>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <label>Operator</label>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <label>Variable</label>
+                                                        </div>
+                                                        <div class="col-lg-1">
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="isShowConditionalOperatorCollection" ng-class="{'disabled':isShowConditionalOperatorCollection}">
+                                                        <div ng-repeat="condition in conditionalOperatorCollection">
+                                                            <div class="row text-center" ng-if="condition.ConditionInfo!=null">
+                                                                <div class="col-lg-2">
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="control-label border-lbl">{{condition.ConditionInfo}}</label>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label">{{condition.Variable1}}</label>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="control-label">{{condition.Operator}}</label>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <label class="control-label">{{condition.Variable2}}</label>
+                                                                </div>
+                                                                <div class="col-lg-1" ng-class="{'enabled':isShowConditionalOperatorCollection}">
+                                                                    <a title="Remove" class="pointer" ng-click="removeConditionalOperator($index)"><i class="fa fa-minus-circle work-flow-icon"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-lg-2">
+
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group" ng-if="isConditionOptioShow">
+                                                                <div class="col-sm-10">
+                                                                    <ui-select ng-model="workFlowDetails.Permission.ConditionalOperator.ConditionInfo" name="Condition" ng-change="changeConditionValue()">
+                                                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                                        <ui-select-choices repeat="attribute.value as attribute in operatorCollection | filter: $select.search">
+                                                                            <div ng-bind-html="attribute.Name | highlight: $select.search" name="{{attribute.Name}}">{{attribute.Name}}</div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                        </div>
+                                                        <div class="col-lg-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-class="{'disabled':isConditonalOperatorDisadbled}">
+                                                        <div class="col-lg-2">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <ui-select ng-model="workFlowDetails.Permission.ConditionalOperator.Variable1" name="Variable" ng-change="changeAttributeValue(workFlowDetails.Permission.ConditionalOperator.Variable1)">
+                                                                        <ui-select-match placeholder="Select Variable">{{$select.selected.VariableName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="attribute.VariableName as attribute in attributeCollection | filter: $select.search">
+                                                                            <div ng-bind-html="attribute.VariableName | highlight: $select.search" name="{{attribute.VariableName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-10">
+                                                                    <ui-select ng-model="workFlowDetails.Permission.ConditionalOperator.Operator" name="operator">
+                                                                        <ui-select-match placeholder="Select Operator">{{$select.selected.value}}</ui-select-match>
+                                                                        <ui-select-choices repeat="operator.value as operator in operatorList | filter: $select.search">
+                                                                            <div ng-bind-html="{{operator.value}}" name="{{operator.value}}">{{operator.value}}</div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-2">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <ui-select ng-disabled="isDisabledVariableValue" ng-model="workFlowDetails.Permission.ConditionalOperator.Variable2" name="Variable2" ng-change="changeAttribute()">
+                                                                        <ui-select-match placeholder="Select Variable">{{$select.selected.VariableName}}</ui-select-match>
+                                                                        <ui-select-choices repeat="attribute.VariableName as attribute in otherAttributeCollection | filter: $select.search">
+                                                                            <div ng-bind-html="attribute.VariableName | highlight: $select.search" name="{{attribute.VariableName}}"></div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-1" ng-class="{'disabled':isDisabledAddConditionalButton}">
+                                                            <a title="Add" class="pointer" ng-click="addConditionalOperator(workFlowDetails.Permission.ConditionalOperator)"><i class="fa fa-plus-circle work-flow-icon"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="sub-title">On True</h4>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="radio m-l-20" ng-repeat="eval in customActivityCollection">
+                                                            <label class="font-bold">
+                                                                <input type="radio" ng-model="workFlowConditionDetails.Permission.NextActivityId" ng-change="onTruePermissionChangeEvent(eval,workFlowDetails.Permission)" name="OnTrueactivityOption" value="{{eval.PermissionId}}">{{eval.AcceptPermission}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-4 p-0">Assigned To:</label>
+                                                            <div class="col-sm-8">
+                                                                <ui-select ng-disabled="isAcceptRoleDisabled" ng-model="workFlowConditionDetails.Permission.AssignedId" required name="OnTrueAssignedRole">
+                                                                    <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                    <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                        <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" ng-if="isTrueCondtionAllowOtherWorkFlow">
+                                                            <label class="control-label col-sm-4 p-0">WorkFlow :</label>
+                                                            <div class="col-sm-8">
+                                                                <ui-select ng-model="workFlowConditionDetails.Permission.OtherWorkFlowId" required name="OnTrueWorkFlowName" ng-change="onTrueChangeWorkFlowName(workFlowConditionDetails.Permission.OtherWorkFlowId)">
+                                                                    <ui-select-match placeholder="Select Role From">{{$select.selected.WorkFlowName}}</ui-select-match>
+                                                                    <ui-select-choices repeat="workFlow.WorkFlowId as workFlow in workFlowCollection | filter: $select.search">
+                                                                        <div ng-bind-html="workFlow.WorkFlowName | highlight: $select.search" name="{{workFlow.WorkFlowName}}"></div>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4" ng-if="isAllowOtherBranchUser">
+                                                        <label>Allow other branch's role to continue workflow: <input type="checkbox" style="vertical-align:text-bottom" ng-model="workFlowConditionDetails.Permission.IsAllowOtherBranchUser" /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="sub-title">On False</h4>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="radio m-l-20" ng-repeat="eval in customActivityCollection">
+                                                            <label class="font-bold">
+                                                                <input type="radio" ng-model="workFlowCondition.Permission.NextActivityId" ng-change="onFalsePermissionChangeEvent(eval,workFlowDetails.Permission)" name="onTrueActivity" value="{{eval.PermissionId}}">{{eval.AcceptPermission}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-4 p-0">Assigned To:</label>
+                                                            <div class="col-sm-8">
+                                                                <ui-select ng-disabled="isRejectRoleDisabled" ng-model="workFlowCondition.Permission.AssignedId" required name="OnFalseAssignedRole">
+                                                                    <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                    <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                        <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" ng-if="isFalseCondtionAllowOtherWorkFlow">
+                                                            <label class="control-label col-sm-4 p-0">WorkFlow :</label>
+                                                            <div class="col-sm-8">
+                                                                <ui-select ng-model="workFlowCondition.Permission.OtherWorkFlowId" required name="OnFalseWorkFlowName" ng-change="onFalseChangeWorkFlowName(workFlowCondition.Permission.OtherWorkFlowId)">
+                                                                    <ui-select-match placeholder="Select Role From">{{$select.selected.WorkFlowName}}</ui-select-match>
+                                                                    <ui-select-choices repeat="workFlow.WorkFlowId as workFlow in workFlowCollection | filter: $select.search">
+                                                                        <div ng-bind-html="workFlow.WorkFlowName | highlight: $select.search" name="{{workFlow.WorkFlowName}}"></div>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4" ng-if="isAllowOtherBranchUser">
+                                                        <label>Allow other branch's role to continue workflow: <input type="checkbox" style="vertical-align:text-bottom" ng-model="workFlowCondition.Permission.IsAllowOtherBranchUser" /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br />
+                                <br />
+                                <div class="row text-center" ng-if="isSubmitButtonEnable">
+                                    <button class="btn btn-primary m-r-10" ng-if="!isEditInformation" ng-disabled="workFlowPanel.$invalid || !isSubmitButtonEnabled" name="submit-btn" ng-click="saveWorkFlowDetails(workFlowDetails,workFlowCondition,workFlowConditionDetails,reviewCollectionDetails,conditionalOperatorCollection)">Add</button>
+                                    <button class="btn btn-primary m-r-10" ng-if="isEditInformation" ng-disabled="workFlowPanel.$invalid || !isSubmitButtonEnabled" name="submit-btn" ng-click="saveWorkFlowDetails(workFlowDetails,workFlowCondition,workFlowConditionDetails,reviewCollectionDetails,conditionalOperatorCollection)">Update</button>
+                                    <button ng-class="{'enabled':isWorkFlowNameExist}" class="btn btn-default m-r-10" name="clear-btn" ng-if="!isEditInformation" ng-click="clearInformation()">Clear</button>
+                                    <button ng-class="{'enabled':isWorkFlowNameExist}" class="btn btn-default" name="cancel-btn" ng-click="cancelWorkFlow()">Finish</button>
+                                </div>
+                            </div>
+                            <div class="row text-center" ng-if="!isSubmitButtonEnable">
+                                <button class="btn btn-primary m-r-10" ng-if="!isEditInformation" name="submit-btn" ng-disabled="workflow.$invalid || isCheckedApproval" ng-click="saveWorkFlowDetails(workFlowDetails,workFlowCondition,workFlowConditionDetails,reviewCollectionDetails,conditionalOperatorCollection)">Add</button>
+                                <button class="btn btn-primary m-r-10" ng-if="isEditInformation" name="submit-btn" ng-disabled="workflow.$invalid || isCheckedApproval" ng-click="saveWorkFlowDetails(workFlowDetails,workFlowCondition,workFlowConditionDetails,reviewCollectionDetails,conditionalOperatorCollection)">Update</button>
+                                <button ng-class="{'enabled':isWorkFlowNameExist}" class="btn btn-default m-r-10" ng-if="!isEditInformation" name="clear-btn" ng-click="clearInformation()">Clear</button>
+                                <button ng-class="{'enabled':isWorkFlowNameExist}" class="btn btn-default" name="cancel-btn" ng-click="cancelWorkFlow()">Finish</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-col">
+                        <a ng-click="showDetails = !showDetails" class="pointer exp-col-ico">
+                            <i class="fa fa-angle-double-up" ng-if="!showDetails" title="Collapse"></i>
+                            <i class="fa fa-angle-double-down" ng-if="showDetails" title="Expand"></i>
+                        </a>
+                    </div>
+                    <div class="step-structure">
+                        <ul>
+                            <li ng-repeat="item in stepList" ng-include="'Templates/Workflow/WorkFlowSteps.html'"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

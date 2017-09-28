@@ -1,0 +1,14 @@
+Time : 12:33:13.1936 
+Message : 
+ErrorPath : /api/UserDetail/getUserList
+RawUrl : /api/UserDetail/getUserList
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Core
+StackTrace :    at MerchantService.Core.Controllers.Admin.UserDetailController.GetUserList() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\Admin\UserDetailController.cs:line 85
+TargetSite : System.Web.Http.IHttpActionResult GetUserList() 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:33:36.7577 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

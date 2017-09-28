@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/Style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <div class="text-center">
+            <h4><span string-replace="supplierreturnreceipt"></span></h4>
+            <div class="barcode-div" ng-bind-html="Invoice | rawHtml"></div>
+            <h5>{{BranchName}}</h5>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                logo
+            </div>
+            <div class="col-xs-5 pull-right">
+                {{BranchAddress}}
+            </div>
+        </div>
+        <br />
+        <hr class="thik-line" />
+        <div class="row form-horizontal cust-receipt">
+
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{Date | date:'dd-MM-yyyy'}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="date"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{SupplierMobileNo}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="mobileno"></span>:</label>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{ReceiptNo}}</label>
+                    <label class="control-label label-rtl  p-0"><span string-replace="requestno"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{SupplierName}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="suppliername"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{ApproverName}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="approvedby"></span>:</label>
+                </div>
+            </div>
+        </div>
+        <hr class="thik-line" />
+        <div>
+            <table class="table table-striped table-hover table-rtl" name="bill-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="itemname"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="flavor"></span></th>
+                        <th><span string-replace="returncause"></span></th>
+                        <th><span string-replace="costpricepos"></span></th>
+                        <th><span string-replace="returnquantity"></span></th>
+                        <th><span string-replace="totalcostprice"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in SupplierReturnItemAC">
+                        <td>{{item.ItemNameEn}}</td>
+                        <td>{{item.Unit}}-{{item.BaseUnit}}</td>
+                        <td>{{item.FlavourEn}}</td>
+                        <td>{{item.ReturnCause}}</td>
+                        <td>{{item.CostPrice}}</td>
+                        <td>{{item.ReturnQuantity}}</td>
+                        <td>{{item.TotalCostPrice}}</td>
+                    </tr>
+                    <tr class="dashed-border">
+                        <td colspan="5" align="left"><b><span string-replace="total"></span>:</b></td>
+                        <td><b>{{TotalQuantity}}</b></td>
+                        <td><b>{{TotalCostPrice | number:2}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div class="">
+                <label class="verti-align-top"><span string-replace="comment"></span></label>
+                <div class="display-inline comment-border-div">
+
+                </div>
+            </div>
+            <br /><br />
+            <div class="pull-right">
+                <label class="verti-align-top"><span string-replace="signature"></span></label>
+                <div class="display-inline sign-border-div">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

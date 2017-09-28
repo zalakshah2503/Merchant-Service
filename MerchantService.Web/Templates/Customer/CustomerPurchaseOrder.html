@@ -1,0 +1,585 @@
+﻿<div ng-controller="CustomerPOController" ng-init="initialize()">
+    <form name="addCPO" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-heading"><span string-replace="customerurchaseorder"></span></div>
+            <div class="panel-body">
+                <label ng-show="!isEdit"><span string-replace="selectcustomer"></span></label>
+                <hr ng-show="!isEdit" />
+                <div class="form-horizontal">
+                    <div ng-show="!isEdit">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="membershipno"></span>.:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="30" id="" ng-model="find.MembershipCode" name="membership-no">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="pricecategory"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <ui-select ng-model="find.PriceCategory" name="cname">
+                                            <ui-select-match placeholder="Select Type">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="pricecategory.Id as pricecategory in priceCategoryList | filter: $select.search">
+                                                <div ng-bind-html="pricecategory.Name | highlight: $select.search" name="{{find.PriceCategory}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="255" ng-model="find.Name" name="membership-no">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="mobileno"></span>.:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="15" ng-model="find.Mobile" name="mobileno">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="text-center">
+                            <button class="btn btn-primary" name="search-customer-btn" ng-click="findCustomer()"><span string-replace="search"></span></button>
+                        </div>
+                        <br />
+                        <div ng-show="isCustomerListVisible">
+                            <div class="alert alert-success text-center" role="alert" ng-show="customerList.length==0">
+                                <span>{{noDataFound}}</span>
+                            </div>
+                            <table class="table table-striped table-bordered table-hover" name="customer-grid-list" ng-hide="customerList.length==0">
+                                <thead>
+                                    <tr>
+                                        <th><span string-replace="customername"></span></th>
+                                        <th><span string-replace="membershipcode"></span></th>
+                                        <th><span string-replace="phoneno"></span>.</th>
+                                        <th><span string-replace="mobileno"></span>.</th>
+                                        <th><span string-replace="remainingbalancelimit"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="customer in customerList">
+                                    <tr ng-click="customerSelect(customer)" class="pointer">
+                                        <td class="grid-width">{{customer.Name}}</td>
+                                        <td class="grid-width">{{customer.MembershipCode}}</td>
+                                        <td class="grid-width">{{customer.Phone}}</td>
+                                        <td class="grid-width">{{customer.Mobile}}</td>
+                                        <td class="grid-width">{{customer.RemainingAmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <hr ng-show="!isEdit && isCustomerSearched" />
+                        <div class="row" ng-show="isCustomerSearched">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" maxlength="255" class="form-control" id="" ng-disabled="true" ng-model="customerPO.CustomerProfile.Name" name="customername">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="customertype"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="" ng-disabled="true" ng-show="customerPO.CustomerProfile.IsCreditCustomer" value="Credit" name="customertype">
+                                        <input type="text" class="form-control" id="" ng-disabled="true" ng-hide="customerPO.CustomerProfile.IsCreditCustomer" value="Non-Credit" name="customertype">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4 ">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="mobile"></span>.:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="15" id="" ng-disabled="true" ng-model="customerPO.CustomerProfile.Mobile" name="pricecategory">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="pricecategory"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="" disabled ng-model="customerPO.CustomerProfile.PriceCategoryName" name="pricecategory">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 cust-page">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="membershipno"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" maxlength="30" id="" ng-disabled="true" ng-model="customerPO.CustomerProfile.MembershipCode" name="pricecategory">
+                                    </div>
+                                </div>
+                                <fieldset>
+                                    <legend><span string-replace="amount"></span>:</legend>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="balance"></span>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="" ng-disabled="true" name="balance" ng-model="customerPO.CustomerProfile.BalanceAmt" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="limit"></span>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" ng-disabled="true" name="limit" ng-model="customerPO.CustomerProfile.LimitAmt" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="cpoList.length>0">
+                        <hr />
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0 label-multi"><span string-replace="additionalcosttype"></span>:  </label>
+                                        <div class="col-sm-7">
+                                            <ui-select ng-model="search.Id" name="customer-name">
+                                                <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                <ui-select-choices repeat="cost.Id as cost in additionalServiceList | filter: $select.search">
+                                                    <div ng-bind-html="cost.Name | highlight: $select.search" name="cost.Name"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="amount"></span>:   </label>
+                                        <div class="col-sm-7" ng-class="{ 'has-error': addCPO.amount.$touched && addCPO.amount.$invalid }">
+                                            <input type="text" class="form-control" pattern="^\d{1,8}(\.\d{1,4})?$" maxlength="13" ng-model="search.Amount" id="" name="amount">
+                                            <div class="help-block" ng-messages="addCPO.amount.$error" ng-if="addCPO.amount.$touched">
+                                                <p ng-message="pattern" class="text-error">{{validAmountError}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button type="submit" class="btn btn-primary" ng-disabled="!(search.Amount && search.Id)" ng-click="addAttionalService(search)" name="add-btn"><span string-replace="add"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                        <br ng-if="(addtionalCostList.length>0)" />
+                        <table class="table table-striped table-bordered table-hover" name="customer-po-grid" ng-if="(addtionalCostList.length>0)">
+                            <thead>
+                                <tr>
+                                    <th><span string-replace="service"></span></th>
+                                    <th><span string-replace="amount"></span></th>
+                                    <th><span string-replace="action"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="service in addtionalCostList">
+                                <tr>
+                                    <td class="grid-width">{{service.Name}}</td>
+                                    <td class="grid-width">{{service.Amount}}</td>
+                                    <td>
+                                        <div class="action-td">
+                                            <a title="Delete" name="item-delete" ng-click="openDeleteAdditionalCostPopup(service.Id)"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <div ng-show="isCustomerSearched">
+                            <br />
+                            <label><span string-replace="purchaseorder"></span></label>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group" ng-show="!isEdit">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="collectingbranch"></span>:</label>
+                                        <div class="col-sm-7" ng-class="{ 'has-error': addCPO.collectingBranch.$touched && addCPO.collectingBranch.$invalid }">
+                                            <ui-select ng-model="collectingBranch.Branch" name="collectingBranch" ng-required="!isEdit">
+                                                <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                <ui-select-choices repeat="branch as branch in branchList | filter: $select.search">
+                                                    <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="addCPO.collectingBranch.$error" ng-if="addCPO.collectingBranch.$touched">
+                                                <p ng-message="required" class="text-error">{{branchSelectError}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="isEdit">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="collectingbranch"></span>:</label>
+                                        <div class="col-sm-7" ng-class="{ 'has-error': addCPO.collectingBranch.$touched && addCPO.collectingBranch.$invalid }">
+                                            <ui-select ng-model="collectingBranch.BranchId" name="collectingBranch" ng-required="isEdit">
+                                                <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                                <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                                    <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="error">*</span>
+                                            <div class="help-block" ng-messages="addCPO.collectingBranch.$error" ng-if="addCPO.collectingBranch.$touched">
+                                                <p ng-message="required" class="text-error">{{branchSelectError}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="itemBarcode"></span>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="" maxlength="18" name="item-barcode" ng-model="customerPO.Barcode">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 p-0"><span string-replace="duedate"></span>:</label>
+                                        <div class="col-sm-7">
+                                            <div class="input-group">
+                                                <input type="text" min-date="minStartDate" name="duedateinput" disabled class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="customerPO.DueDate" is-open="isDueDatePickerOpened" close-text="Close" ng-required="true" />
+                                                <span class="input-group-btn" ng-class="{ 'has-error': addCPO.duedate.$touched && addCPO.duedateinput.$invalid }">
+                                                    <button type="button" class="btn btn-default" name="duedate" ng-click="openDueDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+
+                                                    <div class="help-block" ng-messages="addCPO.duedateinput.$error" ng-if="addCPO.duedate.$touched">
+                                                        <p ng-message="required" class="text-error">{{dueDateError}}</p>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <span class="error-picker error" style="right:20px">*</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button ng-if="isEdit" class="btn btn-primary pull-left m-l-40" ng-disabled="!((customerPO.Barcode>0) && (collectingBranch.BranchId > 0))" ng-click="addItemByBarcode(customerPO.Barcode)"><span string-replace="add"></span></button>
+                                        <button ng-if="!isEdit" class="btn btn-primary pull-left m-l-40" ng-disabled="!((customerPO.Barcode>0) && (collectingBranch.Branch.Id > 0))" ng-click="addItemByBarcode(customerPO.Barcode)"><span string-replace="add"></span></button>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button ng-if="isEdit" class="btn btn-primary pull-right" ng-disabled="!collectingBranch.BranchId" ng-click="openItemSearchPopup()"><span string-replace="searchitem"></span></button>
+                                    <button ng-if="!isEdit" class="btn btn-primary pull-right" ng-disabled="!collectingBranch.Branch" ng-click="openItemSearchPopup()"><span string-replace="searchitem"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-success text-center" role="alert" ng-show="cpoList.length==0 && isCustomerSearched">
+                            <span>{{cpoListEmptyError}}</span>
+
+                        </div>
+                        <div id="item-grid">
+                            <div ng-if="cpoList.length>0">
+                                <br />
+                                <table class="table table-striped table-bordered table-hover" name="item-grid">
+                                    <thead>
+                                        <tr>
+                                            <th><span string-replace="barcode"></span></th>
+                                            <th><span string-replace="name"></span></th>
+                                            <th><span string-replace="flavor"></span></th>
+                                            <th><span string-replace="unit"></span></th>
+                                            <th><span string-replace="pricepos"></span></th>
+                                            <!--the quantity which the supplier wants to order-->
+                                            <th><span string-replace="availablequantity"></span></th>
+                                            <!--<th>Offer Price</th>
+                                            <th>Offer Quantity</th>-->
+                                            <th><span string-replace="quantitypos"></span></th>
+                                            <th><span string-replace="totalpos"></span></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="cpo in cpoList">
+                                            <td class="grid-width">{{cpo.Barcode}}</td>
+                                            <td class="grid-width">{{cpo.ItemNameEn}}</td>
+                                            <td class="grid-width">{{cpo.FlavourEn}}</td>
+                                            <td class="grid-width">{{cpo.Unit}}-{{cpo.BaseUnit}}</td>
+                                            <td class="grid-width">{{cpo.SellPrice}}</td>
+                                            <td class="grid-width">{{cpo.ActualQuantity}}</td>
+                                            <td>
+                                                <input type="text" ng-model="cpo.Quantity" ng-pattern="/^[0-9]*$/" ng-change="checkQuantity(cpo)" class="form-control" maxlength="6" name="orderQuantity" required />
+                                                <span class="error">*</span>
+                                            </td>
+
+                                            <td class="grid-width">
+                                                <span ng-if="cpo.Quantity>0">{{cpo.ItemTotalCost}}</span>
+                                                <span ng-if="!(cpo.Quantity>0)">0</span>
+                                            </td>
+                                            <td>
+                                                <div class="action-td">
+                                                    <a title="Delete" name="item-delete" ng-click="openDeleteItemPopup(cpo)"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" class="text-right">
+                                                <strong><span string-replace="totalpos"></span>:</strong>
+                                            </td>
+                                            <td>
+                                                {{totalQuantity}}
+                                            </td>
+                                            <td>
+                                                {{totalCost}}
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="submit-btn" ng-show="$root.merchatSettings.IsAllowedToCreateCPO" ng-if="cpoList.length>0" ng-disabled="(checkItem()==false?false:true) || (addCPO.$invalid && customerPO.DueDate === null)" ng-click="generateCustomerPONum()"><span string-replace="submitpos"></span></button>
+                    <button name="cancel-btn" ng-if="isCustomerSearched" value="Cancel" ng-click="cancel()" class="btn btn-default" string-replace="cancelpos"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/ng-template" id="CustomerItemSearch">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="itemsearch"></span> </h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row m-0">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="itemname"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="255" ng-model="category.ItemNameEn" name="item-name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4  p-0"><span string-replace="itemBarcode"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="18" ng-model="category.Barcode" name="barcode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="group"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="category.GroupId" name="group-name">
+                                    <ui-select-match placeholder="Select Group">{{$select.selected.GroupName}}</ui-select-match>
+                                    <ui-select-choices repeat="group.GroupId as group in groupList  | filter: $select.search">
+                                        <div ng-bind-html="group.GroupName | highlight: $select.search" name="{{group.GroupName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="flavor"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" maxlength="255" ng-model="category.FlavourEn" name="flavour">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="category"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="category.CategoryId" name="category-name">
+                                    <ui-select-match placeholder="Select Type">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="category.Id as category in categoryList | filter: $select.search">
+                                        <div ng-bind-html="category.Name | highlight: $select.search" name="{{category.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="brand"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="category.BrandId" name="brand-name">
+                                    <ui-select-match placeholder="Select Brand">{{$select.selected.BrandName}}</ui-select-match>
+                                    <ui-select-choices repeat="brand.BrandId as brand in brandList | filter: $select.search">
+                                        <div ng-bind-html="brand.BrandName | highlight: $select.search" name="{{brand.BrandName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchItem()"><span string-replace="search"></span></button>
+                </div>
+            </fieldset>
+            <br />
+            <div class="alert alert-success text-center" role="alert" ng-show="totalCollection.length==0">
+                <span>No Item Found</span>
+            </div>
+            <table class="table table-striped table-bordered table-hover" name="item-grid-list" ng-if="totalCollection.length > 0">
+                <thead>
+                    <tr>
+                        <th><span string-replace="name"></span></th>
+                        <th><span string-replace="namesl"></span></th>
+                        <th><span string-replace="barcode"></span></th>
+                        <th><span string-replace="flavor"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="category"></span></th>
+                        <!--actual quantity of the product-->
+                        <th><span string-replace="availablequantity"></span></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in totalCollection">
+                    <tr ng-click="addCPOItem(item)" class="pointer">
+                        <td class="grid-width">{{item.ItemNameEn}}</td>
+                        <td class="grid-width">{{item.ItemNameSl}}</td>
+                        <td class="grid-width">{{item.Barcode}}</td>
+                        <td class="grid-width">{{item.FlavourEn}}</td>
+                        <td class="grid-width">{{item.Unit}}-{{item.BaseUnit}}</td>
+                        <td class="grid-width">{{item.ItemType}}</td>
+                        <td class="grid-width">{{item.ActualQuantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="totalCollection.length >0" style="text-align:center">
+                <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-click="pagination(currentPage)" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" name="cancel-btn" ng-click="closeItemSearchPopup()"><span string-replace="cancelpos"></span></button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="AddItemErrorPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeItemAddErrorPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Oops !!</h4>
+        </div>
+        <div class="modal-body" ng-if="!isAddCPOItem">
+            {{itemAddedTOPOList}}
+        </div>
+        <div class="modal-body" ng-if="!isAddAdditionalService">
+            {{addCostAddedError}}
+        </div>
+        <div class="modal-body" ng-if="!isCPOFilled">
+            {{noItemAddedToPO}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeItemAddErrorPopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="ItemQuantityErrorPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeItemQuantityErrorPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Oops !!</h4>
+        </div>
+        <div class="modal-body" ng-show="({{actualQuantity}} == 2 )">
+            {{quantityLimitError}}
+        </div>
+        <div class="modal-body" ng-show="({{actualQuantity}} == 1)">
+            {{validQuantityError}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeItemQuantityErrorPopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="NotFoundErrorPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeNotFoundErrorPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Oops !!</h4>
+        </div>
+        <div class="modal-body" ng-show="customerNotFound">
+            {{customerNotFind}}
+        </div>
+        <div class="modal-body" ng-show="itemNotFound">
+            {{itemNotFind}}
+        </div>
+        <div class="modal-body" ng-show="InActiveCustomer">
+            {{inActiveCustomerError}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeNotFoundErrorPopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="DeleteItemPopup">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeDeleteItemPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="deleteCPOItem(Item)"><span string-replace="yes"></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeDeleteItemPopup()"><span string-replace="no"></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="DeleteAdditionalCostPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeDeleteAdditionalCostPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="deleteAdditionalCost(AdditionalCostId)"><span string-replace="yes"></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeDeleteAdditionalCostPopup()"><span string-replace="no"></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="SummaryCPOPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeSummaryCPOPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="summaryofcpo"></span></h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-5 col-lg-offset-1">
+                        <div class="form-group">
+                            <label class="control-label col-sm-6 p-0"><span string-replace="customername"></span>:</label>
+                            <label class="control-label col-sm-6 no-bold t-left">{{customerProfile.Name}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6 p-0"><span string-replace="cponumber"></span>:</label>
+                            <label class="control-label col-sm-6 no-bold t-left">{{customerPO.PurchaseOrderNo}}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-6 p-0"><span string-replace="membershipcode"></span> :</label>
+                            <label class="control-label col-sm-6 no-bold t-left">{{customerProfile.MembershipCode}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-6 p-0"><span string-replace="totalquantityofitem"></span> :</label>
+                            <label class="control-label col-sm-6  no-bold t-left">{{totalQuantity}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6 p-0"><span string-replace="totalamount"></span>:</label>
+                            <label class="control-label col-sm-6 no-bold t-left">{{cpoInfo.TotalCPOAmount}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeSummaryCPOPopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>

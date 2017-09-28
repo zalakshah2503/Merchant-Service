@@ -1,0 +1,60 @@
+﻿<div ng-controller="ManageUserAccessController" ng-init="getRoleList()">   
+    <div class="panel panel-default">
+        <div class="panel-heading">User Access</div>
+        <div class="panel-body">
+            <form name="userAccess" novalidate>
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4">Role Name:</label>
+                            <div class="col-lg-4" ng-class="{ 'has-error': userAccess.roleName.$touched && userAccess.roleName.$invalid }">
+                                <ui-select name="roleName" ng-model="userAcessDetail.RoleId" ng-change="getUserAccesListByRoleId(userAcessDetail.RoleId)" required>
+                                    <ui-select-match placeholder="Select Role">{{$select.selected.RoleName}}</ui-select-match>
+                                    <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                        <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="userAccess.roleName.$error" ng-if="userAccess.roleName.$touched">
+                                    <p ng-message="required" class="text-error" ng-show="dropDownMessage">{{roleNameRequired}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <p class="text-error" ng-show="chekBoxMessage">{{checkBoxSelectionRequired}}</p>
+                <table class="table table-striped table-bordered table-hover" name="user-access-grid" ng-show="totalCollection.length >0">
+                    <thead>
+                        <tr>
+                            <th>Screen Name</th>
+                            <th>Description</th>
+                            <th>IsActive (<span class="m-r-10">Select All</span><input type="checkbox" class="verti-align-top" ng-disabled="userAccess.$invalid" ng-click="allCheckBoxChekedEvent()" ng-model="hasChecked">)</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="userAccessDetail in totalCollection">
+                        <tr>
+                            <td>{{userAccessDetail.FormName}}</td>
+                            <td>{{userAccessDetail.FormDescription}}</td>
+                            <td>
+                                <input id="cbkIsActive" name="active" type="checkbox" ng-model="userAccessDetail.IsActive" ng-click="singleCheckBoxChekedEvent()">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="totalCollection.length >0" style="text-align:center">
+                    <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" ng-click="singleCheckBoxChekedEvent()"></pagination>
+                </div>
+                <div class="form-group" ng-show="totalCollection.length >0">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <input type="submit" value="Submit" name="submit-btn" class="btn btn-primary m-r-10" ng-click="updateUserAccessDetail(userAccessList)" ng-disabled="userAccess.$invalid" />
+                        <input type="submit" value="Cancel" class="btn btn-default m-r-10" name="cancel-btn" ng-click="cancleUpdateAccessDetail()" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

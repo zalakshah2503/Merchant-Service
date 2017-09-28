@@ -1,0 +1,75 @@
+﻿<div ng-controller="RoleController" ng-init="getRoleList()">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span ng-show="isRoleListGridVisible">System Role</span><span ng-hide="isRoleListGridVisible">Add Role</span></div>
+        <div class="panel-body">
+            <div ng-show="isRoleListGridVisible">
+                <input type="button" name="add-role-btn" ng-disabled="isCompanyCreated" ng-click="addNewRole()" value="Add Role" class="btn btn-primary pull-right" />
+                <div class="clearfix"></div>
+                <br />
+            </div>
+            <form name="manageRole" novalidate ng-submit="manageRole.$valid && addRole()" ng-show="isAddRolePanelVisible">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Role Name</label>
+                        <div class="col-sm-4" ng-class="{ 'has-error': manageRole.role.$error.required && submitted }">
+                            <input type="text" name="role" class="form-control" id="" placeholder="Role Name" ng-model="role.RoleName" required maxlength="255">
+                            <span class="error">*</span>
+                            <p ng-show="manageRole.role.$error.required && submitted" class="text-error">{{roleRequired}}</p>
+                            <p ng-show="isRoleNameExist && manageRole.$valid" class="text-error">{{roleNameExist}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Role NameSl</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="role" class="form-control" id="" placeholder="Role NameSl" ng-model="role.RoleNameSl" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <input type="submit" value="Submit" name="submit-btn" ng-click="submitted=true" class="btn btn-primary m-r-10" />
+                            <input type="button" value="Cancel" name="cancel-btn" class="btn btn-default" ng-click="cancelRole()" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div ng-show="isRoleListGridVisible">
+                <table class="table table-striped table-bordered table-hover" name="role-grid">
+                    <thead>
+                        <tr>
+                            <th>Role Name</th>
+                            <th>Role NameSl</th>
+                            <th>Actoin</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="role in roleList">
+                        <tr>
+                            <td>{{role.RoleName}}</td>
+                            <td>{{role.RoleNameSl}}</td>
+                            <td>
+                                <div class="action-td">
+                                    <a title="Edit" name="role-edit" ng-click="editRole(role.Id,role.RoleName,role.RoleNameSl)"><i class="fa fa-edit"></i></a>
+                                    <a title="Delete" name="role-delete" data-toggle="modal" ng-click="openDeleteRolePopup(role)"><i class="fa fa-trash-o"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="DeleteRolePopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" name="close-btn" data-dismiss="modal" ng-click="closeDeleteRolePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Delete Confirmation</h4>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete <span class="text-success">{{role.Name}} </span> ?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" name="yes-btn" ng-click="deleteRole(role.Id)">Yes</button>
+            <button type="button" class="btn btn-default" name="no-btn" data-dismiss="modal" ng-click="closeDeleteRolePopup()">No</button>
+        </div>
+    </div>
+</script>

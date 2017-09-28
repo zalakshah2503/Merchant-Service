@@ -1,0 +1,258 @@
+﻿<div ng-controller="SupplierPOWorkListController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="supplierpurchaseorderdetails"></span></div>
+        <div class="panel-body">
+            <br />
+            <label><span string-replace="purchaseorderdetails"></span></label>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="pono"></span>.:</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled name="po-no" class="form-control" ng-model="poDetail.PurchaseOrderNumber">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-lg-8" ng-class="{ 'has-error': addSPO.branchOther.$touched && addSPO.branchOther.$invalid }">
+                                <div ng-dropdown-multiselect ng-model="branchModel" name="branchOther" options="branchList" class="multi-select-dropdown isdisable-class" selected-model="branchModel" checkboxes="true" extra-settings="selectsettings"></div>
+                                <span class="error">*</span>
+                                <div class="help-block" ng-messages="addSPO.branchOther.$error" ng-if="addSPO.branchOther.$touched">
+                                    <p ng-message="required" class="text-error">{{branchNameRequired}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="suppliername"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled name="po-no" class="form-control" ng-model="poDetail.SupplierName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="issuedate"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled name="po-no" class="form-control" ng-model="poDetail.IssueDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="duedate"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled name="po-no" class="form-control" ng-model="poDetail.DueDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="suppliercode"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled name="po-no" class="form-control" ng-model="poDetail.SupplierCode">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="billList.length > 0">
+                <br />
+                <label><span string-replace="billdetails"></span></label>
+                <table class="table table-striped table-bordered table-hover" name="bill-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="billno"></span>.</th>
+                            <th><span string-replace="amount"></span></th>
+                            <th><span string-replace="discount"></span></th>
+                            <th><span string-replace="percentage"></span></th>
+                            <th><span string-replace="comment"></span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="bills in billList">
+                        <tr>
+                            <td>{{bills.BillNumber}}</td>
+                            <td>{{bills.Amount}}</td>
+                            <td>{{bills.Discount}}</td>
+                            <td>{{bills.IsPercentageDiscount}}</td>
+                            <td>{{bills.BillComment}}</td>
+                            <td class="action-td-width" style="width:100px">
+                                <div class="action-td">
+                                    <a title="Edit" name="bill-edit"><i class="fa fa-edit" ng-click="receiveSPORedirect(poDetail.Id)"></i></a>
+                                    <a ng-hide="bills.IsVerified" ng-click="verifyBill(bills.BillId)" class="pointer" name="add-item-link" title="Add Item"><span string-replace="verify"></span></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <button class="btn btn-primary pull-right" ng-click="clickOnOpenRecivingPopup()" ng-show="isDisplayRecevingSPOButton"><span string-replace="receivedspodetails"></span></button>
+            <div class="clearfix"></div>
+            <br />
+            <label><span string-replace="itemdetails"></span></label>
+            <table class="table table-striped table-bordered table-hover" name="item-detail-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="barcode"></span></th>
+                        <th><span string-replace="code"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="itemname"></span></th>
+                        <th><span string-replace="systemquantity"></span></th>
+                        <th><span string-replace="systemcostprice"></span></th>
+                        <th><span string-replace="freequantity"></span></th>
+                        <th><span string-replace="discount"></span></th>
+                        <th><span string-replace="ordercostprice"></span></th>
+                        <th><span string-replace="orderquantity"></span></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in poDetail.SupplierItem">
+                    <tr>
+                        <td class="grid-width">{{item.Barcode}}</td>
+                        <td class="grid-width">{{item.Code}}</td>
+                        <td class="grid-width">{{item.Type}}</td>
+                        <td class="grid-width">{{item.ItemNameEn}}</td>
+                        <td class="grid-width">{{item.ActualQuantity}}</td>
+                        <td class="grid-width">{{item.CostPrice}}</td>
+                        <td class="grid-width">{{item.FreeQuantity}}</td>
+                        <td class="grid-width">{{item.PercentageDiscount}}</td>
+                        <td class="grid-width">{{item.OrderCostPrice}}</td>
+                        <td class="grid-width">{{item.OrderQuantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <label ng-show="poDetail.WorkFlowLog.length != '0'"><span string-replace="action"></span></label>
+            <table class="table table-striped table-bordered table-hover" name="item-action-grid" ng-show="poDetail.WorkFlowLog.length != '0'">
+                <thead>
+                    <tr>
+                        <th><span string-replace="stage"></span></th>
+                        <th><span string-replace="action"></span></th>
+                        <th><span string-replace="actiondate"></span></th>
+                        <th><span string-replace="role"></span></th>
+                        <th><span string-replace="username"></span></th>
+                        <th><span string-replace="comment"></span></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="detail in poDetail.WorkFlowLog">
+                    <tr>
+                        <td class="grid-width">{{detail.Stage}}</td>
+                        <td>{{detail.Action}}</td>
+                        <td class="grid-width">{{detail.CreatedDateTime | date:'dd-MM-yyyy'}}</td>
+                        <td class="grid-width">{{detail.RoleName}}</td>
+                        <td class="grid-width">{{detail.UserName}}</td>
+                        <td class="grid-width">{{detail.Comments}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div ng-show="isButtonsVisible">
+                <div ng-show="poDetail.IsSubmitted">
+                    <div class="row" ng-show="displayConfirm || isCanceled || isCancel || isResubmitVisible || isReviewVisible || (poDetail.IsApproved && !poDetail.IsSend && $root.merchatSettings.IsAllowToSendSupplierPurchaseOrder) || (poDetail.IsApproved && poDetail.IsSend && poDetail.IsReceived && !poDetail.IsVerified && $root.merchatSettings.IsAllowToVerifySupplierPurchaseOrder)">
+                        <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                        <div class="col-lg-9">
+                            <textarea class="form-control" maxlength="350" ng-model="comment.Comment" name="comment"></textarea>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div class="row" ng-hide="poDetail.IsSubmitted">
+                    <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" maxlength="350" ng-model="comment.Comment" name="comment"></textarea>
+                    </div>
+                    <br />
+                </div>
+                <div class="row text-center" ng-show="poDetail.IsSubmitted">
+                    <label ng-show="displayConfirm">
+                        <button class="btn btn-primary m-r-10" name="confirm-btn" ng-click="approveSPO()" ng-show="$root.merchatSettings.IsAllowToApprovalSupplierPurchaseOrder"><span string-replace="approve"></span></button>
+                        <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="rejectSPO()" ng-show="$root.merchatSettings.IsAllowToRejectSupplierPurchaseOrder"><span string-replace="reject"></span></button>
+                    </label>
+                    <label ng-show="isReviewVisible">
+                        <button class="btn btn-primary m-r-10" name="confirm-btn" ng-click="reviewSPO()" ng-show="$root.merchatSettings.IsAllowToReviewSupplierPurchaseOrder"><span string-replace="review"></span></button>
+                    </label>
+                    <label ng-show="isEditDisplay">
+                        <button class="btn btn-primary m-r-10" ng-click="edit(poDetail.Id)" ng-show="$root.merchatSettings.IsAllowToEditSupplierPurchaseOrder"><span string-replace="edit"></span></button>
+                    </label>
+                    <label ng-show="isCancel">
+                        <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="cancelSPO()" ng-show="$root.merchatSettings.IsAllowToCancelSupplierPurchaseOrder"><span string-replace="cancelpos"></span></button>
+                    </label>
+                    <button class="btn btn-primary m-r-10" name="confirm-btn" ng-click="receiveSPORedirect(poDetail.Id)" ng-if="isReceiveVisible==true && $root.merchatSettings.IsAllowedToReceiveSPO"><span string-replace="receive"></span></button>
+                    <button class="btn btn-primary m-r-10" name="confirm-btn" ng-click="approveCancelSPO(1)" ng-if="isCanceled==true && $root.merchatSettings.IsAllowToApproveCancelSupplierPurchaseOrder "><span string-replace="approvecancel"></span></button>
+                    <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="approveCancelSPO(2)" ng-if="isCanceled==true && $root.merchatSettings.IsAllowToApproveCancelSupplierPurchaseOrder "><span string-replace="rejectcancel"></span></button>
+                    <label ng-show="isResubmitVisible">
+                        <button class="btn btn-primary m-r-10" ng-click="resubmitSPO()" ng-show="$root.merchatSettings.IsAllowToResubmitSupplierPurchaseOrder"><span string-replace="resubmit"></span></button>
+                    </label>
+                    <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="send()" ng-if="poDetail.IsApproved && !poDetail.IsSend && $root.merchatSettings.IsAllowToSendSupplierPurchaseOrder"><span string-replace="send"></span></button>
+                    <button class="btn btn-primary m-r-10" name="reject-btn" ng-click="verifySPO(poDetail.Id)" ng-if="poDetail.IsApproved && poDetail.IsSend && poDetail.IsReceived && !poDetail.IsVerified && $root.merchatSettings.IsAllowToVerifySupplierPurchaseOrder"><span string-replace="verify"></span></button>
+                    <button class="btn btn-default" name="cancel-btn" ng-click="cancel()"><span string-replace="close"></span></button>
+                </div>
+
+                <div class="row text-center" ng-hide="poDetail.IsSubmitted">
+                    <button class="btn btn-primary m-r-10" ng-click="edit(poDetail.Id)" ng-show="$root.merchatSettings.IsAllowToEditSupplierPurchaseOrder"><span string-replace="edit"></span></button>
+                    <button class="btn btn-primary m-r-10" ng-click="submitSPO(poDetail.Id,comment.Comment)" ng-show="$root.merchatSettings.IsAllowToCreateSupplierPurchaseOrder"><span string-replace="submitpos"></span></button>
+                    <button class="btn btn-primary m-r-10" ng-click="openPODeletePopup()" ng-show="$root.merchatSettings.IsAllowToDeleteSupplierPurchaseOrder"><span string-replace="delete"></span></button>
+                    <button class="btn btn-default" name="cancel-btn" ng-click="cancel()"><span string-replace="close"></span></button>
+                </div>
+            </div>
+
+            <script type="text/ng-template" id="recevingPurchaseOrder">
+                <div class="modal-header">
+                    <button type="button" name="close-btn" class="close" ng-click="cancelReceivedPurchaseOrderDetail()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title">{{receivePODetails}}</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                        <span>{{noItemFound}}</span>
+                    </div>
+                    <div ng-show="!errorMessageDisplayForBlankList">
+                        <table class="table table-striped table-bordered table-hover" name="item-action-grid">
+                            <thead>
+                                <tr>
+                                    <th><span string-replace="barcode"></span></th>
+                                    <th><span string-replace="code"></span></th>
+                                    <th><span string-replace="itemname"></span></th>
+                                    <th><span string-replace="unit"></span></th>
+                                    <th><span string-replace="recevingquantity"></span></th>
+                                    <th><span string-replace="recevingcostprice"></span></th>
+                                    <th><span string-replace="freequantity"></span></th>
+                                    <th><span string-replace="discount"></span></th>
+                                    <th><span string-replace="receivingstatus"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody dir-paginate="item in recevingPurchaseOrderList| itemsPerPage: 2">
+                                <tr>
+                                    <td class="grid-width">{{item.Barcode}}</td>
+                                    <td class="grid-width">{{item.Code}}</td>
+                                    <td class="grid-width">{{item.ItemName}}</td>
+                                    <td class="grid-width">{{item.Unit}}</td>
+                                    <td class="grid-width">{{item.ReceivingQuantity}}</td>
+                                    <td class="grid-width">{{item.ReceivnigCostPrice}}</td>
+                                    <td class="grid-width">{{item.FreeQuantity}}</td>
+                                    <td class="grid-width">{{item.Discount}}</td>
+                                    <td class="grid-width">{{item.SPOReceivingStatus}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-show="recevingPurchaseOrderList.length >0" style="text-align:center">
+                            <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="PODeletePopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closePODeletePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="deleteSPO(poDetail.Id)"><span string-replace="yes"></span></button>
+            <button type="button" class="btn btn-primary" ng-click="closePODeletePopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>

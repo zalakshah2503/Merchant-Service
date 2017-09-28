@@ -1,0 +1,118 @@
+﻿<div ng-controller="systemParameterController" ng-init="getConstantList()">
+    <div class="panel panel-default" ng-hide="isConstantPanelVisible">
+        <div class="panel-heading"><span string-replace="managesystemparameter"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="selectsystemparameter"></span>:</label>
+                        <div class="col-sm-5">
+                            <ui-select ng-model="constant.selected" ng-change="getParameterListById(constant)" name="system-parameter" id="parameter-dr-menu-e">
+                                <ui-select-match placeholder="Select System Parameter">{{$select.selected.Value}}</ui-select-match>
+                                <ui-select-choices repeat="constant in constantList | filter: $select.search">
+                                    <div ng-bind-html="constant.Value | highlight: $select.search" name="{{constant.Value}}" id="select-{{constant.Value}}-e"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="panel panel-default" ng-show="isConstantPanelVisible ">
+        <div class="panel-heading"><span string-replace="systemparameter"></span></div>
+        <div class="panel-body">
+            <form name="systemparameter">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-lg-4">{{constant.selected.Value}} <span>Name En</span>:</label>
+                                <div class="col-lg-7" ng-class="{ 'has-error': systemparameter.nameen.$error.required && systemparameter.nameen.$touched }">
+                                    <input type="text" id="{{constant.selected.Value}}nameEn-txt-e" maxlength="255" class="form-control" name="nameen" ng-model="paramType.ValueEn" placeholder="{{constant.selected.Value}} Name in English Language" required auto-focus="isFocusIn">
+                                    <span class="error">*</span>
+                                    <p ng-show="systemparameter.nameen.$error.required && systemparameter.nameen.$touched" class="text-error">{{constant.selected.Value}}-{{valueRequired}}</p>
+                                    <p ng-show="isParameterValueEnExist" class="text-error">{{constant.selected.Value}}{{parameterValueExist}}</p>
+                                    <p ng-show="systemparameter.nameen.$error.pattern && systemparameter.nameen.$dirty" class="text-error">{{invalidName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-lg-4">{{constant.selected.Value}} <span>Name Sl</span>:</label>
+                                <div class="col-lg-7" ng-class="{ 'has-error': systemparameter.namesl.$error.required && systemparameter.namesl.$touched  }">
+                                    <input type="text" id="{{constant.selected.Value}}nameSl-txt-e" maxlength="255" class="form-control" name="namesl" ng-model="paramType.ValueSl" placeholder="{{constant.selected.Value}} Name in Secondary Language" required>
+                                    <span class="error">*</span>
+                                    <p ng-show="systemparameter.namesl.$error.required && systemparameter.namesl.$touched" class="text-error">{{constant.selected.Value}}-{{valueRequired}}</p>
+                                    <p ng-show="isParameterValueSlExist" class="text-error">{{constant.selected.Value}}{{parameterValueExist}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <button class="btn btn-primary m-r-10" id="submit-{{constant.selected.Value}}-btn-e" name="submit-btn" ng-click="saveParameterName(paramType)" ng-disabled="systemparameter.namesl.$invalid || systemparameter.nameen.$invalid"><span string-replace="submitpos"></span></button>
+                        <button class="btn btn-default m-r-10" id="cancel-{{constant.selected.Value}}-btn-e" name="cancel-btn" ng-click="cancelParameterPanel()"><span string-replace="cancelpos"></span></button>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div class="alert alert-success text-center" role="alert" ng-show="parameterList.length == '0' &&  isErrorMessageDisplay">
+                <span>{{noDataFound}}</span>
+            </div>
+            <table class="table table-striped table-bordered table-hover" ng-show="parameterList.length != '0'" name="parameter-grid">
+                <thead>
+                    <tr>
+                        <th>{{constant.selected.Value}} Name En :</th>
+                        <th>{{constant.selected.Value}} Name Sl :</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="paramType in parameterList">
+                    <tr>
+                        <td>{{paramType.ValueEn}}</td>
+                        <td>{{paramType.ValueSl}}</td>
+                        <td class="action-td-width">
+                            <div class="action-td">
+                                <a title="Edit" id="edit-{{constant.selected.Value}}-e" name="parameter-edit" ng-click="editSystemParameterName(paramType.Id)"><i class="fa fa-edit"></i></a>
+                                <a title="Delete" id="delete-{{constant.selected.Value}}-e" name="parameter-delete" ng-click="openDeletePopup(paramType.Id)"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="DeletePopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" name="close-btn" data-dismiss="modal" ng-click="closeDeletePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" name="yes-btn" class="btn btn-primary" ng-click="deleteSystemParameter(paramTypeId)"><span string-replace="yes"></span></button>
+            <button type="button" name="no-btn" class="btn btn-default" data-dismiss="modal" ng-click="closeDeletePopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="DeleteFailurePopup">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" name="close-btn" data-dismiss="modal" ng-click="closeDeleteFailurePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{categoryDeleteFailed}}</h4>
+        </div>
+        <div class="modal-body">
+            {{deleteFailureMsg}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" name="ok-btn" ng-click="closeDeleteFailurePopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>

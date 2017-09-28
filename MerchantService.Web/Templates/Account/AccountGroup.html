@@ -1,0 +1,75 @@
+﻿<div ng-controller="GroupController" ng-init="getGroupList()">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span ng-hide="newGroupPanel"><span string-replace="grouplist"></span></span><span ng-show="newGroupPanel"><span string-replace="addgroup"></span></span></div>
+        <div class="panel-body">
+            <div ng-hide="newGroupPanel">
+                <button string-replace="addgroup" class="btn btn-primary pull-right" name="add-group-btn" ng-click="addNewGroup()"></button>
+                <div class="clearfix"></div>
+            </div>
+            <div ng-show="newGroupPanel">
+                <form name="addGroup" novalidate>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+
+                            <label class="control-label col-sm-4"><span string-replace="groupname"></span>:</label>
+                            <div class="col-sm-4" ng-class="{ 'has-error': addGroup.group.$touched && addGroup.group.$invalid }">
+                                <input type="text" name="group" class="form-control" ng-model="group.GroupName" maxlength="50" required auto-focus="isFocusIn">
+                                <span class="error">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="addGroup.group.$error" ng-if="addGroup.group.$touched">
+                                <p ng-message="required" class="text-error">{{groupNameRequired}}</p>
+                            </div>
+                            <div>
+                                <p class="text-error" ng-show="isGroupNameExist">{{groupExists}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4"><span string-replace="Under"></span>:</label>
+                            <div class="col-sm-4">
+                                <ui-select ng-model="group.UnderId" name="under">
+                                    <ui-select-match placeholder="Select Group">{{$select.selected.GroupName}}</ui-select-match>
+                                    <ui-select-choices repeat="groups.GroupId as groups in groupUnderList | filter: $select.search">
+                                        <div ng-bind-html="groups.GroupName | highlight: $select.search" name="{{groups.GroupName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <button name="submit-btn" string-replace="submitpos" class="btn btn-primary m-r-10" ng-hide="isUpdateGroup" ng-click="addGroupName(group)" ng-disabled="addGroup.$invalid" ></button>
+                                <button name="update-btn" string-replace="update" class="btn btn-primary m-r-10" ng-show="isUpdateGroup" ng-click="updateGroup(group)" ></button>
+                                <button name="cancel-btn" string-replace="cancelpos" class="btn btn-default" ng-click="cancelGroupDetails()" ></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng-hide="newGroupPanel">
+                <br />
+                <div ng-hide="groupErrorMessageDisplay">
+                    <table class="table table-striped table-bordered table-hover" name="group-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="groupname"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="group in groupList">
+                            <tr>
+                                <td>{{group.GroupName}}</td>
+                                <td>
+                                    <div class="action-td">
+                                        <a title="Edit" name="group-edit" ng-click="editGroupDetails(group.GroupId)"><i class="fa fa-edit"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="groupList.length >0" style="text-align:center">
+                        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

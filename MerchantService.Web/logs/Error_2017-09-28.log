@@ -1,0 +1,27 @@
+Time : 10:18:57.3205 
+Message : 
+ErrorPath : /api/supplierpo/updatespo
+RawUrl : /api/supplierpo/updatespo
+Message : Sequence contains no elements
+Source : System.Core
+StackTrace :    at System.Linq.Enumerable.Last[TSource](IEnumerable`1 source)
+   at MerchantService.Repository.Modules.WorkFlow.WorkFlowDetailsRepository.CheckLastActionPerform(Int32 recordId, String actionName, Int32 roleId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowDetailsRepository.cs:line 881
+TargetSite : TSource Last[TSource](System.Collections.Generic.IEnumerable`1[TSource]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 10:18:57.3385 
+Message : 
+ErrorPath : /api/supplierpo/updatespo
+RawUrl : /api/supplierpo/updatespo
+Message : Sequence contains no elements
+Source : System.Core
+StackTrace :    at System.Linq.Enumerable.Last[TSource](IEnumerable`1 source)
+   at MerchantService.Repository.Modules.WorkFlow.WorkFlowDetailsRepository.CheckLastActionPerform(Int32 recordId, String actionName, Int32 roleId) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowDetailsRepository.cs:line 890
+   at MerchantService.Core.Controllers.SupplierPO.SupplierPOController.UpdateSPO(SupplierPOAC supplierPO) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\SupplierPO\SupplierPOController.cs:line 167
+TargetSite : TSource Last[TSource](System.Collections.Generic.IEnumerable`1[TSource]) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 10:19:05.5998 
+Message : Sequence contains no elements 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,119 @@
+﻿<div ng-controller="BranchController" ng-init="intialize()">
+    <form name="addBranch" novalidate>
+        <div class="branch-page">
+            <div class="panel panel-default">
+                <div class="panel-heading">Add Branch</div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Branch:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.branchName.$touched && addBranch.branchName.$invalid }">
+                                <input type="text" name="branchName" ng-model="branchDetail.Name" auto-focus="isFocusIn" class="form-control" id="" placeholder="Branch" required maxlength="255">
+                                <span class="error">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="addBranch.branchName.$error" ng-if="addBranch.branchName.$touched">
+                                <p ng-message="required" class="text-error">{{branchNameRequired}}</p>
+                            </div>
+                            <div>
+                                <p ng-show="nameExists && addBranch.$valid" class="text-error">{{branchNameUnique}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Branch Name Sl:</label>
+                            <div class="col-md-5">
+                                <input type="text" name="branchNameSl" ng-model="branchDetail.NameSl" class="form-control" id="" placeholder="Branch" maxlength="255">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Code:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.branchCode.$touched && addBranch.branchCode.$invalid }">
+                                <input type="text" name="branchCode" ng-model="branchDetail.Code" class="form-control" id="branchCode" maxlength="50" placeholder="Code" required>
+                                <span class="error">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="addBranch.branchCode.$error" ng-if="addBranch.branchCode.$touched">
+                                <p ng-message="required" class="text-error">{{codeRequired}}</p>
+                            </div>
+                            <div>
+                                <p ng-show="codeExists && addBranch.$valid" class="text-error">{{codeUnique}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Address:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.google_places_ac.$touched && addBranch.google_places_ac.$invalid }">
+                                <google-places location=location></google-places>
+                                <span class="error error-textbox">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="addBranch.google_places_ac.$error" ng-if="addBranch.google_places_ac.$touched">
+                                <p ng-message="required" class="text-error">{{addressRequired}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Zip Code:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.branchZipcode.$touched && addBranch.branchZipcode.$invalid }">
+                                <input type="text" name="branchZipcode" ng-model="branchDetail.Zipcode" class="form-control" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}" ng-minlength="4" maxlength="15" placeholder="Zip Code">
+                                <div class="help-block" ng-messages="addBranch.branchZipcode.$error" ng-if="addBranch.branchZipcode.$touched">
+                                    <p ng-message="minlength" class="text-error">{{zipcodeMinlength}}</p>
+                                    <p ng-message="pattern" class="text-error"><span>Please Enter Valid Zip Code</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Email:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.branchEmail.$touched && addBranch.branchEmail.$invalid }">
+                                <input type="email" name="branchEmail" ng-model="branchDetail.Email" class="form-control" id="branchEmail" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" required maxlength="254">
+                                <span class="error">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="addBranch.branchEmail.$error" ng-if="addBranch.branchEmail.$touched">
+                                <p ng-message="required" class="text-error">{{emailRequired}}</p>
+                                <p ng-message="pattern" class="text-error">{{emailInvalid}}</p>
+                            </div>
+                            <div>
+                                <p ng-show="emailExists && addBranch.$valid" class="text-error">{{emailUnique}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Phone:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.branchPhone.$touched && addBranch.branchPhone.$invalid }">
+                                <input type="text" name="branchPhone" ng-model="branchDetail.Phone" class="form-control" id="" placeholder="Phone" ng-minlength="10" maxlength="15" pattern="^[0-9-+(][0-9-+()]{1,14}$" required>
+                                <span class="error">*</span>
+                            </div>
+                            <div class="help-block" ng-messages="addBranch.branchPhone.$error" ng-if="addBranch.branchPhone.$touched">
+                                <p ng-message="required" class="text-error">{{phoneRequired}}</p>
+                                <p ng-message="minlength" class="text-error">{{phoneMinLength}}</p>
+                                <p ng-message="pattern" class="text-error">{{phoneInvalid1}}</p>
+                            </div>
+                            <div>
+                                <p ng-show="phoneExists && addBranch.$valid" class="text-error">{{phoneUnique}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Fax:</label>
+                            <div class="col-md-5" ng-class="{ 'has-error': addBranch.branchFax.$touched && addBranch.branchFax.$invalid }">
+                                <input type="text" name="branchFax" ng-model="branchDetail.Fax" ng-pattern="/^[0-9-+(][0-9-+()]{1,14}$/" class="form-control" id="" placeholder="Fax" ng-minlength="10" maxlength="15">
+                            </div>
+                            <div class="help-block" ng-messages="addBranch.branchFax.$error" ng-if="addBranch.branchFax.$touched">
+                                <p ng-message="minlength" class="text-error">{{phoneMinLength}}</p>
+                                <p ng-message="pattern" class="text-error"><span>Please Add Valid Fax No.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <fieldset>
+                        <legend>Supplier Purchase Order</legend>
+                        <a class="pull-right help-icon" tooltip="Please Select any One"><span class="fa fa-question-circle"></span></a>
+                        <div></div>
+                        <div ng-repeat="spo in spoList">
+                            <input type="radio" ng-model="branchDetail.spoSelection" ng-value="spo.Id" name="spo.Name" required>
+                            {{spo.Name}}
+                        </div>
+                    </fieldset>
+                    <br />
+                    <div class="row text-center">
+                        <button class="btn btn-primary m-r-10" name="submitButton" ng-click="addBranchDetail(branchDetail)" ng-disabled="addBranch.$invalid">Submit</button>
+                        <button class="btn btn-default" name="cancel-btn" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

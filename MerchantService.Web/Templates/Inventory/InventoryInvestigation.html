@@ -1,0 +1,171 @@
+﻿<div ng-controller="issueStockInventoryController">
+    <div class="panel panel-default" ng-init="viewIssueStockInventoryDetailsById()">
+        <div class="panel-heading"><span string-replace="inventoryinvestigation"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <label><span string-replace="issuestockinventory"></span></label>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="255" ng-disabled="true" class="form-control" name="branch" ng-model="issueInventoryDetails.BranchName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="startdate"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="startdate" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="issueInventoryDetails.StartDate" is-open="isOpenStartDateFromModel" ng-required="true" close-text="Close" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventoryno"></span>.:</label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-disabled="true" class="form-control" maxlength="20" name="inventorynumber" ng-model="issueInventoryDetails.InventoryNO" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="matchitemcount"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="6" ng-disabled="true" class="form-control" name="matchitem" ng-model="issueInventoryDetails.MatchItemCount" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventorytype"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-disabled="true" class="form-control" name="inventorytype" ng-model="issueInventoryDetails.InventoryType" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0 label-multi"><span string-replace="unmatchitemcount"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="6" ng-disabled="true" class="form-control" name="unmatchitem" ng-model="issueInventoryDetails.UnMatchItemCount" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div ng-if="issueInventoryDetails.UnmatchedItemCollection.length > 0">
+                <label><span string-replace="inventoryunmatcheditems"></span></label>
+                <hr />
+                <table class="table table-striped table-bordered table-hover" name="inventory-item-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="barcode"></span></th>
+                            <th><span string-replace="unit"></span></th>
+                            <th><span string-replace="name"></span></th>
+                            <th><span string-replace="shelfquantity"></span></th>
+                            <th><span string-replace="systemquantity"></span></th>
+                            <th><span string-replace="totalprice"></span></th>
+                            <th><span string-replace="resolve"></span></th>
+                            <th><span string-replace="comment"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="unmatchedItemDetails in issueInventoryDetails.UnmatchedItemCollection| itemsPerPage: 10">
+                            <td>{{unmatchedItemDetails.Barcode}}</td>
+                            <td>{{unmatchedItemDetails.Unit}}</td>
+                            <td>{{unmatchedItemDetails.ItemName}}</td>
+                            <td>{{unmatchedItemDetails.ShelfQuantity}}</td>
+                            <td>{{unmatchedItemDetails.SystemQuantity}}</td>
+                            <td>{{unmatchedItemDetails.TotalPrice}}</td>
+                            <td ng-if="$root.merchatSettings.IsAllowUnmatchedItemRecover && !issueInventoryDetails.IsActive">
+                                <ui-select name="branchName" ng-disabled="!issueInventoryDetails.IsRecoveItem" ng-model="unmatchedItemDetails.ResolvedId" class="icr-select">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="unmatchedItem.Id as unmatchedItem in unmatchedItemResolvedCollection | filter: $select.search">
+                                        <div ng-bind-html="unmatchedItem.Name | highlight: $select.search" name="{{unmatchedItem.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td ng-if="$root.merchatSettings.IsAllowUnmatchedItemRecover && issueInventoryDetails.IsActive">
+                                <ui-select name="branchName" ng-disabled="true" ng-model="unmatchedItemDetails.ResolvedId" class="icr-select">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="unmatchedItem.Id as unmatchedItem in unmatchedItemResolvedCollection | filter: $select.search">
+                                        <div ng-bind-html="unmatchedItem.Name | highlight: $select.search" name="{{unmatchedItem.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td ng-if="!$root.merchatSettings.IsAllowUnmatchedItemRecover">
+                                <ui-select name="branchName" ng-model="unmatchedItemDetails.ResolvedId" class="icr-select" ng-disabled="true">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="unmatchedItem.Id as unmatchedItem in unmatchedItemResolvedCollection | filter: $select.search">
+                                        <div ng-bind-html="unmatchedItem.Name | highlight: $select.search" name="{{unmatchedItem.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td ng-if="$root.merchatSettings.IsAllowUnmatchedItemRecover && !issueInventoryDetails.IsActive">
+                                <input type="text" ng-disabled="!issueInventoryDetails.IsRecoveItem" maxlength="350" ng-model="unmatchedItemDetails.UnmatchedItemComment" />
+                            </td>
+                            <td ng-if="$root.merchatSettings.IsAllowUnmatchedItemRecover && issueInventoryDetails.IsActive">
+                                <input type="text" ng-disabled="true" ng-model="unmatchedItemDetails.UnmatchedItemComment" maxlength="350"/>
+                            </td>
+                            <td ng-if="!$root.merchatSettings.IsAllowUnmatchedItemRecover">
+                                <input type="text" ng-disabled="true" ng-model="unmatchedItemDetails.UnmatchedItemComment" maxlength="350"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div ng-show="issueInventoryDetails.UnmatchedItemCollection.length >0" style="text-align:center">
+                    <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                </div>
+            </div>
+
+            <br />
+            <label><span string-replace="action"></span></label>
+            <hr />
+            <table class="table table-striped table-bordered table-hover" name="action-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="stage"></span></th>
+                        <th><span string-replace="action"></span></th>
+                        <th><span string-replace="actiondate"></span></th>
+                        <th><span string-replace="role"></span></th>
+                        <th><span string-replace="username"></span></th>
+                        <th><span string-replace="comment"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="workFlowAction in issueInventoryDetails.WorkFlowAction">
+                        <td>{{workFlowAction.Stage}}</td>
+                        <td>{{workFlowAction.Action}}</td>
+                        <td>{{workFlowAction.ActionDate}}</td>
+                        <td>{{workFlowAction.RoleName}}</td>
+                        <td>{{workFlowAction.UserName}}</td>
+                        <td>{{workFlowAction.Comment}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" maxlength="350" ng-model="issueInventoryDetails.InitiationComment" name="comment"></textarea>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row text-center">
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && issueInventoryDetails.IsAllowReViewButton && issueInventoryDetails.IsReview && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="reviewIssueStockInventoryById(issueInventoryDetails)"><span string-replace="review"></span></button>
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && issueInventoryDetails.IsAllowApprovalButton && issueInventoryDetails.IsReview && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="issueStockInventoryApprovalById(issueInventoryDetails,true)"><span string-replace="approve"></span></button>
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && issueInventoryDetails.IsAllowApprovalButton && issueInventoryDetails.IsReview && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="issueStockInventoryApprovalById(issueInventoryDetails,false)"><span string-replace="reject"></span></button>
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && issueInventoryDetails.IsResubmitRequest && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="reSubmitIssueStockInventory(issueInventoryDetails,true)"><span string-replace="resubmit"></span></button>
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && issueInventoryDetails.IsRejectedRequest && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="reSubmitIssueStockInventory(issueInventoryDetails,true)"><span string-replace="approve"></span></button>
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && issueInventoryDetails.IsRejectedRequest && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="reSubmitIssueStockInventory(issueInventoryDetails,false)"><span string-replace="reject"></span></button>
+                <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowReviewStockInventory && issueInventoryDetails.IsResubmitReRecord && !issueInventoryDetails.IsActive && !issueInventoryDetails.IsDeleted" name="save-btn" ng-click="reSubmitIssueStockInventory(issueInventoryDetails,true)"><span string-replace="resubmit"></span></button>
+                <button class="btn btn-default" name="cancel-btn" ng-click="cancelIssueInventory()"><span string-replace="cancelpos"></span></button>
+            </div>
+        </div>
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Mappings>
+  <Map TableName="Languages" ClassName="MerchantService.DomainModel.Models.Globalization.Language" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="CurrencyDetails" ClassName="MerchantService.DomainModel.Models.Globalization.CurrencyDetail" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="CompanyConfigurations" ClassName="MerchantService.DomainModel.Models.Company.CompanyConfiguration" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="ParentPermissions" ClassName="MerchantService.DomainModel.Models.WorkFlow.ParentPermission" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="ChildPermissions" ClassName="MerchantService.DomainModel.Models.WorkFlow.ChildPermission" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="Roles" ClassName="MerchantService.DomainModel.Models.Role.Role" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="RolePermissions" ClassName="MerchantService.DomainModel.Models.WorkFlow.RolePermission" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="GlobalizationDetails" ClassName="MerchantService.DomainModel.Models.Globalization.GlobalizationDetail" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="SecondaryLanguages" ClassName="MerchantService.DomainModel.Models.Globalization.SecondaryLanguage" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="Params" ClassName="MerchantService.DomainModel.Models.SystemParameters.Param" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="ParamTypes" ClassName="MerchantService.DomainModel.Models.SystemParameters.ParamType" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="SystemParameters" ClassName="MerchantService.DomainModel.Models.SystemParameters.SystemParameter" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="Categories" ClassName="MerchantService.DomainModel.Models.Item.Category" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="UserDetails" ClassName=" MerchantService.DomainModel.Models.UserDetail" AssemblyName=" MerchantService.DomainModel"></Map>
+  <Map TableName="SupplierProfiles" ClassName="MerchantService.DomainModel.Models.Supplier.SupplierProfile" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="CustomerProfiles" ClassName="MerchantService.DomainModel.Models.Customer.CustomerProfile" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="ItemProfiles" ClassName="MerchantService.DomainModel.Models.Item.ItemProfile" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="ItemQuantities" ClassName="MerchantService.DomainModel.Models.Item.ItemQuantity" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="ItemOffers" ClassName="MerchantService.DomainModel.Models.Item.ItemOffer" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="POSLoginSessions" ClassName="MerchantService.DomainModel.Models.POS.POSLoginSession" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="POSSessions" ClassName="MerchantService.DomainModel.Models.POS.POSSession" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="POSBills" ClassName="MerchantService.DomainModel.Models.POS.POSBill" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="POSBillPayments" ClassName="MerchantService.DomainModel.Models.POS.POSBillPayment" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="POSBillItems" ClassName="MerchantService.DomainModel.Models.POS.POSBillItem" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="Groups" ClassName="MerchantService.DomainModel.Models.Accounting.Group" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="GroupTypes" ClassName="MerchantService.DomainModel.Models.Accounting.GroupType" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="Ledgers" ClassName="MerchantService.DomainModel.Models.Accounting.Ledgers" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="DoubleEntries" ClassName="MerchantService.DomainModel.Models.Accounting.DoubleEntry" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="IncidentReports" ClassName="MerchantService.DomainModel.Models.IncidentReport.IncidentReport" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="CashierIncidentReports" ClassName="MerchantService.DomainModel.Models.IncidentReport.CashierIncidentReport" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="PosIncidentReports" ClassName="MerchantService.DomainModel.Models.IncidentReport.PosIncidentReport" AssemblyName="MerchantService.DomainModel"></Map>
+  <Map TableName="POSNonSaleTransactions" ClassName="MerchantService.DomainModel.Models.POS.POSNonSaleTransaction" AssemblyName="MerchantService.DomainModel"></Map>
+</Mappings>

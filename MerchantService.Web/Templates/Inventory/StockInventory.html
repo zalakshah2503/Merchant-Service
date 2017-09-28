@@ -1,0 +1,219 @@
+﻿<div ng-controller="issueStockInventoryController">
+    <div class="panel panel-default" ng-init="getAllInventoryList()">
+        <div class="panel-heading"><span string-replace="stockinventory"></span></div>
+        <div class="panel-body">
+            <div>
+                <button class="btn btn-primary pull-right" name="issue-stock-btn" ng-if="$root.merchatSettings.IsAllowToInitiateIssueStockInventory" ng-click="addIssueStockInventory()"><span string-replace="issuestockinventory"></span></button>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select name="branchName" ng-model="search.BranchId" required>
+                                    <ui-select-match placeholder="Select Branch Name">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.BranchId as branch in branchList | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventorytype"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select name="inventoryType" ng-model="search.ParamTypeId">
+                                    <ui-select-match placeholder="Select Type">{{$select.selected.ValueEn}}</ui-select-match>
+                                    <ui-select-choices repeat="inventory.ParamTypeId as inventory in inventoryTypeCollection | filter: $select.search">
+                                        <div ng-bind-html="inventory.ValueEn | highlight: $select.search" name="{{inventory.ValueEn}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="inventoryno"></span>.:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="50" class="form-control" ng-model="search.InventoryNO" name="inventoryno" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="18" class="form-control" ng-model="search.Barcode" name="barcode" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="suppliername"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="search.SupplierId" name="supplier">
+                                    <ui-select-match placeholder="Select Supplier">{{$select.selected.NameEn}}</ui-select-match>
+                                    <ui-select-choices repeat="supplier.SupplierProfileId as supplier in supplierCollection | filter: $select.search">
+                                        <div ng-bind-html="supplier.NameEn | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0"><span string-replace="category"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="search.CategoryId" name="category">
+                                    <ui-select-match placeholder="Select Category">{{$select.selected.CategoryName}}</ui-select-match>
+                                    <ui-select-choices repeat="category.CategoryId as category in categoryCollection | filter: $select.search">
+                                        <div ng-bind-html="category.CategoryName | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchIssueInventoryDetails()"><span string-replace="search"></span></button>
+                </div>
+            </div>
+
+            <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                <span>{{noRecordFound}}</span>
+            </div>
+            <br />
+            <div ng-hide="errorMessageDisplayForBlankList">
+
+                <div>
+                    <label><span string-replace="inventoryworklist"></span></label>
+                    <hr />
+                    <table class="table table-striped table-bordered table-hover" name="inventory-worklist-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="branch"></span></th>
+                                <th><span string-replace="type"></span> </th>
+                                <th><span string-replace="inventoryno"></span></th>
+                                <th><span string-replace="startdate"></span></th>
+                                <th><span string-replace="enddate"></span></th>
+                                <th ng-if="$root.merchatSettings.IsAllowUnmatchedItemRecover"><span string-replace="system"></span></th>
+                                <th><span string-replace="self"></span></th>
+                                <th><span string-replace="status"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="inventory in inventoryColletion| itemsPerPage: 10">
+                                <td>{{inventory.BranchName}}</td>
+                                <td>{{inventory.InventoryType}}</td>
+                                <td>{{inventory.InventoryNO}}</td>
+                                <td>{{inventory.StartDate| date:'dd-MM-yyyy'}}</td>
+                                <td>{{inventory.CloseDate| date:'dd-MM-yyyy'}}</td>
+                                <td ng-if="$root.merchatSettings.IsAllowUnmatchedItemRecover">{{inventory.SystemAmount}}</td>
+                                <td>{{inventory.ShelfAmount}}</td>
+                                <td>{{inventory.WorkFlowStatus}}</td>
+                                <td class="action-td-width">
+                                    <div class="action-td">
+                                        <a title="MoniterView" name="inventory-moniter-view" ng-if="!inventory.IsReview" ng-click="viewIssueStockInventoryMoniterDetails(inventory.IssueStockInventoryId)"><i class="fa fa-eye"></i></a>
+                                        <a title="View" name="inventory-worklist-view" ng-if="inventory.IsReview" ng-click="viewIssueStockInventoryDetails(inventory.IssueStockInventoryId)"><i class="fa fa-eye"></i></a>
+                                        <a title="Delete" name="inventory-worklist-delete" ng-if="$root.merchatSettings.IsAllowToInitiateIssueStockInventory && inventory.IsInitiate" ng-click="deleteIssueStockInventory(inventory)"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div ng-show="inventoryColletion.length >0" style="text-align:center">
+                        <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="">
+    <div class="modal-header">
+        <h3 class="modal-title"><span string-replace="investigatestockinventory"></span> </h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="brand"></span>:</label>
+                        <div class="col-sm-8">
+                            <ui-select ng-model="" ng-change="" name="brand">
+                                <ui-select-match placeholder="Select Type"></ui-select-match>
+                                <ui-select-choices repeat="">
+                                    <div ng-bind-html="" name=""></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="itemtype"></span>:</label>
+                        <div class="col-sm-8">
+                            <ui-select ng-model="" ng-change="" name="type">
+                                <ui-select-match placeholder="Select Type"></ui-select-match>
+                                <ui-select-choices repeat="">
+                                    <div ng-bind-html="" name=""></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="startdate"></span>:</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" disabled name="statdate" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="" is-open="isJointPickerDateOpened" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click=""><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="supplier"></span>:</label>
+                        <div class="col-sm-8">
+                            <ui-select ng-model="" ng-change="" name="supplier">
+                                <ui-select-match placeholder="Select Type"></ui-select-match>
+                                <ui-select-choices repeat="">
+                                    <div ng-bind-html="" name=""></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="category"></span>:</label>
+                        <div class="col-sm-8">
+                            <ui-select ng-model="" ng-change="" name="category">
+                                <ui-select-match placeholder="Select Type"></ui-select-match>
+                                <ui-select-choices repeat="">
+                                    <div ng-bind-html="" name=""></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="" name="barcode">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" name="issue-inventory"><span string-replace="issueinventory"></span></button>
+    </div>
+</script>

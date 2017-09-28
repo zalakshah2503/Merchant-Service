@@ -1,0 +1,290 @@
+﻿<div ng-controller="incidentReportController">
+    <div class="panel panel-default" ng-init="getIncidentReportDetailsById()">
+        <div class="panel-heading"><span string-replace="itemincidentreport"></span></div>
+        <div class="panel-body">
+            <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                <span>{{noItemFound}}</span>
+            </div>
+            <br />
+            <div ng-show="!errorMessageDisplayForBlankList">
+                <form name="itemIncident">
+                    <div class="form-horizontal">
+                        <label><span string-replace="incidentdetails"></span></label>
+                        <hr />
+                        <div class="row" ng-class="{'disabled':incidentReportDetail.IsDisabledInfo}">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="incidenttype"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" maxlength="255" class="form-control" ng-model="incidentReportDetail.IncidentTypeName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="branch"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" maxlength="255" class="form-control" ng-model="incidentReportDetail.BranchName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="costprice"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" ng-model="incidentReportDetail.CostPrice" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="incidentquantity"></span>:</label>
+                                    <div class="col-md-7" ng-class="{'enabled': $root.merchatSettings.IsAllowedToInitiateIncidentReport && incidentReportDetail.IsProcess && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser}">
+                                        <input type="text" name="incidentqty" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" class="form-control" ng-model="incidentReportDetail.ItemOverQuantity" />
+                                        <div class="help-block" ng-messages="itemIncident.incidentqty.$error" ng-if="itemIncident.incidentqty.$touched">
+                                            <p ng-message="pattern" class="text-error">{{validIncidentQuantity}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="incidentselfquantity"></span>:</label>
+                                    <div class="col-md-7" ng-class="{'enabled': $root.merchatSettings.IsAllowedToInitiateIncidentReport && incidentReportDetail.IsProcess && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser}">
+                                        <input type="text" maxlength="6" name="incidentselfqty" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" class="form-control" ng-model="incidentReportDetail.ShelfQuantity" />
+                                        <div class="help-block" ng-messages="itemIncident.incidentselfqty.$error" ng-if="itemIncident.incidentselfqty.$touched">
+                                            <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="sellprice"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.SellPrice" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="incidentsystemquantity"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" name="incidentsysqty" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-model="incidentReportDetail.SystemQuantity" />
+                                        <div class="help-block" ng-messages="itemIncident.incidentsysqty.$error" ng-if="itemIncident.incidentsysqty.$touched">
+                                            <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="date"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" ng-model="incidentReportDetail.IncidentDate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="currentsystemquantity"></span></label>
+                                    <div class="col-md-7">
+                                        <input type="text" name="currentsysqty" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-model="incidentReportDetail.CurrentSystemQuantity" />
+                                        <div class="help-block" ng-messages="itemIncident.currentsysqty.$error" ng-if="itemIncident.currentsysqty.$touched">
+                                            <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <label><span string-replace="targetitem"></span></label>
+                        <hr />
+                        <div class="row" ng-class="{'disabled':incidentReportDetail.IsDisabledInfo}">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="itemarabicname"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" maxlength="255" class="form-control" ng-model="incidentReportDetail.ItemDetails.ItemNameAr" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="itemname"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="255" ng-model="incidentReportDetail.ItemDetails.ItemNameEn" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="itemarabicflavor"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="255" ng-model="incidentReportDetail.ItemDetails.FlavourAr" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="itemflavor"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="255" ng-model="incidentReportDetail.ItemDetails.FlavourEn" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="itemtype"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="255" ng-model="incidentReportDetail.ItemDetails.ItemType" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="isofferitem"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" ng-model="incidentReportDetail.ItemDetails.IsOfferItem" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="itemcode"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="20" ng-model="incidentReportDetail.ItemDetails.ItemCode" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="barcode"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="18" ng-model="incidentReportDetail.ItemDetails.Barcode" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="unittype"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="255" ng-model="incidentReportDetail.ItemDetails.UnitType" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label label-multi"><span string-replace="baseunitcount"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="20" ng-model="incidentReportDetail.ItemDetails.BaseUnitCount" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="isactivate"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" ng-model="incidentReportDetail.ItemDetails.IsActiveItem" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="sellpricea"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.ItemDetails.SellPriceA" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="sellpriceb"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.ItemDetails.SellPriceB" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="sellpricec"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.ItemDetails.SellPriceC" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="sellpriced"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.ItemDetails.SellPriceD" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label"><span string-replace="costprice"></span>:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.ItemDetails.CostPrice" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row text-center" ng-if="incidentReportDetail.IsRegisterItem">
+                            <br />
+                            <button class="btn btn-primary" ng-if="$root.merchatSettings.IsAllowedToInitiateIncidentReport && incidentReportDetail.IsProcess" name="edit-btn" ng-click="editItemInformation(incidentReportDetail.ItemId)"><span string-replace="edititem"></span></button>
+                        </div>
+                        <br />
+
+                        <div ng-if="$root.merchatSettings.IsAllowRecovery && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser">
+                            <label><span string-replace="recoveryaction"></span></label>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="col-md-5 control-label"><span string-replace="gainvalue"></span>:</label>
+                                        <div class="col-md-7">
+                                            <input type="text" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" class="form-control" ng-model="incidentReportDetail.CommittedGainValue" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="col-md-5 control-label"><span string-replace="lossvalue"></span>:</label>
+                                        <div class="col-md-7">
+                                            <input type="text" class="form-control" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" ng-model="incidentReportDetail.CommittedLossValue" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="col-md-5 control-label label-multi"><span string-replace="commitquantity"></span>:</label>
+                                        <div class="col-md-7">
+                                            <input type="text" name="commitqty" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" class="form-control" ng-model="incidentReportDetail.CommitedQuantity" />
+                                            <div class="help-block" ng-messages="itemIncident.commitqty.$error" ng-if="itemIncident.commitqty.$touched">
+                                                <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div ng-if="incidentReportDetail.WorkFlowAction != null">
+                            <label><span string-replace="action"></span></label>
+                            <hr />
+                            <table class="table table-striped table-bordered table-hover" name="item-incident-report-grid">
+                                <thead>
+                                    <tr>
+                                        <th><span string-replace="stage"></span></th>
+                                        <th><span string-replace="action"></span></th>
+                                        <th><span string-replace="actiondate"></span></th>
+                                        <th><span string-replace="role"></span></th>
+                                        <th><span string-replace="username"></span></th>
+                                        <th><span string-replace="comment"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr ng-repeat="workFlow in incidentReportDetail.WorkFlowAction">
+                                        <td>{{workFlow.Stage}}</td>
+                                        <td>{{workFlow.Action}}</td>
+                                        <td>{{workFlow.ActionDate}}</td>
+                                        <td>{{workFlow.RoleName}}</td>
+                                        <td>{{workFlow.UserName}}</td>
+                                        <td>{{workFlow.Comment}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="col-md-2 control-label"><span string-replace="comment"></span>:</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" ng-model="incidentReportDetail.Comment" maxlength="350"></textarea>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row text-center">
+                            <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowedToInitiateIncidentReport && incidentReportDetail.IsProcess && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser" name="approve-btn" ng-click="submitIncidentReport(incidentReportDetail)"><span string-replace="submitpos"></span></button>
+                            <button ng-if="$root.merchatSettings.IsAllowToReview && incidentReportDetail.IsReview && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser" class="btn btn-primary" type="button" ng-click="reviewIncidentReportDetails(incidentReportDetail)" name="update-btn"><span string-replace="review"></span></button>
+                            <button ng-if="$root.merchatSettings.IsAllowToReview && incidentReportDetail.IsApproval && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser" class="btn btn-primary" type="button" ng-click="incidentReportApproveAndReject(incidentReportDetail,true)" name="update-btn"><span string-replace="approve"></span></button>
+                            <button ng-if="$root.merchatSettings.IsAllowToReview && incidentReportDetail.IsApproval && !incidentReportDetail.IsActive && incidentReportDetail.IsCurrentUser" class="btn btn-primary" type="button" ng-click="incidentReportApproveAndReject(incidentReportDetail,false)" name="update-btn"><span string-replace="reject"></span></button>
+                            <button class="btn btn-default" name="cancel-btn" ng-click="cancelButtonEvent()"><span string-replace="cancelpos"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

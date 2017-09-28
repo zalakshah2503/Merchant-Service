@@ -1,0 +1,155 @@
+﻿<div ng-controller="internalTransferGoodsController">
+    <div class="panel panel-default" ng-init="getAllInventoryTransferList()">
+        <div class="panel-heading"><span string-replace="inventorytransferlist"></span></div>
+        <div class="panel-body">
+            <div ng-if="$root.merchatSettings.IsAllowToInitiateIntrenalTransferGood">
+                <button class="btn btn-primary pull-right" name="inventory-transfer-btn" ng-click="initiateTransferInventory()"><span string-replace="initiateinventorytransfer"></span></button>
+                <div class="clearfix"></div>
+                <br />
+            </div>
+            <div class="form-horizontal">
+                <label><span string-replace="searhfilter"></span></label>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="sendingbranch"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="searchTransfer.CurrentBranchId" name="targerbranch">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.BranchId as branch in branchCollection | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="receivingbranch"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="searchTransfer.TargetBranchId" name="receivingbranch">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.BranchId as branch in branchCollection | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="requestno"></span>.:</label>
+                            <div class="col-sm-7">
+                                <input type="text" maxlength="15" class="form-control" id="" name="requestno" ng-model="searchTransfer.RequestNo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="issuedatefrom"></span>:</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <input type="text" name="issuedatefrom" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="searchDate.IssueFromDate" is-open="isOpenIssueDateFromModel" ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openIssueDateFromModel($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="issuedateto"></span>:</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <input type="text" name="issuedateto" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="searchDate.IssueDate" is-open="isOpenIssueDateToModel" ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openIssueDateToModel($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="requesttype"></span>:</label>
+                            <div class="col-sm-7">
+                                <ui-select ng-model="searchTransfer.RequestTypeId" name="requesttype">
+                                    <ui-select-match placeholder="Select">{{$select.selected.ValueEn}}</ui-select-match>
+                                    <ui-select-choices repeat="requestType.ParamTypeId as requestType in requestTypeCollection | filter: $select.search">
+                                        <div ng-bind-html="requestType.ValueEn | highlight: $select.search" name="{{requestType.ValueEn}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="duedatefrom"></span>:</label>
+                            <div class="col-sm-7">
+                                <div class="input-group change-pos">
+                                    <input type="text" disabled name="issuedatef" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="searchDate.DueFromDate" is-open="isDueDateFromPickerOpened" ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openDueDateFromModel($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="duedateto"></span>:</label>
+                            <div class="col-sm-7">
+                                <div class="input-group change-pos">
+                                    <input type="text" disabled class="form-control" name="issuedatet" datepicker-popup="dd-MMMM-yyyy" ng-model="searchDate.DueDate" is-open="isDueDateToPickerOpened" ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openDueDateToModel($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchInventoryDetails()"><span string-replace="search"></span></button>
+                </div>
+            </div>
+            <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                <span>{{noRecordFound}}</span>
+            </div>
+            <br />
+            <div ng-hide="errorMessageDisplayForBlankList">
+                <br />
+                <label><span string-replace="inventorytransferlist"></span></label>
+                <hr />
+                <table class="table table-striped table-bordered table-hover" name="inventory-transfer-grid">
+                    <thead>
+                        <tr>
+                            <th><span string-replace="requestno"></span></th>
+                            <th><span string-replace="sender"></span> </th>
+                            <th><span string-replace="receiver"></span></th>
+                            <th><span string-replace="requesttype"></span></th>
+                            <th><span string-replace="issuedate"></span></th>
+                            <th><span string-replace="duedate"></span></th>
+                            <th><span string-replace="status"></span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="inventory in inventoryTransferCollection| itemsPerPage: 10" ng-class="{'highlight-row': inventory.IsTragetedBranch}">
+                            <td>{{inventory.RequestNo}}</td>
+                            <td>{{inventory.CurrentBranchName}}</td>
+                            <td>{{inventory.TargetBranchName}}</td>
+                            <td>{{inventory.RequestType}}</td>
+                            <td>{{inventory.IssuedDateTime|date:'dd-MM-yyyy'}}</td>
+                            <td>{{inventory.DueDate|date:'dd-MM-yyyy'}}</td>
+                            <td>{{inventory.WorkFlowStatus}}</td>
+                            <td class="action-td-width">
+                                <div class="action-td">
+                                    <a title="view" name="inventory-edit" ng-click="viewInternalTransferGoodDetails(inventory.InventoryTransferId)"><i class="fa fa-eye"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="inventoryTransferCollection.length >0" style="text-align:center">
+                    <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

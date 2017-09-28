@@ -1,0 +1,453 @@
+﻿<div ng-controller="SupplierProfileController" ng-init="getSupplierType()">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="supplierprofile"></span></div>
+        <div class="panel-body">
+            <div ng-hide="isAddSupplier">
+                <div ng-if="$root.merchatSettings.IsAllowToCreateSupplierProfile">
+                    <button class="btn btn-primary pull-right" ng-click="addSupplier()" name="add-supplier-btn"><span string-replace="addsupplier"></span></button>
+                </div>
+                <div class="clearfix"></div>
+                <br />
+                <div ng-show="IsSupplierListVisible">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><span string-replace="suppliername"></span>:</label>
+                                    <div class="col-md-8">
+                                        <ui-select name="supplier" ng-model="search.NameEn" ng-change="onSeacrhSupplierNameChanged()">
+                                            <ui-select-match placeholder="Select Supplier Name">{{$select.selected.NameEn}}</ui-select-match>
+                                            <ui-select-choices repeat="supplier.NameEn as supplier in supplierList | filter: $select.search">
+                                                <div ng-bind-html="supplier.NameEn" name="{{supplier.NameEn}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><span string-replace="suppliercode"></span>:</label>
+                                    <div class="col-md-8">
+                                        <ui-select name="supplier" ng-model="search.Code" ng-change="onSeacrhSupplierCodeChanged()">
+                                            <ui-select-match placeholder="Select Supplier Code">{{$select.selected.Code}}</ui-select-match>
+                                            <ui-select-choices repeat="supplier.Code as supplier in supplierList | filter: $select.search">
+                                                <div ng-bind-html="supplier.Code" name="{{supplier.Code}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" name="search-btn" ng-click="searchSupplierDetails()"><span string-replace="search"></span></button>
+                                <!--<input type="submit" name="search-btn" value="Search" ng-click="searchSupplierDetails()" class="btn btn-primary" />-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div>
+                    <div class="alert alert-success text-center" role="alert" ng-hide="IsSupplierListVisible">
+                        <span>{{supplierNotFound}}</span>
+                    </div>
+                </div>
+                <div ng-hide="supplierErrorMessageDisplay">
+                    <div ng-show="IsSupplierListVisible">
+                        <table class="table table-striped table-bordered table-hover" name="supplier-profile">
+                            <thead>
+                                <tr>
+                                    <th><span string-replace="suppliername"></span></th>
+                                    <th><span string-replace="suppliercode"></span></th>
+                                    <th><span string-replace="creditsupplier"></span></th>
+                                    <th><span string-replace="phone"></span></th>
+                                    <th><span string-replace="fax"></span></th>
+                                    <th><span string-replace="email"></span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody dir-paginate="supplier in supplierProfileList|orderBy:'-CreatedDateTime'| itemsPerPage: 10" ng-hide="supplierErrorMessageDisplay">
+                                <tr>
+                                    <td class="grid-width">{{supplier.NameEn}}</td>
+                                    <td class="grid-width">{{supplier.Code}}</td>
+                                    <td class="grid-width">{{supplier.SupplierTypeId.ValueEn}}</td>
+                                    <td>{{supplier.Phone}}</td>
+                                    <td>{{supplier.Fax}}</td>
+                                    <td class="grid-width">{{supplier.Email}}</td>
+                                    <td class="action-td-width">
+                                        <div class="action-td">
+                                            <a ng-if="$root.merchatSettings.IsAllowToEditSupplierProfile" title="Edit" ng-click="editSupplierProfile(supplier.Id)"><i class="fa fa-edit"></i></a>
+                                            <a ng-if="$root.merchatSettings.IsAllowToDeleteSupplier" title="Delete" data-toggle="modal" ng-click="openDeleteSupplierPopup(supplier)"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-show="supplierTotalCollection.length >0" style="text-align:center">
+                            <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div ng-show="isAddSupplier">
+                <tabset>
+                    <tab heading="{{ProfileTab}}" ng-click="supplierTabClick()">
+                        <br />
+                        <form name="addSupplierProfile" novalidate>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="name"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.nameEn.$touched && addSupplierProfile.nameEn.$invalid }">
+                                        <input type="text" name="nameEn" ng-model="supplierProfile.NameEn" class="form-control" placeholder="Name" maxlength="255" required auto-focus="isFocusIn">
+                                        <span class="error">*</span>
+                                    </div>
+                                    <div class="help-block" ng-messages="addSupplierProfile.nameEn.$error" ng-if="addSupplierProfile.nameEn.$touched">
+                                        <p ng-message="required" class="text-error">{{nameRequired}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="suppliercode"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.code.$touched && addSupplierProfile.code.$invalid }">
+                                        <input type="text" class="form-control" name="code" id="supplierCode" ng-model="supplierProfile.Code" maxlength="50" placeholder="Supplier Code" ng-disabled="isUpdate" required>
+                                        <span class="error">*</span>
+                                    </div>
+                                    <div class="help-block" ng-messages="addSupplierProfile.code.$error" ng-if="addSupplierProfile.code.$touched">
+                                        <p ng-message="required" class="text-error">{{supplierCodeRequired}}</p>
+                                    </div>
+                                    <div>
+                                        <p ng-show="codeExists && addSupplierProfile.$valid" class="text-error">{{supplierCodeUnique}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="address"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.addressEn.$touched && addSupplierProfile.addressEn.$invalid }">
+                                        <textarea type="text" class="form-control" name="addressEn" ng-model="supplierProfile.AddressEn" maxlength="350" placeholder="Address" required></textarea>
+                                        <span class="error-textbox error">*</span>
+                                    </div>
+                                    <div class="help-block" ng-messages="addSupplierProfile.addressEn.$error" ng-if="addSupplierProfile.addressEn.$touched">
+                                        <p ng-message="required" class="text-error">{{addressRequired}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="phone"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.Phone.$touched && addSupplierProfile.Phone.$invalid }">
+                                        <input type="text" name="Phone" class="form-control" ng-model="supplierProfile.Phone" id="" placeholder="Phone" ng-minlength="10" pattern="^[0-9-+(][0-9-+()]{1,14}$" maxlength="15">
+                                        <div class="help-block" ng-messages="addSupplierProfile.Phone.$error" ng-if="addSupplierProfile.Phone.$touched">
+                                            <p ng-message="minlength" class="text-error">{{phoneMinLength}}</p>
+                                            <p ng-message="pattern" class="text-error">{{phoneInvalid}}</p>
+                                        </div>
+                                        <div>
+                                            <p ng-show="phoneExists && addSupplierProfile.$valid" class="text-error">{{phoneUnique}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="fax"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.Fax.$touched && addSupplierProfile.Fax.$invalid }">
+                                        <input type="text" class="form-control" ng-model="supplierProfile.Fax" name="Fax" ng-minlength="10" pattern="^[0-9-+(][0-9-+()]{1,14}$" placeholder="Fax" maxlength="15">
+                                        <div class="help-block" ng-messages="addSupplierProfile.Fax.$error" ng-if="addSupplierProfile.Fax.$touched">
+                                            <p ng-message="minlength" class="text-error">{{phoneMinLength}}</p>
+                                            <p ng-message="pattern" class="text-error">{{FaxInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="email"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.email.$touched && addSupplierProfile.email.$invalid }">
+                                        <input type="email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" name="email" class="form-control" ng-model="supplierProfile.Email" id="" maxlength="255" placeholder="Email">
+                                        <div class="help-block" ng-messages="addSupplierProfile.email.$error" ng-if="addSupplierProfile.email.$touched">
+                                            <p ng-message="pattern" class="text-error">{{emailInvalid}}</p>
+                                        </div>
+                                        <div>
+                                            <p ng-show="emailExists && addSupplierProfile.$valid" class="text-error">{{emailUnique}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="zipcode"></span>:</label>
+                                    <div class="col-md-5" ng-class="{ 'has-error': addSupplierProfile.Zipcode.$touched && addSupplierProfile.Zipcode.$invalid }">
+                                        <input type="text" class="form-control" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}" ng-model="supplierProfile.ZipCode" name="Zipcode" ng-minlength="4" maxlength="15" placeholder="Zip Code">
+                                        <div class="help-block" ng-messages="addSupplierProfile.Zipcode.$error" ng-if="addSupplierProfile.Zipcode.$touched">
+                                            <p ng-message="minlength" class="text-error">{{zipcodeMinlength}}</p>
+                                            <p ng-message="pattern" class="text-error"><span>{{ValidZipcodeMessage}}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="bobox"></span>:</label>
+                                    <div class="col-md-5">
+                                        <input type="text" name="bobox" class="form-control" ng-model="supplierProfile.POBox" id="" maxlength="10" placeholder="b.o.box">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="isActiveVisible">
+                                    <label class="col-md-3 control-label"><span string-replace="active"></span>:</label>
+                                    <div class="col-md-5">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="" ng-model="supplierProfile.IsActive" ng-change="onIsActiveChanged(supplierProfile.Id)" ng-checked="supplierProfile.IsActive">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="suppliertype"></span>:</label>
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-3" ng-class="{ 'has-error': addSupplierProfile.supplierType.$touched && addSupplierProfile.supplierType.$invalid }">
+                                                <ui-select name="supplierType" ng-model="supplierProfile.SupplierTypeId" ng-change="onChangeSupplierType($select.selected.ValueEn)" required>
+                                                    <ui-select-match placeholder="Select">{{$select.selected.ValueEn}}</ui-select-match>
+                                                    <ui-select-choices repeat="supplierType.Id as supplierType in supplierTypeList | filter: $select.search">
+                                                        <div ng-bind-html="supplierType.ValueEn | highlight: $select.search" name="{{supplierType.ValueEn}}"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="error">*</span>
+                                                <div class="help-block" ng-messages="addSupplierProfile.supplierType.$error" ng-if="addSupplierProfile.supplierType.$touched">
+                                                    <p ng-message="required" class="text-error">{{supplierTypeRequired}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3" ng-hide="!enableDaysLimit" ng-class="{ 'has-error': addSupplierProfile.dayslimit.$touched && addSupplierProfile.dayslimit.$invalid && enableDaysLimit}">
+                                                <input type="text" name="dayslimit" ng-pattern="/^[0-9]*$/" class="form-control" ng-model="supplierProfile.TotalDaysLimit" ng-change="onChangeDays(supplierProfile.TotalDaysLimit)" placeholder="Total Days Limit" maxlength="4">
+                                                <div class="help-block" ng-messages="addSupplierProfile.dayslimit.$error" ng-if="addSupplierProfile.dayslimit.$touched">
+                                                    <p ng-message="pattern" class="text-error">{{ValidNoofDaysMessage}}</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="col-md-3" ng-hide="!enableDaysLimit">
+                                                    <ui-select name="days" ng-model="supplierProfile.Days">
+                                                        <ui-select-match placeholder="select days">{{$select.selected.Days}}</ui-select-match>
+                                                        <ui-select-choices repeat="limit.Id as limit in days | filter: $select.search">
+                                                            <div ng-bind-html="limit.Days" name="{{limit.Days}}"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                                <div class="col-md-2" ng-hide="!enableDaysLimit">
+                                                    <input type="text" name="discount" class="form-control discount-input" ng-model="supplierProfile.Discount" ng-pattern="/^[0-9]{0,2}(\.[0-9]{1,2})?$|^(100)(\.[0]{1,2})?$/" maxlength="6" placeholder="Discount">%
+                                                    <div class="help-block" ng-if="checkDiscount(supplierProfile.Discount)">
+                                                        <p class="text-error"><span>{{ValidDiscountMessage}}</span></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-1" ng-hide="!enableDaysLimit">
+                                                    <button type="button" name="plus-add-btn" ng-click="addElements()" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-repeat="element in elementList">
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-3" ng-hide="!enableDaysLimit">
+                                                    <ui-select name="days" ng-model="element.Days">
+                                                        <ui-select-match placeholder="select days">{{$select.selected.Days}}</ui-select-match>
+                                                        <ui-select-choices repeat="limit.Id as limit in days | filter: $select.search">
+                                                            <div ng-bind-html="limit.Days" name="{{limit.Days}}"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                                <div class="col-md-2" ng-hide="!enableDaysLimit">
+                                                    <input type="text" name="discount" ng-model="element.Discount" class="form-control discount-input" pattern="^\d+[.]?\d*%?$" maxlength="6" ng-change="checkDiscount(element.Discount)" placeholder="Discount">%
+                                                    <div class="help-block" ng-if="checkDiscount(element.Discount)">
+                                                        <p class="text-error"><span>{{ValidDiscountMessage}}</span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1" ng-hide="!enableDaysLimit">
+                                                    <button class="btn btn-primary btn-circle" name="remove-btn" ng-show="$last" ng-click="removeElement()"><i class="fa fa-minus"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><span string-replace="acceptreturnforexpireditem"></span>:</label>
+                                    <div class="checkbox col-md-5">
+                                        <label>
+                                            <input type="checkbox" name="expire" ng-model="supplierProfile.IsAcceptReturnForExpiredItem" value="">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <label ng-show="$root.merchatSettings.IsAllowToCreateSupplierProfile">
+                                    <button name="submit-btn" ng-hide="isUpdate" ng-click="addSupplierProfiles(supplierProfile)" ng-disabled="addSupplierProfile.$invalid" class="btn btn-primary m-r-10" string-replace="submitpos"></button>
+                                </label>
+                                <label ng-show="$root.merchatSettings.IsAllowToEditSupplierProfile">
+                                    <button name="sec-btn" ng-show="isUpdate" ng-click="updateSupplierProfile(supplierProfile)" ng-disabled="addSupplierProfile.$invalid" class="btn btn-primary m-r-10" string-replace="update" ></button>
+                                </label>
+                                <button name="cancel-btn" ng-click="cancel()" class="btn btn-default" string-replace="cancelpos" ></button>
+                            </div>
+                            <br />
+                        </form>
+                    </tab>
+
+                    <tab heading="{{ContactInfoTab}}" ng-click="addContact()" ng-hide="!isUpdate">
+                        <form name="addSupplierContact" id="addSupplierContact" novalidate>
+                            <div class="p-15">
+                                <div class="alert alert-success text-center" role="alert" ng-hide="IsContactPersonListVisible">
+                                    <span>{{contactNotFound}}</span>
+                                </div>
+                                <br />
+                                <table class="table table-striped table-bordered table-hover" ng-show="IsContactPersonListVisible" name="contacts-grid">
+                                    <thead>
+                                        <tr>
+                                            <th><span string-replace="name"></span></th>
+                                            <th><span string-replace="jobtitle"></span></th>
+                                            <th><span string-replace="phone"></span></th>
+                                            <th><span string-replace="phoneextension"></span></th>
+                                            <th><span string-replace="fax"></span></th>
+                                            <th><span string-replace="email"></span></th>
+                                            <th><span string-replace="action"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="contact in contactPersonList">
+                                        <tr>
+                                            <td class="grid-width">{{contact.ContactNameEn}}</td>
+                                            <td class="grid-width">{{contact.JobTitleEn}}</td>
+                                            <td>{{contact.ContactPhone}}</td>
+                                            <td>{{contact.PhoneExtension}}</td>
+                                            <td>{{contact.ContactFax}}</td>
+                                            <td class="grid-width">{{contact.ContactEmail}}</td>
+                                            <td class="action-td-width">
+                                                <div class="action-td">
+                                                    <a title="Edit" name="contact=edit" ng-click="editContactPerson(contact.ContactId)"><i class="fa fa-edit"></i></a>
+                                                    <a title="Delete" name="contact-delete" data-toggle="modal" ng-click="openDeleteSupplierContactPopup(contact)"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div>
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="name"></span>:</label>
+                                        <div class="col-md-5" ng-class="{ 'has-error': addSupplierContact.contactName.$touched && addSupplierContact.contactName.$invalid }">
+                                            <input type="text" name="contactName" class="form-control" ng-model="contactPerson.ContactNameEn" maxlength="255" placeholder="Name" required>
+                                            <span class="error">*</span>
+                                        </div>
+                                        <div class="help-block" ng-messages="addSupplierContact.contactName.$error" ng-if="addSupplierContact.contactName.$touched">
+                                            <p ng-message="required" class="text-error">{{nameRequired}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="jobtitle"></span>:</label>
+                                        <div class="col-md-5">
+                                            <input type="text" name="job" class="form-control" ng-model="contactPerson.JobTitleEn" maxlength="255" placeholder="Job Title">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="address"></span>:</label>
+                                        <div class="col-md-5">
+                                            <textarea class="form-control" name="address" ng-model="contactPerson.ContactAddressEn" maxlength="350" placeholder="Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="phone"></span>:</label>
+                                        <div class="col-md-5" ng-class="{ 'has-error': addSupplierContact.contactPhone.$touched && addSupplierContact.contactPhone.$invalid }">
+                                            <input type="text" class="form-control" maxlength="15" ng-model="contactPerson.ContactPhone" pattern="^[0-9-+(][0-9-+()]{1,14}$" name="contactPhone" id="" placeholder="Phone" ng-minlength="10" required>
+                                            <span class="error">*</span>
+                                        </div>
+                                        <div class="help-block" ng-messages="addSupplierContact.contactPhone.$error" ng-if="addSupplierContact.contactPhone.$touched">
+                                            <p ng-message="required" class="text-error">{{phoneRequired}}</p>
+                                            <p ng-message="pattern" class="text-error">{{phoneInvalid}}</p>
+                                            <p ng-message="minlength" class="text-error">{{phoneMinLength}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="phoneextension"></span>:</label>
+                                        <div class="col-md-5" ng-class="{ 'has-error': addSupplierContact.phonecon.$touched && addSupplierContact.phonecon.$invalid }">
+                                            <input type="text" name="phonecon" class="form-control" ng-model="contactPerson.PhoneExtension" pattern="^[0-9-+(][0-9-+()]{1,14}$" maxlength="15" placeholder="Phone Extension">
+                                            <div class="help-block" ng-messages="addSupplierContact.phonecon.$error" ng-if="addSupplierContact.phonecon.$touched">
+                                                <p ng-message="pattern" class="text-error"><span>{{ValidPhoneExtensionMessage}}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="fax"></span>:</label>
+                                        <div class="col-md-5" ng-class="{ 'has-error': addSupplierContact.fax.$touched && addSupplierContact.fax.$invalid }">
+                                            <input type="text" maxlength="15" class="form-control" name="fax" ng-model="contactPerson.ContactFax" placeholder="Fax" ng-minlength="10" pattern="^[0-9-+(][0-9-+()]{1,14}$">
+                                            <div class="help-block" ng-messages="addSupplierContact.fax.$error" ng-if="addSupplierContact.fax.$touched">
+                                                <p ng-message="minlength" class="text-error">{{phoneMinLength}}</p>
+                                                <p ng-message="pattern" class="text-error">{{FaxInvalid}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><span string-replace="email"></span>:</label>
+                                        <div class="col-md-5" ng-class="{ 'has-error': addSupplierContact.contactEmail.$touched && addSupplierContact.contactEmail.$invalid }">
+                                            <input type="email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" maxlength="255" ng-model="contactPerson.ContactEmail" placeholder="Email" name="contactEmail" required>
+                                            <span class="error">*</span>
+                                        </div>
+                                        <div class="help-block" ng-messages="addSupplierContact.contactEmail.$error" ng-if="addSupplierContact.contactEmail.$touched">
+                                            <p ng-message="required" class="text-error">{{emailRequired}}</p>
+                                            <p ng-message="pattern" class="text-error">{{emailInvalid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <input type="submit" name="submit-btn" value="Submit" ng-hide="isContactUpdate" ng-disabled="addSupplierContact.$invalid" ng-click="addContactPerson(contactPerson,addSupplierContact)" class="btn btn-primary m-r-10" />
+                                <input type="submit" name="profile-btn" value="Update" ng-show="isContactUpdate" ng-click="updateContactPerson(contactPerson,addSupplierContact)" ng-disabled="addSupplierContact.$invalid" class="btn btn-primary m-r-10" />
+                                <input type="button" name="reset-btn" value="Reset" ng-click="cancelContact(addSupplierContact)" class="btn btn-default" />
+                            </div>
+                            <br />
+                        </form>
+                    </tab>
+                </tabset>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="DeleteSupplierPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeDeleteSupplierPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" name="yes-btn" class="btn btn-primary" ng-click="deleteSupplierProfile(supplierProfile.Id)"><span string-replace="yes"></span></button>
+            <button type="button" name="no-btn" class="btn btn-default" data-dismiss="modal" ng-click="closeDeleteSupplierPopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/ng-template" id="DeleteSupplierContactPopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" name="close-popup-btn" class="close" data-dismiss="modal" ng-click="closeDeleteSupplierContactPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+        </div>
+        <div class="modal-body">
+            <span string-replace="areyousureyouwanttodelete"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" name="yes-btn" class="btn btn-primary" ng-click="deleteContactPerson(contactTemp)"><span string-replace="yes"></span></button>
+            <button type="button" name="no-btn" class="btn btn-default" data-dismiss="modal" ng-click="closeDeleteSupplierContactPopup()"><span string-replace="no"></span></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="DeleteSupplierFailurePopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="closeDeleteSupplierFailurePopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{supplierDeleteFail}}</h4>
+        </div>
+        <div class="modal-body">
+            {{deleteSupplierFailureMsg}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="closeDeleteSupplierFailurePopup()"><span string-replace="okay"></span></button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,315 @@
+﻿<div ng-controller="SupplierReturnRequestController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="supplierreturnrequest"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group" ng-show="$root.merchatSettings.IsAllowToAccessAllBranch || isEdit">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-sm-8">
+                                <ui-select ng-model="supplierReturnRequest.BranchId" ng-disabled="isEdit" ng-change="getItemProfileList(supplierReturnRequest.BranchId)" name="branch">
+                                    <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-hide="$root.merchatSettings.IsAllowToAccessAllBranch || isEdit">
+                            <label class="control-label col-sm-3 p-0"><span string-replace="branch"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" disabled ng-model="selectedBranch" name="selectedBranch">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div ng-show="isItemDetailsVisible">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="itemname"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" maxlength="255" ng-model="search.ItemNameEn" name="itemname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="itemcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" maxlength="20" id="" ng-model="search.Code" name="itemcode">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="" maxlength="18" ng-model="search.Barcode" name="barcode">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 p-0 label-multi"><span string-replace="selectCategory"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="search.CategoryId" name="select-category">
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="category.Id as category in categoryList | filter: $select.search">
+                                            <div ng-bind-html="category.Name | highlight: $select.search" name="category.Name"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="selectUnit"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="search.UnitParamTypeId" name="select-unit">
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="unit.Id as unit in unitList | filter: $select.search">
+                                            <div ng-bind-html="unit.Name | highlight: $select.search" name="unit.Name"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 p-0"><span string-replace="supplier"></span>:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="search.SupplierId" name="supplier">
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="supplier.Id as supplier in supplierList | filter: $select.search">
+                                            <div ng-bind-html="supplier.Name | highlight: $select.search" name="{{supplier.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <button class="btn btn-primary" name="search-btn" ng-click="itemSearch()"><span string-replace="search"></span></button>
+                    </div>
+                    <br />
+                </div>
+                <div class="return-grid-section">
+                    <div ng-show="isItemDetailsVisible">
+                        <hr />
+                        <label><span string-replace="itemlist"></span></label>
+                        <div class="alert alert-success text-center" role="alert" ng-show="isItemListEmpty">
+                            <span>{{noItemFound}}</span>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" name="item-list-grid" ng-show="itemProfileCollection.length >0">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th><span string-replace="itemname"></span></th>
+                                    <th><span string-replace="barcode"></span></th>
+                                    <th><span string-replace="itemtype"></span></th>
+                                    <th><span string-replace="systemquantity"></span></th>
+                                    <th><span string-replace="suppliername"></span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody dir-paginate="item in itemProfileCollection| itemsPerPage: 5">
+                                <tr>
+                                    <td id="{{item.Id}}{{item.SupplierId}}"><a class="pointer" ng-click="getSubItemList(item.Id,item.SupplierId)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                                    <td>{{item.ItemNameEn}}</td>
+                                    <td>{{item.Barcode}}</td>
+                                    <td>{{item.ItemType}}</td>
+                                    <td>{{item.SystemQuantity}}</td>
+                                    <td>{{item.SupplierName}}</td>
+                                    <td>
+                                        <div class="action-td">
+                                            <a ng-click="addItem(item.ItemId,item.SupplierId,true)" name="add-item-link" title="Add Item"><i class="fa fa-plus-circle"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="subChild{{item.Id}}{{item.SupplierId}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                                    <td colspan="10">
+                                        <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                            <thead>
+                                                <tr>
+                                                    <th><span string-replace="itemname"></span></th>
+                                                    <th><span string-replace="barcode"></span></th>
+                                                    <th><span string-replace="type"></span></th>
+                                                    <th><span string-replace="systemquantity"></span></th>
+                                                    <th><span string-replace="suppliername"></span></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="subItem in item.listOfChildProfileAC">
+                                                    <td class="grid-width">{{subItem.ItemNameEn}}</td>
+                                                    <td class="grid-width">{{subItem.Barcode}}</td>
+                                                    <td class="grid-width">{{subItem.ItemType}}</td>
+                                                    <td class="grid-width">{{subItem.SystemQuantity}}</td>
+                                                    <td class="grid-width">{{subItem.SupplierName}}</td>
+                                                    <td class="action-td-width">
+                                                        <div class="action-td">
+                                                            <a ng-click="addItem(subItem.ItemId,subItem.SupplierId,false)" name="add-item-link" title="Add Item"><i class="fa fa-plus-circle"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-show="itemProfileCollection.length >0" style="text-align:center">
+                            <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+                        </div>
+                        <br />
+                        <div>
+                            <label ng-show="returnItemList.length>0"><span string-replace="returnrequestitems"></span></label>
+                            <table class="table table-striped table-bordered table-hover" name="return-req-grid" ng-show="returnItemList.length>0">
+                                <thead>
+                                    <tr>
+                                        <th><span string-replace="itemname"></span></th>
+                                        <th><span string-replace="barcode"></span></th>
+                                        <th><span string-replace="type"></span></th>
+                                        <th><span string-replace="systemquantity"></span></th>
+                                        <th><span string-replace="costprice"></span></th>
+                                        <th><span string-replace="returnquantity"></span></th>
+                                        <th><span string-replace="returncause"></span></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="selected in returnItemList">
+                                        <td>{{selected.ItemNameEn}}</td>
+                                        <td>{{selected.Barcode}}</td>
+                                        <td>{{selected.ItemType}}</td>
+                                        <td>{{selected.SystemQuantity}}</td>
+                                        <td>{{selected.CostPrice}}</td>
+                                        <td>
+                                            <!--<input type="text" class="form-control" id="" ng-pattern="/^[0-9]*$/" ng-change="changeQuantity(selected)" ng-model="selected.ReturnQuantity" maxlength="6" name="returnqty">-->
+                                            <input type="text" class="form-control" id="" ng-change="changeQuantity(selected)" ng-model="selected.ReturnQuantity" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" name="returnqty">
+                                            <div class="help-block" ng-if="checkReturnQuantityValid(selected.ReturnQuantity)">
+                                                <p class="text-error"><span>{{ValidReturnQuantity}}</span></p>
+                                                <p ng-message="patter">{{validQuantityError}}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <ui-select ng-model="selected.ReturnCauseId" name="returncause" class="return-cause">
+                                                <ui-select-match placeholder="Select">{{$select.selected.ValueEn}}</ui-select-match>
+                                                <ui-select-choices repeat="cause.Id as cause in causeList | filter: $select.search">
+                                                    <div ng-bind-html="cause.ValueEn | highlight: $select.search" name="{{cause.ValueEn}}"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td>
+                                            <div class="action-td">
+                                                <a title="Delete" name="return-item-delete" ng-click="openDeleteSRRItemPopup(selected)"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-horizontal" ng-show="returnItemList.length>0">
+                            <div class="row">
+                                <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" ng-model="supplierReturnRequest.InitiationComment" maxlength="350" name="comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row text-center">
+                            <label ng-hide="isEdit">
+                                <button class="btn btn-primary m-r-10" name="submit-btn" ng-disabled="(check()?true:false)" ng-show="$root.merchatSettings.IsAllowToInitiateSupplierReturnRequest" ng-click="saveReturnItem()"><span string-replace="submitpos"></span></button>
+                            </label>
+                            <label ng-show="isEdit">
+                                <button class="btn btn-primary m-r-10" name="submit-btn" ng-disabled="(check()?true:false)" ng-show="$root.merchatSettings.IsAllowToEditSupplierReturnRequest" ng-click="saveReturnItem()"><span string-replace="update"></span></button>
+                            </label>
+                            <button ng-show="!isEdit" class="btn btn-default" name="cancel-btn" ng-click="clear()"><span string-replace="cancelpos"></span></button>
+                            <button ng-hide="!isEdit" class="btn btn-default" name="cancel-btn" ng-click="cancel()"><span string-replace="cancelpos"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="AddItemRepeatPopup">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="closeItemAddRepeatPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span string-replace="oops"></span></h4>
+            </div>
+            <div class="modal-body">
+                {{errorMessage}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="closeItemAddRepeatPopup()"><span string-replace="okay"></span></button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="DeleteSRRItemPopup">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" name="close-btn" class="close" data-dismiss="modal" ng-click="closeDeleteSRRItemPopup()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span string-replace="deleteconfirmation"></span></h4>
+            </div>
+            <div class="modal-body">
+                <span string-replace="areyousureyouwanttodelete"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="deleteReturnItem(Item)"><span string-replace="yes"></span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeDeleteSRRItemPopup()"><span string-replace="no"></span></button>
+            </div>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="AddSRRItemPopup">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">{{Warning}}</h4>
+            </div>
+            <div class="modal-body">
+                {{srrExists}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="updateReturnItemList()"><span string-replace="yes"></span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeAddSRRItemPopup()"><span string-replace="no"></span></button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="SummaryCN">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><span string-replace="creditnotedetails"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-6 p-0"><span string-replace="creditnoteno"></span> .:</label>
+                                <label class="control-label col-sm-6 no-bold t-left">{{receiptDetails.CreditNoteNo}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-6 p-0"><span string-replace="suppliername"></span> :</label>
+                                <label class="control-label col-sm-6 no-bold t-left">{{receiptDetails.SupplierName}}</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-6 p-0"><span string-replace="amount"></span> :</label>
+                                <label class="control-label col-sm-6 no-bold t-left">{{receiptDetails.CreditNoteAmount}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="printReceipt(receiptDetails)"><span string-replace="okay"></span></button>
+            </div>
+        </div>
+    </script>
+</div>

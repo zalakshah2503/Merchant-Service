@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <style>
+        .navbar-right {
+            margin-right: 0;
+        }
+
+        .loggedin-user {
+            margin: 0 10px;
+        }
+    </style>
+    using (Html.BeginForm("LogOff", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-top-links">
+            <li class="dropdown">
+                <a class="dropdown-toggle pointer" data-toggle="dropdown">
+                    <i class="fa fa-user fa-fw"></i><span class="loggedin-user">@HttpContext.Current.User.Identity.Name</span>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right"></ul>
+}
+

@@ -1,0 +1,106 @@
+﻿<div ng-controller="incidentReportController">
+    <div class="panel panel-default" ng-init="getAllIncidentReportWorkList()">
+        <div class="panel-heading"><span string-replace="itemincidentreportworklist"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4"><span string-replace="branchname"></span>:</label>
+                            <div class="col-lg-7">
+                                <ui-select ng-model="search.BranchId" name="select-branch">
+                                    <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="branch.BranchId as branch  in branchList | filter: $select.search">
+                                        <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4"><span string-replace="itemname"></span>:</label>
+                            <div class="col-lg-7">
+                                <input type="text" maxlength="255" class="form-control" ng-model="search.ItemName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="btn btn-primary" ng-click="searchIncidentDetails()"><span string-replace="search"></span></button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <br />
+                <div class="alert alert-success text-center" role="alert" ng-show="errorMessageDisplayForBlankList">
+                    <span>{{noItemFound}}</span>
+                </div>
+                <br />
+                <div ng-show="!errorMessageDisplayForBlankList">
+                    <table class="table table-striped table-bordered table-hover" name="incident-report-grid">
+                        <thead>
+                            <tr>
+                                <th><span string-replace="branchname"></span></th>
+                                <th><span string-replace="type"></span></th>
+                                <th><span string-replace="itemname"></span></th>
+                                <th><span string-replace="incidentdate"></span></th>
+                                <th><span string-replace="resolvequantity"></span></th>
+                                <th><span string-replace="gainvalue"></span></th>
+                                <th><span string-replace="lossvalue"></span></th>
+                                <th><span string-replace="status"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="incidentReport in totalCollection">
+                                <td>{{incidentReport.BranchName}}</td>
+                                <td>{{incidentReport.IncidentTypeName}}</td>
+                                <td>{{incidentReport.ItemName}}</td>
+                                <td>{{incidentReport.IncidentDate}}</td>
+                                <td>{{incidentReport.ResolveQuantity}}</td>
+                                <td>{{incidentReport.GainValue}}</td>
+                                <td>{{incidentReport.LossValue}}</td>
+                                <td>{{incidentReport.WorkFlowStatus}}</td>
+                                <td>
+                                    <div class="action-td">
+                                        <a title="Edit" name="report-edit" ng-click="getIncidentDetailsById(incidentReport.PosIncidentReportId)"><i class="fa fa-edit"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="totalCollection.length >0" style="text-align:center">
+                        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    </div>
+                </div>
+            </div>
+            <script type="text/ng-template" id="resetPopup">
+                <div class="modal-header">
+                    <h3 class="modal-title"><span string-replace="reset"></span></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5 p-0"><span string-replace="comment"></span>:</label>
+                                    <div class="col-sm-7">
+                                        <textarea class="form-control" maxlength="350" name="comment" ng-model=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary m-r-10" type="button" name="submit-btn" ng-click="submitClickEvent()"><span string-replace="submitpos"></span></button>
+                        <button class="btn btn-default m-r-10" type="button" name="cancel-btn" ng-click="cancelEvent()"><span string-replace="cancelpos"></span></button>
+                    </div>
+                </div>
+            </script>
+        </div>
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

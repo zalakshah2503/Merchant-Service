@@ -1,0 +1,120 @@
+﻿<div ng-controller="CustomerPODetailListController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span string-replace="customerpurchaseorderdetails"></span></div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="customername"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" maxlength="255" id="" name="customer-name" ng-model="search.CustomerName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="issuedatefrom"></span>:</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <input type="text" name="start-date" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="searchDate.issuedateFrom" is-open="isCollectionDateFrom" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" name="start-date-picker" ng-click="clickOnCollectionDateFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="orderno"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" maxlength="16" id="" name="orderno" ng-model="search.OrderNumber">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="issuedateto"></span>:</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <input type="text" name="issue-dateto" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="searchDate.CollectionDateTo" ng-model="searchDate.CollectionDateFrom" is-open="isCollectionDateTo" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" name="start-date-picker" ng-click="clickOnCollectionDateTo($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 p-0"><span string-replace="membershipno"></span>:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="" maxlength="30" name="membershipno" ng-model="search.MemberShipCode">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <button class="btn btn-primary" name="search-btn" ng-click="searchClick()"><span string-replace="search"></span></button>
+                </div>
+            </div>
+            <br />
+            <label><span string-replace="customerPOworklist"></span></label>
+            <hr />
+            <div class="alert alert-success text-center" role="alert" ng-show="notFoundItem">
+                <span>{{errorMessage}}</span>
+            </div>
+            <div ng-hide="notFoundItem">
+                <div class="table-div">
+                    <table class="table table-striped table-bordered table-hover" name="item-grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th><span string-replace="customername"></span></th>
+                                <th><span string-replace="orderno"></span>.</th>
+                                <th><span string-replace="membershipno"></span></th>
+                                <th><span string-replace="issuedate"></span></th>
+                                <th><span string-replace="collectingbranch"></span></th>
+                                <th><span string-replace="collectingdate"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item in totalCollection">
+                            <tr>
+                                <td id="{{item.Id}}"><a class="pointer" ng-click="getSubItemList(item.Id)" name="plus-link" ng-show="item.HasChildItem"><i attr="item.Id" class="fa fa-plus action-icon"></i></a></td>
+                                <td>{{item.CustomerName}}</td>
+                                <td>{{item.OrderNumber}}</td>
+                                <td>{{item.MemberShipCode}}</td>
+                                <td>{{item.IssueDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{item.CollectionBranch}}</td>
+                                <td>{{item.CollectionDate | date:'dd-MM-yyyy'}}</td>
+                            </tr>
+                            <tr id="subChild{{item.Id}}" ng-if="item.HasChildItem" class="isHide sub-grid-list">
+                                <td colspan="10">
+                                    <table class="table table-striped table-bordered table-hover sub-table" name="sub-table">
+                                        <thead>
+                                            <tr>
+                                                <th><span string-replace="itemname"></span></th>
+                                                <th><span string-replace="itemBarcode"></span></th>
+                                                <th><span string-replace="pricepos"></span></th>
+                                                <th><span string-replace="quantitypos"></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="subItem in item.CustomerPurchaseOrderItemList">
+                                                <td>{{subItem.ItemName}}</td>
+                                                <td>{{subItem.Barcode}}</td>
+                                                <td>{{subItem.Price}}</td>
+                                                <td>{{subItem.Quantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-show="totalCollection.length >0" style="text-align:center">
+                    <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

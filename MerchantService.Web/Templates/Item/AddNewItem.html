@@ -1,0 +1,344 @@
+﻿<div>
+    <div class="panel panel-default" ng-controller="addNewItemProfileController">
+        <div class="panel-heading"><span string-replace="{{itemPage}}"></span></div>
+        <form name="addNewItem" novalidate>
+            <div class="panel-body">
+                <br />
+
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemnameen"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.ItemNameEn.$touched && addNewItem.ItemNameEn.$invalid }">
+                                    <input type="text" name="ItemNameEn" class="form-control" ng-model="addNewItemProfile.ItemNameEn" maxlength="255" required tabindex="1" auto-focus="isFocusIn">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.ItemNameEn.$error" ng-if="addNewItem.ItemNameEn.$touched">
+                                        <p ng-message="required" class="text-error">{{itemNameEnRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemflavouren"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.ItemFlavourEn.$touched && addNewItem.ItemFlavourEn.$invalid }">
+                                    <input type="text" name="ItemFlavourEn" class="form-control" ng-model="addNewItemProfile.FlavourEn" maxlength="255" required tabindex="3">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.ItemFlavourEn.$error" ng-if="addNewItem.ItemFlavourEn.$touched">
+                                        <p ng-message="required" class="text-error">{{itemFlavourEnRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="barcode"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.barCode.$touched && addNewItem.barCode.$invalid }">
+                                    <input type="text" name="barCode" class="form-control" ng-model="addNewItemProfile.Barcode" required tabindex="5" ng-paste="$event.preventDefault()" pattern="[0-9]*[0-9]*" ng-disabled="isBarcodeDisabled">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.barCode.$error" ng-if="addNewItem.barCode.$touched">
+                                        <p ng-message="required" class="text-error">{{barCodeRequired}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{itemBarcodeValid}}</span></p>
+                                        <p class="text-error" ng-show="isbarcodeExists">{{barcodeExists}}</p>
+                                        <p class="text-error" ng-show="isBarCodeNotValid">{{barCodeNotValid}}</p>                                       
+                                    </div>
+                                    <button class="btn btn-primary m-r-15 m-t-10" ng-click="GenrateBarcode()" ng-disabled="isGenratedBarcodeButton">{{companyBarcodeButtonText}}</button>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="unittype"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.unit.$touched && addNewItem.unit.$invalid }">
+                                    <ui-select name="unit" ng-model="addNewItemProfile.UnitParamTypeId" required tabindex="7">
+                                        <ui-select-match placeholder="Select Unit Type">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="unitType.Id as unitType in unitList | filter: $select.search">
+                                            <div ng-bind-html="unitType.Name | highlight: $select.search" name="{{unitType.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.unit.$error" ng-if="addNewItem.unit.$touched">
+                                        <p ng-message="required" class="text-error">{{unitTypeRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="baseunitcount"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.baseUnitCount.$touched && addNewItem.baseUnitCount.$invalid }">
+                                    <input type="text" class="form-control" id="baseUnitCount" name="baseUnitCount" ng-model="addNewItemProfile.BaseUnit" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" tabindex="9">
+                                    <div class="help-block" ng-messages="addNewItem.baseUnitCount.$error" ng-if="addNewItem.baseUnitCount.$touched">
+                                        <p ng-message="pattern" class="text-error"><span>{{itemBaseUnitCount}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemtype"></span>:</label>
+                                <div class="col-sm-6" ng-class="{ 'has-error': addNewItem.itemType.$touched && addNewItem.itemType.$invalid }">
+                                    <input name="itemType" type="text" ng-model="itemType" ng-click="itemTypePopup()" class="form-control no-color" id="" readonly required tabindex="11">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.itemType.$error" ng-if="addNewItem.itemType.$touched">
+                                        <p ng-message="required" class="text-error">{{itemTypeRequired}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 p-0">
+                                    <a ng-click="itemTypePopup()" class="pointer" name="select-item-link"><span string-replace="selectItem"></span></a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="profitmargin"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.profitMargin.$touched && addNewItem.profitMargin.$invalid }">
+                                    <div class="input-group">
+                                        <input name="profitMargin" type="text" class="form-control" ng-model="addNewItemProfile.ProfitMargin" maxlength="6" ng-pattern="/^[0-9]{0,2}(\.[0-9]{1,2})?$|^(100)(\.[0]{1,2})?$/" required tabindex="13"><span class="input-group-addon">%</span>
+                                    </div>
+                                    <span class="error item-error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.profitMargin.$error" ng-if="addNewItem.profitMargin.$touched">
+                                        <p ng-message="required" class="text-error">{{profitMarginRequired}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{itemValidProfitMargin}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="isofferitem"></span>:</label>
+                                <div class="col-sm-8">
+                                    <div class="checkbox"> <label> <input type="checkbox" name="offer-item" ng-model="addNewItemProfile.IsOfferItem" tabindex="15"></label> </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="isactivate"></span>:</label>
+                                <div class="col-sm-8">
+                                    <div class="checkbox"> <label> <input type="checkbox" name="isactive" ng-model="addNewItemProfile.IsActive" ng-disabled="isActive" tabindex="17"></label> </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="isautomaticpo"></span>:</label>
+                                <div class="col-sm-8">
+                                    <div class="checkbox"> <label> <input type="checkbox" name="automatic-po" ng-change="openAutomaticPOPopup()" ng-model="addNewItemProfile.IsAutomaticPO" ng-disabled="isAutomaticPo || (itemType == '')" tabindex="19"></label> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemnamear"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.itemNameAr.$touched && addNewItem.itemNameAr.$invalid }">
+                                    <input type="text" name="itemNameAr" class="form-control" ng-model="addNewItemProfile.ItemNameSl" maxlength="255" required tabindex="2">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.itemNameAr.$error" ng-if="addNewItem.itemNameAr.$touched">
+                                        <p ng-message="required" class="text-error">{{itemNameSlRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemflavoursl"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.itemFlavourAr.$touched && addNewItem.itemFlavourAr.$invalid }">
+                                    <input type="text" name="itemFlavourAr" class="form-control" ng-model="addNewItemProfile.FlavourSl" maxlength="255" required tabindex="4">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.itemFlavourAr.$error" ng-if="addNewItem.itemFlavourAr.$touched">
+                                        <p ng-message="required" class="text-error">{{itemFlavourSlRequired}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="itemcode"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.itemCode.$touched && addNewItem.itemCode.$invalid }">
+                                    <input type="text" name="itemCode" class="form-control" ng-model="addNewItemProfile.Code" maxlength="20" required tabindex="6">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.itemCode.$error" ng-if="addNewItem.itemCode.$touched">
+                                        <p ng-message="required" class="text-error">{{itemCodeRequired}}</p>
+                                        <p class="text-error" ng-show="isItemCodeExists">{{itemCodeisExists}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellprice"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.sellPrice.$touched && addNewItem.sellPrice.$invalid }">
+
+                                    <input ng-disabled="isSellPriceDisabled" type="text" name="sellPrice" class="form-control" ng-model="addNewItemProfile.SellPrice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" required tabindex="8">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.sellPrice.$error" ng-if="addNewItem.sellPrice.$touched">
+                                        <p ng-message="required" class="text-error">{{sellPriceRequired}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{itemValidSellPrice}}</span></p>
+                                    </div>
+                                    <p class="text-error" ng-show="isSellPriceNotValid">{{sellPriceNotValid}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpricea"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input ng-disabled="isSellPriceADisabled" type="text" name="sellPriceA" id="sellPriceA" class="form-control" ng-model="addNewItemProfile.SellPriceA" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" tabindex="10">
+                                    <div class="help-block" ng-messages="addNewItem.sellPriceA.$error" ng-if="addNewItem.sellPriceA.$touched">
+                                        <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceA}}</span></p>
+                                        <p class="text-error" ng-show="isSellPriceANotValid">{{sellPriceANotValid}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpriceb"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input ng-disabled="isSellPriceBDisabled" type="text" name="sellPriceB" class="form-control" ng-model="addNewItemProfile.SellPriceB" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" tabindex="12">
+                                    <div class="help-block" ng-messages="addNewItem.sellPriceB.$error" ng-if="addNewItem.sellPriceB.$touched">
+                                        <p class="text-error" ng-show="isSellPriceBNotValid">{{sellPriceBNotValid}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceB}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpricec"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input ng-disabled="isSellPriceCDisabled" type="text" name="sellPriceC" class="form-control" ng-model="addNewItemProfile.SellPriceC" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" tabindex="14">
+                                    <div class="help-block" ng-messages="addNewItem.sellPriceC.$error" ng-if="addNewItem.sellPriceC.$touched">
+                                        <p class="text-error" ng-show="isSellPriceCNotValid">{{sellPriceCNotValid}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceC}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="sellpriced"></span>:</label>
+                                <div class="col-sm-8">
+                                    <input ng-disabled="isSellPriceDDisabled" name="sellPriceD" type="text" class="form-control" ng-model="addNewItemProfile.SellPriceD" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" tabindex="16">
+                                    <div class="help-block" ng-messages="addNewItem.sellPriceD.$error" ng-if="addNewItem.sellPriceD.$touched">
+                                        <p class="text-error" ng-show="isSellPriceDNotValid">{{sellPriceDNotValid}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{itemValidSellPriceD}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0"><span string-replace="costprice"></span>:</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error': addNewItem.costPrice.$touched && addNewItem.costPrice.$invalid }">
+                                    <input ng-disabled="isCostPriceDisabled" type="text" name="costPrice" class="form-control" ng-model="addNewItemProfile.CostPrice" maxlength="13" pattern="^\d{1,8}(\.\d{1,4})?$" required tabindex="18">
+                                    <span class="error">*</span>
+                                    <div class="help-block" ng-messages="addNewItem.costPrice.$error" ng-if="addNewItem.costPrice.$touched">
+                                        <p ng-message="required" class="text-error">{{costPriceRequired}}</p>
+                                        <p ng-message="pattern" class="text-error"><span>{{validCostPriceError}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="addNewItemProfile.IsAutomaticPO">
+                    <div class="col-sm-4">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="supplier"></span>:</label>
+                        <div class="col-sm-7" ng-class="{ 'has-error': addNewItem.supplierAutomatic.$touched && addNewItem.supplierAutomatic.$invalid }">
+                            <ui-select ng-model="addNewItemProfile.SupplierId" name="supplierAutomatic" ng-required="true">
+                                <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                <ui-select-choices repeat="supplier.Id as supplier in supplierList | filter: $select.search">
+                                    <div ng-bind-html="supplier.Name | highlight: $select.search" name="{{supplier.Name}}"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="addNewItem.supplierAutomatic.$error" ng-if="addNewItem.supplierAutomatic.$touched">
+                                <p ng-message="required" class="text-error">{{supplierRequired}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <label class="control-label col-sm-4 p-0"><span string-replace="initiatorofspo"></span>:</label>
+                        <div class="col-sm-7" ng-class="{ 'has-error': addNewItem.initiatorrole.$touched && addNewItem.initiatorrole.$invalid }">
+                            <ui-select ng-model="addNewItemProfile.InitiatorRoleId" name="initiatorrole" ng-required="true">
+                                <ui-select-match placeholder="Select">{{$select.selected.RoleName}}</ui-select-match>
+                                <ui-select-choices repeat="role.RoleId as role in initiatorOfSpoCollection | filter: $select.search">
+                                    <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="error">*</span>
+                            <div class="help-block" ng-messages="addNewItem.initiatorrole.$error" ng-if="addNewItem.initiatorrole.$touched">
+                                <p ng-message="required" class="text-error">{{initiatorRequired}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-5 p-0"><span string-replace="quantity"></span>:</label>
+                        <div class="col-sm-7" ng-class="{ 'has-error': addNewItem.quantity.$touched && addNewItem.quantity.$invalid }">
+                            <input type="text" id="quantity" name="quantity" class="form-control" maxlength="6" placeholder="Quantity" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-model="addNewItemProfile.AutomaticPOQuantity">
+                            <div class="help-block" ng-messages="addNewItem.quantity.$error" ng-if="addNewItem.quantity.$touched">
+                                <p ng-message="pattern" class="text-error"><span>{{validQuantityError}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-2 p-0">
+                        <p class="text-error" ng-show="isbranchNameExists">{{branchNameExists}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-lg-2"><span string-replace="branchname"></span>:</label>
+                        <div class="col-lg-10">
+                            <div class="row" id="other-item">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <ui-select name="branchName" ng-model="addNewItemProfile.BranchId" tabindex="21">
+                                            <ui-select-match placeholder="Select Branch">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                                <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <input type="text" name="ActualStatic" class="form-control" maxlength="6" ng-disabled="!addNewItemProfile.BranchId" placeholder="Actual Qunatity" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-model="addNewItemProfile.ActualQuantity" tabindex="22">
+                                    <div class="help-block" ng-messages="addNewItem.ActualStatic.$error" ng-if="addNewItem.ActualStatic.$touched">
+                                        <p ng-message="pattern" class="text-error"><span>{{validActualQuantityError}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="maxiMumStatic" class="form-control" maxlength="6" ng-disabled="!addNewItemProfile.BranchId" placeholder="Max Quantity" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-model="addNewItemProfile.MaximumQuantity" tabindex="23" ng-change="compareMaxMiniValue(addNewItemProfile.MinimumQuantity,addNewItemProfile.MaximumQuantity)">
+                                    <div class="help-block" ng-messages="addNewItem.maxiMumStatic.$error" ng-if="addNewItem.maxiMumStatic.$touched">
+                                        <p ng-message="pattern" class="text-error"><span>{{validMaximumQuantityError}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="miniMumStatic" class="form-control" maxlength="6" ng-disabled="!addNewItemProfile.BranchId" placeholder="Min Quantity" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-model="addNewItemProfile.MinimumQuantity" tabindex="24" ng-change="compareMaxMiniValue(addNewItemProfile.MinimumQuantity,addNewItemProfile.MaximumQuantity)">
+                                    <div class="help-block" ng-messages="addNewItem.miniMumStatic.$error" ng-if="addNewItem.miniMumStatic.$touched">
+                                        <p ng-message="pattern" class="text-error"><span>{{validMinimumQuantityError}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="button" name="plus-btn" class="btn btn-primary btn-circle" ng-disabled="!addNewItemProfile.BranchId||!addNewItemProfile.MinimumQuantity||!addNewItemProfile.MaximumQuantity" ng-click="addElements()"><i class="fa fa-plus"></i> </button>
+                                </div>
+
+                            </div>
+                            <div class="row" ng-repeat="element in addNewItemProfile.ListOfItemQuantityList">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <ui-select name="branchName" ng-model="element.BranchId">
+                                            <ui-select-match placeholder="Select Branch Name">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="branch.Id as branch in branchList | filter: $select.search">
+                                                <div ng-bind-html="branch.Name | highlight: $select.search" name="{{branch.Name}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" name="Actual" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-disabled="!element.BranchId" placeholder="Actual Quantity" ng-model="element.ActualQuantity">
+                                    <div class="help-block" ng-if="checkIntegerActual(element.ActualQuantity,$index)">
+                                        <p class="text-error"><span>{{validActualQuantityError}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="MaxiMum" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-disabled="!element.BranchId" placeholder="Max Quantity" ng-model="element.MaximumQuantity" ng-change="compareMaxMinWithIndex(element.MinimumQuantity,element.MaximumQuantity,$index)">
+                                    <div class="help-block" ng-if="checkIntegerMax(element.MaximumQuantity,$index)">
+                                        <p class="text-error"><span>{{validMaximumQuantityError}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="MiniMum" class="form-control" maxlength="6" ng-pattern="/^0*(?:[1-9][0-9]{5}|[1-9][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$/" ng-disabled="!element.BranchId" placeholder="Min Quantity" ng-model="element.MinimumQuantity" ng-change="compareMaxMinWithIndex(element.MinimumQuantity,element.MaximumQuantity,$index)">
+                                    <div class="help-block" ng-if="checkIntegerMin(element.MinimumQuantity,$index)">
+                                        <p class="text-error"> <span>{{validMinimumQuantityError}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="button" name="minus-btn" class="btn btn-primary btn-circle" ng-click="removeElement($index)"><i class="fa fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <button class="btn btn-primary m-r-15" ng-click="submitNewItem(addNewItemProfile,true)" ng-disabled="addNewItem.$invalid" ng-show="(isSumbit && $root.merchatSettings.IsAllowToCreateItemProfile)" name="add-main-item-btn"><span string-replace="addmainitem"></span></button>
+                <button class="btn btn-primary m-r-15" ng-click="submitNewItem(addNewItemProfile,false)" ng-disabled="addNewItem.$invalid" ng-show="(isUpdate && $root.merchatSettings.IsAllowToEditItemProfile)" name="update-main-item-btn"><span string-replace="updatemainitem"></span></button>
+                <button name="cancel-btn" class="btn btn-default" ng-click="cancelButtonEvent()"><span string-replace="cancelpos"></span></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

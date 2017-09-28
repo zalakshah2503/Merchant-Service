@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <table style="direction: rtl;width:950px">
+        <tr>
+            <td align="center" colspan="4">
+                <h4><span string-replace="supplierpurchaseorderreceipt"></span></h4>
+                <h5>${BranchName}$</h5>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                <!--Address Lines<br />
+                Address Lines<br />
+                Address Lines Address
+                Address Lines-->
+                ${BranchAddress}$
+            </td>
+            <td colspan="2" align="left">
+                logo
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="4">
+                <span string-replace="purchaseorderdetails"></span>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="padding:4px;font-weight:bold">
+                <span string-replace="suppliername"></span>:
+            </td>
+            <td align="right" style="padding:4px">
+                ${SupplierName}$
+            </td>
+            <td align="left" style="padding:4px;font-weight:bold">
+                <span string-replace="mobileno"></span>:
+            </td>
+            <td align="right" style="padding:4px">
+                ${MobileNo}$
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="padding:4px;font-weight:bold">
+                <span string-replace="issuedate"></span>:
+            </td>
+            <td align="right" style="padding:4px">
+                <!--${IssueDate | date:'dd-MM-yyyy'}$-->
+                ${IssueDate}$
+            </td>
+            <td align="left" style="padding:4px;font-weight:bold">
+                <span string-replace="duedate"></span>:
+            </td>
+            <td align="right" style="padding:4px">
+                <!--${DueDate | date:'dd-MM-yyyy'}$-->
+                ${DueDate}$
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="padding:4px;font-weight:bold">
+                <span string-replace="supplierpono"></span>:
+            </td>
+            <td align="right" style="padding:4px">
+                ${SPONumber}$
+            </td>
+            <td align="left" style="padding:4px;font-weight:bold">
+                <span string-replace="potype"></span>:
+            </td>
+            <td align="right" style="padding:4px">
+                ${POType}$
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <span string-replace="purchaseorderdetails"></span>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <table style="width:100%;">
+                    <thead>
+                        <tr style="padding:10px;border-bottom:1px dashed #ccc">
+                            <th style="text-align:center;font-weight:bold;padding:10px"><span string-replace="name"></span></th>
+                            <th style="text-align:center;font-weight:bold"><span string-replace="flavourpos"></span></th>
+                            <th style="text-align:center;font-weight:bold"><span string-replace="unit"></span></th>
+                            <th style="text-align:center;font-weight:bold"><span string-replace="orderprice"></span></th>
+                            <th style="text-align:center;font-weight:bold"><span string-replace="orderquantity"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--<tr>
+                            <td style="text-align:center;padding:10px">{{item.ItemNameEn}}</td>
+                            <td style="text-align:center;padding:10px">{{item.FlavourEn}}</td>
+                            <td style="text-align:center">{{item.Type}}</td>
+                            <td style="text-align:center">{{item.OrderCostPrice}}</td>
+                            <td style="text-align:center">{{item.OrderQuantity}}</td>
+                        </tr>-->
+                        ${items}$
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

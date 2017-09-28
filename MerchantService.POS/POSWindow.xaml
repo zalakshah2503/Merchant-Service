@@ -1,0 +1,310 @@
+﻿<Window x:Class="MerchantService.POS.POSWindow"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:base="clr-namespace:MerchantService.POS.UserControls"
+        xmlns:conv="clr-namespace:MerchantService.POS.Utility"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PosLangingScreen" Height="1000" WindowState="Maximized" Tag="langingscreen">
+    <Window.Resources>
+        <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+            <DataGridRowsPresenter x:Name="PART_RowsPresenter" IsItemsHost="True"/>
+        </ItemsPanelTemplate>
+        <Style x:Key="CellRightAlign">
+            <Setter Property="Control.HorizontalAlignment"
+            Value="Right" />
+        </Style>
+        <Style x:Key="NumCols" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Background" Value="#FF081B22"></Setter>
+            <Setter Property="Padding" Value="0,0,0,0" />
+            <Setter Property="Margin" Value="1,0,0,0" />
+        </Style>
+        <Style x:Key="NumFields" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="#FF081B22"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="TextAlignment" Value="Right"></Setter>
+            <Setter Property="Padding" Value="0,0,5,0"></Setter>
+        </Style>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{Binding CustomerWindowCommand}"/>
+        <KeyBinding Key="F2" Command="{Binding PaymentWindowCommand}"/>
+        <KeyBinding Key="F3" Command="{Binding BarcodeCommand}"/>
+        <KeyBinding Key="F4" Command="{Binding ReturnBillNoCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding CustomerPOCommand}"/>
+        <KeyBinding Key="F6" Command="{Binding SuspendCommand}"/>
+        <KeyBinding Key="F7" Command="{Binding UnsuspendCommand}"/>
+        <KeyBinding Key="F8" Command="{Binding SelectItemCommand}"/>
+        <KeyBinding Key="F12" Command="{Binding LogOutCommand}"/>
+        <KeyBinding Key="Enter" Command="{Binding ItemProfileDataCommand}" />
+    </Window.InputBindings>
+
+    <Grid HorizontalAlignment="Stretch" Background="#FF2A2A2A" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Header" Grid.Row="0" Margin="5" Background="#FF081B22">
+            <Image x:Name="Image" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Source="Resource/people.png" />
+            <Label Tag="logoutpos" x:Name="Logout" Content="LogOut" Width="100" Height="40" Foreground="White" 
+                   Background="#FFE64242" FontWeight="ExtraBlack"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,5,40,5" HorizontalAlignment="Right" />
+            <Label Content="(F12)" Width="40" Height="40" Foreground="White" 
+                   Background="#FFE64242" FontWeight="ExtraBlack"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,5,20,5" HorizontalAlignment="Right" />
+        </Grid>
+        <Grid x:Name="grdContent" Grid.Row="1" Background="White" Margin="5,0,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="110" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="350" Width="*" />
+                <ColumnDefinition Width="350" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="75" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Tag="barcodepos" x:Name="BarcodeLabel" Content="Barcode" FontSize="14.667" />
+                        <Label Content=" (F3)" FontSize="14.667" />
+                    </StackPanel>
+                    <base:BaseTextBox Width="Auto" x:Name="TxtBarcode" IsNumeric="True" MaxLength="18" Text="{Binding BarcodeNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" Height="40" Padding="8"  />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Tag="itemnamepos" x:Name="ItemNameLabel" Content="Item Name" FontSize="14.667" />
+                        <TextBlock Margin="5" Text="{Binding ItemName,StringFormat= : \{0\}}" FontSize="14.667"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20,0,0,0">
+                    <Label Tag="quantitypos" x:Name="QtyLabel" Content="Quantity" FontSize="14.667" />
+                    <base:BaseTextBox x:Name="TxtQuantity" Text="{Binding CustomerQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsNumeric="True" FontSize="15" MaxLength="5" Height="40" Padding="8" />
+                </StackPanel>
+                <Image x:Name="ItemImage" Margin="5" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Source="Resource/people.png" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0" Margin="5">
+                <DataGrid x:Name="ItemGrid" AutoGenerateColumns="False"
+                          HeadersVisibility="Column" BorderBrush="Transparent"
+					HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+					ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                    ItemsSource="{Binding ItemProfileCollectionNew, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True}" 				  
+                    SelectedItem="{Binding SelectedItemProfile,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+					ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+					RowHeight="35" PreviewKeyDown="grdItemDetail_PreviewKeyDown"
+                          Background="White" SelectionMode="Single" SelectionUnit="FullRow"                        
+                         HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                          VerticalGridLinesBrush="#e6f3ff"
+                          HorizontalGridLinesBrush="LightSlateGray"                          
+                          ColumnHeaderHeight="35" CanUserAddRows="False" IsReadOnly="True" Margin="20,0,0,10" 
+                     CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" 
+                          CanUserResizeRows="False" >
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Foreground" Value="White"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                            <Setter Property="Background" Value="#FF081B22"></Setter>
+                            <Setter Property="Padding" Value="50,0,0,0" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Setter Property="Foreground" Value="#FF081B22" />
+                            <Setter Property="Padding" Value="5,0,0,0" />
+                            <Setter Property="FontSize" Value="13" />
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#FFECBD51" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFECBD51" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                            </Style.Resources>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn HeaderStringFormat="barcodepos" Header="BARCODE" Width="150"  Binding="{Binding Barcode}" />
+                        <DataGridTextColumn HeaderStringFormat="namepos" Header="NAME" Width="*"  Binding="{Binding ItemName}" FontWeight="Bold" />
+                        <DataGridTextColumn HeaderStringFormat="unitpos" Header="UNIT"  Width="100" Binding="{Binding Unit}" />
+                        <DataGridTextColumn HeaderStringFormat="flavourpos" Header="FLAVOUR" Width="120"  Binding="{Binding Flavour}" />
+                        <DataGridTextColumn HeaderStyle="{StaticResource NumCols}" ElementStyle="{StaticResource NumFields}" HeaderStringFormat="pricepos" Header="PRICE" Width="90"  Binding="{Binding ItemPrice}" />
+                        <DataGridTextColumn HeaderStyle="{StaticResource NumCols}" ElementStyle="{StaticResource NumFields}" HeaderStringFormat="quantitypos" Header="QTY"  Width="60" Binding="{Binding ItemQuantity}" FontWeight="Bold" />
+                        <DataGridTextColumn HeaderStyle="{StaticResource NumCols}" ElementStyle="{StaticResource NumFields}" HeaderStringFormat="totalpos" Header="TOTAL" Width="120"  Binding="{Binding Total}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+            <StackPanel x:Name="CustomerItemSummary" VerticalAlignment="Top" Grid.RowSpan="2" Grid.Column="1" Margin="5,5,10,0">
+                <StackPanel x:Name="CustomerSummary" Background="#FF081B22" DataContext="{Binding CustomerInformation}">
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,0">
+                        <Label Tag="customernopos" Content="Customer #" Foreground="White" FontSize="12" />
+                        <Label Content="{Binding Customer.MembershipCode}" AutomationProperties.AutomationId="mcode" Foreground="White"  FontSize="16" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,0">
+                        <Label Tag="customernamepos" Content="Customer Name" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding Customer.Name}"  AutomationProperties.AutomationId="cname" Foreground="White"  FontSize="16" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,0" Visibility="{Binding Customer.IsCreditCustomer,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Label Tag="remainingbalancepos" Content="Customer Remaining Balance" Foreground="White"  FontSize="12"  />
+                        <Label  AutomationProperties.AutomationId="cbal" Content="{Binding CustomerBalanceAmount,StringFormat=C2}" Foreground="White"  FontSize="16" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,0" Visibility="{Binding CPO,Converter={StaticResource NullToVisibilityConverter}}" >
+                        <Label Tag="customerpopos" Content="Customer PO #" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding CPO.PurchaseOrderNo}"  AutomationProperties.AutomationId="cpono" Foreground="White"  FontSize="16" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,0" Visibility="{Binding ReturnBill,Converter={StaticResource NullToVisibilityConverter}}" >
+                        <Label Tag="returnbillpos" Content="Return Bill #" Foreground="White"  FontSize="12"  />
+                        <Label Content="{Binding ReturnBill.ReturnedBillNo}"  AutomationProperties.AutomationId="rbno" Foreground="White"  FontSize="16" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Height="5" />
+                </StackPanel>
+                <StackPanel x:Name="Saperator" Height="5" />
+                <StackPanel x:Name="OrderSummary" Background="#FFEFF0F2"  DataContext="{Binding BillSummary}">
+                    <Label Background="#FF081B22" Tag="summarypos"  Content="SUMMARY" Foreground="White" FontSize="11" FontWeight="Bold" HorizontalContentAlignment="Left" />
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0">
+                        <Label Tag="orderamountpos" Content="Order Amount" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label AutomationProperties.AutomationId="ordramt" Content="{Binding OrderAmount}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0">
+                        <Label Tag="discountpos" Content="Discount" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label AutomationProperties.AutomationId="disc" Content="{Binding Discount}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0">
+                        <Label Tag="discountpos" Content="Discount %" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label AutomationProperties.AutomationId="discperc" Content="{Binding DiscountPerc}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0" Visibility="{Binding ReturnAmount,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="returnbillcashpos" Content="Return Bill Cash" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label Content="{Binding ReturnAmount}"  AutomationProperties.AutomationId="rbcash" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0" Visibility="{Binding Substitute,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="substitutepos" Content="Substitute Amount" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label Content="{Binding Substitute}"  AutomationProperties.AutomationId="rbsub" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0" Visibility="{Binding Tax,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="taxpos" Content="Tax" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label Content="{Binding Tax}" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0" Visibility="{Binding DownPayment,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="downpaymentpos" Content="DownPayment" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label Content="{Binding DownPayment}"  AutomationProperties.AutomationId="dp" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,2,0,0" Visibility="{Binding AdditionalAmount,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="additionalamountpos" Content="Additional Cost" HorizontalAlignment="Left" Foreground="#FF000002" FontSize="16"  />
+                        <Label Content="{Binding AdditionalAmount}"  AutomationProperties.AutomationId="addcost" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Height="1" Margin="10,5,0,0" Background="#FF000002" />
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,10" Visibility="{Binding TotalAmount,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="totalamountpos" Content="TOTAL AMOUNT" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold" FontSize="16"  />
+                        <Label Content="{Binding TotalAmount  ,StringFormat=C2}"  AutomationProperties.AutomationId="totalamt" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="10,5,0,10" Visibility="{Binding AmountToReturn,Converter={StaticResource NullToVisibilityConverter}}">
+                        <Label Tag="amounttoreturnpos" Content="AMOUNT TO BE RETURNED" HorizontalAlignment="Left" Foreground="#FF000002" FontWeight="Bold" FontSize="16"  />
+                        <Label Content="{Binding AmountToReturn, StringFormat=C2}"  AutomationProperties.AutomationId="amttortrn" HorizontalAlignment="Right" Foreground="#FF000002" FontSize="16" FontWeight="Bold" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+            <Grid x:Name="Buttons" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" x:Name="Customer" Foreground="White" Background="#FFB44F3D" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Margin="0" Source="Resource/POS_CustomerNo.png" />
+                        <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                            <TextBlock Tag="customerpos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Customer" />
+                            <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F1)" />
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="1" x:Name="Payment" Foreground="White" Background="#FFAA8453" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_Payment.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <!--<TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Tag="paymentpos" Text="Payment"/><LineBreak/><Run Text="(F2)"/></TextBlock>-->
+                        <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                            <TextBlock Tag="paymentpos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Payment" />
+                            <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F2)" />
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="2" x:Name="ReturnBill" Foreground="White" Background="#FF28759F" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_ReturnBillNo.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <!--<TextBlock x:Name="rb" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Tag="returnbillpos" Text="Return Bill"/><LineBreak/><Run Text="(F4)"/></TextBlock>-->
+                        <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                            <TextBlock Tag="returnbillpos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Return Bill" />
+                            <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F4)" />
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="3" x:Name="CPO" Foreground="White" Background="#FF9F7B48" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_CustomerPO.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <!--<TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Tag="customerpopos" Text="Customer PO"/><LineBreak/><Run Text="(F5)"/></TextBlock>-->
+                        <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                            <TextBlock Tag="customerpopos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Customer PO" />
+                            <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F5)" />
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="4" x:Name="Suspend" Foreground="White" Background="#FFB44F3D" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch" Margin="-10,-25,0,0">
+                            <Ellipse Height="30" Width="30" HorizontalAlignment="Left" Margin="0" Fill="#FFEEBE52" />
+                            <TextBlock AutomationProperties.AutomationId="TxbSuspendedBillCount" Height="Auto" Width="16" FontSize="12" TextAlignment="Center" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Center" Text="{Binding SuspendBillCount}" Foreground="White"/>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image Source="Resource/POS_Suspend.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                            <!--<TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Tag="suspendpos" Text="Suspend"/><LineBreak/><Run Text="(F6)"/></TextBlock>-->
+                            <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                                <TextBlock Tag="suspendpos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Suspend" />
+                                <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F6)" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="5" x:Name="Unsuspend" Foreground="White" Background="#FFA98555" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_Unsuspend.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <!--<TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Tag="unsuspendpos" Text="Unsuspend"/><LineBreak/><Run Text="(F7)"/></TextBlock>-->
+                        <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                            <TextBlock Tag="unsuspendpos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Unsuspend" />
+                            <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F7)" />
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+                <Label Grid.Column="6" x:Name="ItemSelect" Foreground="White" Background="#FF28759F" FontWeight="Bold" VerticalContentAlignment="Center" Margin="5,10" FontSize="14.667">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Image Source="Resource/POS_SelectItem.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" />
+                        <!--<TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Tag="selectitempos" Text="Select Item"/><LineBreak/><Run Text="(F8)"/></TextBlock>-->
+                        <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                            <TextBlock Tag="selectitempos" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Select Item" />
+                            <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="(F8)" />
+                        </StackPanel>
+                    </StackPanel>
+                </Label>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
+

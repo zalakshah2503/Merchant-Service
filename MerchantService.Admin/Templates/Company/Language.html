@@ -1,0 +1,40 @@
+﻿<div ng-class="{'disabled':isPaymentMode}">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">Language</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Select Secondary Language:</label>
+                    <div class="col-md-4" ng-class="{ 'has-error': addCompany.language.$touched && addCompany.language.$invalid }">
+                        <ui-select name="language" ng-model="companyDetail.LanguageId" required>
+                            <ui-select-match placeholder="Select Language">{{$select.selected.Name}}</ui-select-match>
+                            <ui-select-choices repeat="Language.LanguageId as Language in languageCollection | filter: $select.search">
+                                <div ng-bind-html="Language.Name | highlight: $select.search" name="{{Language.Name}}"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="error">*</span>
+                        <div class="help-block" ng-messages="addCompany.language.$error" ng-if="addCompany.language.$touched">
+                            <p ng-message="required" class="text-error">{{languageSelectRequired}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Select Currency:</label>
+                    <div class="col-md-4" ng-class="{ 'has-error': addCompany.currency.$touched && addCompany.currency.$invalid }">
+                        <ui-select name="currency" ng-model="companyDetail.CurrencyId" required>
+                            <ui-select-match placeholder="Select Currency">{{$select.selected.CurrencyType}}</ui-select-match>
+                            <ui-select-choices repeat="currency.Id as currency in currencyCollection | filter: $select.search">
+                                <div ng-bind-html="currency.CurrencyType | highlight: $select.search" name="{{currency.CurrencyType}}"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="error">*</span>
+                        <div class="help-block" ng-messages="addCompany.currency.$error" ng-if="addCompany.currency.$touched">
+                            <p ng-message="required" class="text-error">Please select currency</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

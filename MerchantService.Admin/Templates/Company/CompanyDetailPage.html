@@ -1,0 +1,69 @@
+﻿<div heading="Company Details">
+    <br />
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-3 control-label">Company Name:</label>
+            <div class="col-md-5" ng-class="{ 'has-error': addCompany.companyName.$touched && addCompany.companyName.$invalid }">
+                <input type="text" name="companyName" maxlength="255" class="form-control" id="" placeholder="Company Name" ng-model="companyDetail.Name" auto-focus="isFocusIn" required>
+                <span class="error">*</span>
+                <div class="help-block" ng-messages="addCompany.companyName.$error" ng-if="addCompany.companyName.$touched">
+                    <p ng-message="required" class="text-error">{{compantNameRequired}}</p>
+                </div>
+                <div class="help-block" role="alert" ng-show="isCompanyNameExist">
+                    <span class="text-error">{{companyErrorMessage}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Address</label>
+  
+            <div class="col-md-5" ng-class="{ 'has-error': addCompany.google_places_ac.$touched && addCompany.google_places_ac.$invalid }">
+                <google-places location=location></google-places>
+                <span class="error error-textbox">*</span>
+                <div class="help-block" ng-messages="addCompany.google_places_ac.$error" ng-if="addCompany.google_places_ac.$touched">
+                    <p ng-message="required" class="text-error">{{addressRequired}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Zip Code:</label>
+            <div class="col-md-5" ng-class="{ 'has-error': addCompany.zipcode.$touched && addCompany.zipcode.$invalid }">
+                <input type="text" class="form-control" name="zipcode" id="" placeholder="Zip Code" ng-model="companyDetail.Zipcode" maxlength="15" pattern="[a-zA-Z0-9-]*[a-zA-Z0-9-]{4,15}">
+                <div class="help-block" ng-messages="addCompany.zipcode.$error" ng-if="addCompany.zipcode.$touched">
+                    <p ng-message="pattern" class="text-error">{{zipCodeInvalid}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Email:</label>
+            <div class="col-md-5" ng-class="{ 'has-error': addCompany.email.$touched && addCompany.email.$invalid }">
+               
+                <input type="email" name="email" maxlength="254" class="form-control" id="" placeholder="Email" ng-model="companyDetail.Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" required>
+                <span class="error">*</span>
+                <div class="help-block" ng-messages="addCompany.email.$error" ng-if="addCompany.email.$touched">
+                    <p ng-message="pattern" class="text-error">{{emailInvalid}}</p>
+                    <p ng-message="required" class="text-error">{{emailRequired}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Phone:</label>
+            <div class="col-sm-5" ng-class="{ 'has-error': addCompany.mobile.$touched && addCompany.mobile.$invalid }">
+                <input type="text" name="mobile" class="form-control" ng-model="companyDetail.PhoneNumber" placeholder="Phone" ng-pattern="/^[- +()]*[0-9][- +()0-9]*$/" ng-minlength="10" ng-maxlength="15" required>
+                <span class="error">*</span>
+                <div class="help-block" ng-messages="addCompany.mobile.$error" ng-if="addCompany.mobile.$touched">
+                    <p ng-message="required" class="text-error">{{phoneRequired}}</p>
+                    <p ng-message="pattern" class="text-error">{{phoneInvalid}}</p>
+                    <p ng-message="maxlength" class="text-error">Phone number should be minimum 10 digit and maximum 15 digit</p>
+                    <p ng-message="minlength" class="text-error">Phone number should be minimum 10 digit and maximum 15 digit</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="width:60%;margin:30px auto">
+            <button class="btn btn-primary pull-right" name="next-btn">Next</button>
+        </div>
+    </div>
+</div>
+
+

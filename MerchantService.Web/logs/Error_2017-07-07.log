@@ -1,0 +1,60 @@
+Time : 12:49:43.5586 
+Message : 
+ErrorPath : /api/item/getbranchlist
+RawUrl : /api/item/getbranchlist
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 356
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:49:43.5726 
+Message : 
+ErrorPath : /api/item/getbranchlist
+RawUrl : /api/item/getbranchlist
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 58
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:49:47.4068 
+Message : 
+ErrorPath : /api/returnbill/checkallowtoanotherbranch
+RawUrl : /api/returnbill/checkallowtoanotherbranch
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 356
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:49:47.4182 
+Message : 
+ErrorPath : /api/returnbill/checkallowtoanotherbranch
+RawUrl : /api/returnbill/checkallowtoanotherbranch
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 58
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:49:47.4182 
+Message : 
+ErrorPath : /api/returnbill/checkallowtoanotherbranch
+RawUrl : /api/returnbill/checkallowtoanotherbranch
+Message : Object reference not set to an instance of an object.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.Global.MerchantDataRepository.GetRoleIdByCustomerName(String userName) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\Global\MerchantDataRepository.cs:line 362
+   at MerchantService.Core.Global.MerchantContext.InitializeMerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 68
+   at MerchantService.Core.Global.MerchantContext..ctor(IErrorLog _errorLog, IMerchantDataRepository _merchantDataRepository) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Global\MerchantContext.cs:line 29
+   at MerchantService.Core.Controllers.BaseController.get_MerchantContext() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\BaseController.cs:line 28
+   at MerchantService.Core.Controllers.POS.ReturnBillController.CheckAllowToAnotherBranch() in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\POS\ReturnBillController.cs:line 449
+TargetSite : Int32 GetRoleIdByCustomerName(System.String) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 12:49:49.2816 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

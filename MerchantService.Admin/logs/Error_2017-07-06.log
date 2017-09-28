@@ -1,0 +1,29 @@
+Time : 14:24:26.7422 
+Message : Object reference not set to an instance of an object. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 16:01:00.9053 
+Message : 
+ErrorPath : /api/WorkFlow/saveWorkFlowDetails
+RawUrl : /api/WorkFlow/saveWorkFlowDetails
+Message : WorkFlow already exists.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.SaveWorkFlowActionDetails(WorkFlowDetail workFlowDetails) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 505
+TargetSite : Int32 SaveWorkFlowActionDetails(MerchantService.DomainModel.Models.WorkFlow.WorkFlowDetail) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 16:01:18.5809 
+Message : 
+ErrorPath : /api/WorkFlow/saveWorkFlowDetails
+RawUrl : /api/WorkFlow/saveWorkFlowDetails
+Message : WorkFlow already exists.
+Source : MerchantService.Repository
+StackTrace :    at MerchantService.Repository.Modules.WorkFlow.WorkFlowRepository.SaveWorkFlowActionDetails(WorkFlowDetail workFlowDetails) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Repository\Modules\WorkFlow\WorkFlowRepository.cs:line 517
+   at MerchantService.Core.Controllers.WorkFlow.WorkFlowController.SaveWorkFlowDetails(WorkFlowAc workFlowDetails) in D:\MerchantService\Source\MerchantService.Web\MerchantService.Core\Controllers\WorkFlow\WorkFlowController.cs:line 233
+TargetSite : Int32 SaveWorkFlowActionDetails(MerchantService.DomainModel.Models.WorkFlow.WorkFlowDetail) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Time : 16:01:25.3269 
+Message : WorkFlow already exists. 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

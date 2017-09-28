@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/Style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <div class="text-center">
+            <h4><span string-replace="transfergoodsinvoice"></span></h4>
+            <div class="barcode-div" ng-bind-html="Invoice | rawHtml"></div>
+            <h5>{{BranchDetail.Name}}</h5>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                logo
+            </div>
+            <div class="col-xs-5 pull-right">
+                {{BranchDetail.Address}}
+            </div>
+        </div>
+        <br />
+        <hr class="thik-line" />
+        <div class="row form-horizontal inventory-receipt">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label label-rtl-inventory text-right-inventory no-bold">{{PrintDate}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="date"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl-inventory text-right no-bold">{{IssueDate}}</label>
+                    <label class="control-label label-rtl p-0 "><span string-replace="requestdate"></span>:</label>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label label-rtl-inventory text-right-inventory no-bold">{{BranchDetail.Code}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="branchcode"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl-inventory text-right no-bold">{{RequestBranchDetails.Name}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="requestbranch"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl-inventory text-right no-bold">{{RequestBranchDetails.Phone}}</label>
+                    <label class="control-label label-rtl p-0 "><span string-replace="requestbranchphone"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl-inventory text-right no-bold">{{PrintDueDate}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="duedate"></span>:</label>
+                </div>
+            </div>
+        </div>
+        <hr class="thik-line" />
+        <div>
+            <table class="table table-striped table-hover table-rtl" name="bill-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="barcode"></span></th>
+                        <th><span string-replace="name"></span></th>
+                        <th><span string-replace="flavourpos"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="baseunitcount"></span></th>
+                        <th><span string-replace="pricepos"></span></th>
+                        <th><span string-replace="requestquantity"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="itemTransfer in ItemInventoryTransfer">
+                        <td>{{itemTransfer.Barcode}}</td>
+                        <td>{{itemTransfer.ItemName}}</td>
+                        <td>{{itemTransfer.Flavour}}</td>
+                        <td>{{itemTransfer.Unit}}</td>
+                        <td>{{itemTransfer.BaseUnitCount}}</td>
+                        <td>{{itemTransfer.Price}}</td>
+                        <td>{{itemTransfer.RequestQuantity}}</td>
+                    </tr>
+                    <tr class="dashed-border">
+                        <td colspan="4"></td>
+                        <td style="text-align:left"><b><span string-replace="totalamount"></span>:</b></td>
+                        <td><b>{{TotalAmount}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div class="">
+                <label class="verti-align-top"><span string-replace="comment"></span></label>
+                <div class="display-inline comment-border-div">
+                </div>
+            </div>
+            <br /><br />
+            <div class="pull-right">
+                <label class="verti-align-top"><span string-replace="signature"></span></label>
+                <div class="display-inline sign-border-div">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,48 @@
+﻿<div ng-controller="CompanyController" ng-init="getSystemSetting()">
+    <div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Manage System Setting</div>
+            <div class="panel-body">
+
+                <div class="form-horizontal">
+                    <div>
+                        <label>Item Profile</label>
+                        <hr />
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-7 control-label">Create ICR for cost price and sale price at the time of adding Item</label>
+                                <div class="col-md-5">
+                                    <toggle-switch ng-model="systemSetting.IsIcrrGeneratedAtAddItem" ng-change="saveSystemSetting(systemSetting)"><toggle-switch>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Item Offer</label>
+                        <hr />
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-7 control-label">Allow to Create Item Offer in which sell price lower than cost price</label>
+                                <div class="col-md-5">
+                                    <toggle-switch ng-model="systemSetting.IsOfferCreatedBelowCostPrice" ng-change="saveSystemSetting(systemSetting)"><toggle-switch>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Item Change Request</label>
+                        <hr />
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-7 control-label">Allow to Create Request in which sell price lower than cost price</label>
+                                <div class="col-md-5">
+                                    <toggle-switch ng-model="systemSetting.IsIcrCreatedBelowCostPrice" ng-change="saveSystemSetting(systemSetting)"><toggle-switch>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

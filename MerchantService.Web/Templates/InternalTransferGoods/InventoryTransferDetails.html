@@ -1,0 +1,183 @@
+﻿<div ng-controller="internalTransferGoodsController">
+    <h3 class="page-title"><span string-replace="inventorytransferdetails"></span></h3>
+    <br />
+    <div class="form-horizontal" ng-init="viewInternalTransferGoodDetailsById()">
+        <label><span string-replace="internalgoodstransferdetails"></span></label>
+        <hr />
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="orderno"></span>.:</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="transferGoodsDetails.RequestNo" class="form-control" name="ordernumber" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="requesttype"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="transferGoodsDetails.RequestType" class="form-control" name="requesttype" ng-disabled="true" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="issuedate"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="transferGoodsDetails.IssueDate" class="form-control" name="issuedate" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="duedate"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="startdate" disabled class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="transferGoodsDetails.DueDate" ng-required="true" close-text="Close" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="issuingbranch"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" maxlength="255" class="form-control" ng-model="transferGoodsDetails.CurrentBranchName" name="issueingbranch" ng-disabled="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4 p-0"><span string-replace="targetbranch"></span>:</label>
+                    <div class="col-sm-8">
+                        <input type="text" maxlength="255" class="form-control" ng-model="transferGoodsDetails.TargetBranchName" name="targetbranch" ng-disabled="true" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <label><span string-replace="item"></span></label>
+        <hr />
+        <table class="table table-striped table-bordered table-hover" name="inventory-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="barcode"></span></th>
+                    <th><span string-replace="name"></span></th>
+                    <th><span string-replace="flavourpos"></span></th>
+                    <th><span string-replace="unit"></span></th>
+                    <th><span string-replace="baseunitcount"></span></th>
+                    <th ng-if="transferGoodsDetails.IsSendRequest"><span string-replace="senderbranchquantity"></span></th>
+                    <th ng-if="transferGoodsDetails.IsSendRequest"><span string-replace="receiverbranchquantity"></span></th>
+                    <th ng-if="!transferGoodsDetails.IsSendRequest"><span string-replace="receiverbranchquantity"></span></th>
+                    <th ng-if="!transferGoodsDetails.IsSendRequest"><span string-replace="senderbranchquantity"></span></th>
+                    <th><span string-replace="requestquantity"></span></th>
+                    <th ng-if="transferGoodsDetails.IsReceived"><span string-replace="receivingquantity"></span></th>
+                    <th ng-if="transferGoodsDetails.IsReceived"><span string-replace="status"></span></th>
+                    <th ng-if="transferGoodsDetails.IsReceived"><span string-replace="resolvedqunatity"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dir-paginate="inventory in transferGoodsDetails.ItemInventoryTransfer| itemsPerPage: 10">
+                    <td>{{inventory.Barcode}}</td>
+                    <td>{{inventory.ItemName}}</td>
+                    <td>{{inventory.Flavour}}</td>
+                    <td>{{inventory.Unit}}</td>
+                    <td>{{inventory.BaseUnitCount}}</td>
+                    <td><span>{{inventory.CurrentBranchQunatitytoolTip}}</span></td>
+                    <td><span>{{inventory.TargetBranchQuantityToolTip}}</span></td>
+                    <td ng-if="!transferGoodsDetails.IsActive">
+                        <input ng-disabled="!$root.merchatSettings.IsAllowToInitiateIntrenalTransferGood || transferGoodsDetails.IsRequestQuantityDisabled" type="number" class="form-control lbl-width" required ng-model="inventory.RequestQuantity" ng-min="1" name="requestqty" ng-blur="checkRejectItemNullRequestQuantity(inventory)" />
+                        <span tooltip="Minimum quantity of sending branch is {{inventory.MinimumQunatity}}" tooltip-placement="bottom" ng-if="inventory.IsWarningMesssage && inventory.IsSendInventory"><i class="fa fa-warning text-warn icon-big"></i></span>
+                        <span tooltip="Sender branch have only {{inventory.SystemQuantity}} quantity to send" tooltip-placement="bottom" ng-if="inventory.IsErrorMessage"><i class="fa fa-warning text-danger icon-big"></i></span>
+                        <span tooltip="Maximum quantity of receiving branch is {{inventory.MinimumQunatity}}" tooltip-placement="bottom" ng-if="inventory.IsWarningMesssage && !inventory.IsSendInventory"><i class="fa fa-warning text-warn icon-big"></i></span>
+                    </td>
+                    <td ng-if="transferGoodsDetails.IsActive">
+                        <input ng-disabled="true" type="number" class="form-control lbl-width" required ng-model="inventory.RequestQuantity" ng-min="1" name="requestqty" />
+                        <span tooltip="Minimum quantity of sending branch is {{inventory.MinimumQunatity}}" tooltip-placement="bottom" ng-if="inventory.IsWarningMesssage && inventory.IsSendInventory"><i class="fa fa-warning text-warn icon-big"></i></span>
+                        <span tooltip="Maximum quantity of receiving branch is {{inventory.MinimumQunatity}}" tooltip-placement="bottom" ng-if="inventory.IsWarningMesssage && !inventory.IsSendInventory"><i class="fa fa-warning text-warn icon-big"></i></span>
+                        <div class="help-block" ng-messages="inventory.requestqty.$error" ng-if="inventory.requestqty.$touched">
+                            <p ng-message="required" class="text-error">{{validQuantityError}}</p>
+                        </div>
+                    </td>
+                    <td ng-if="transferGoodsDetails.IsReceived && !transferGoodsDetails.IsActive">
+                        <input type="number" class="form-control" maxlength="6" ng-pattern="/^0*(?:[0-9][0-9]{5}|[0-9][0-9]{4}|[0-9][0-9]{3}|[0-9][0-9]{2}|[0-9][0-9]|[0-9])$/" ng-model="inventory.ReceivingQuantity" ng-disabled="!$root.merchatSettings.IsAllowToReceiveIntranalTransferGood || transferGoodsDetails.IsReceiveQuantityDisabled" ng-min="0" ng-blur="changeReceiveingQuantity(inventory.ItemInventoryTransferId)" name="recievqty" required />
+                        <div class="help-block" ng-messages="inventory.recievqty.$error" ng-if="inventory.recievqty.$touched">
+                            <p ng-message="pattern" class="text-error">{{validQuantityError}}</p>
+                        </div>
+                    </td>
+                    <td ng-if="transferGoodsDetails.IsReceived && transferGoodsDetails.IsActive">
+                        <input type="number" class="form-control" maxlength="6" ng-model="inventory.ReceivingQuantity" ng-disabled="true" ng-min="0" ng-blur="changeReceiveingQuantity(inventory.ItemInventoryTransferId)" name="recievqty" required />
+                    </td>
+                    <td ng-if="transferGoodsDetails.IsReceived">
+                        <div ng-if="inventory.IsReceivedItem">
+                            <span string-replace="received"></span>
+                        </div>
+                        <div ng-if="inventory.IsNotReceivedItem">
+                            <span string-replace="notreceived"></span>
+                        </div>
+                        <div ng-if="inventory.IsPartialReceivedItem">
+                            <span string-replace="partialyreceived"></span>
+                        </div>
+                    </td>
+                    <td ng-if="transferGoodsDetails.IsReceived && !transferGoodsDetails.IsActive">
+                        <ui-select name="branchName" ng-model="inventory.ResolvedId" ng-disabled="!$root.merchatSettings.IsAllowToReslovedUnmatchedItem && !transferGoodsDetails.IsRecoveItem">
+                            <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                            <ui-select-choices repeat="unmatchedItem.Id as unmatchedItem in resolvedCollection | filter: $select.search">
+                                <div ng-bind-html="unmatchedItem.Name | highlight: $select.search" name="{{unmatchedItem.Name}}"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td ng-if="transferGoodsDetails.IsReceived && transferGoodsDetails.IsActive">
+                        <ui-select name="branchName" ng-model="inventory.ResolvedId" ng-disabled="true">
+                            <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                            <ui-select-choices repeat="unmatchedItem.Id as unmatchedItem in resolvedCollection | filter: $select.search">
+                                <div ng-bind-html="unmatchedItem.Name | highlight: $select.search" name="{{unmatchedItem.Name}}"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-show="transferGoodsDetails.ItemInventoryTransfer.length >0" style="text-align:center">
+            <dir-pagination-controls boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></dir-pagination-controls>
+        </div>
+        <br />
+        <br />
+        <label><span string-replace="action"></span></label>
+        <hr />
+        <table class="table table-striped table-bordered table-hover" name="action-grid">
+            <thead>
+                <tr>
+                    <th><span string-replace="stage"></span></th>
+                    <th><span string-replace="action"></span></th>
+                    <th><span string-replace="actiondate"></span></th>
+                    <th><span string-replace="role"></span></th>
+                    <th><span string-replace="username"></span></th>
+                    <th><span string-replace="comment"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="workFlowAction in transferGoodsDetails.WorkFlowAction">
+                    <td>{{workFlowAction.Stage}}</td>
+                    <td>{{workFlowAction.Action}}</td>
+                    <td>{{workFlowAction.ActionDate}}</td>
+                    <td>{{workFlowAction.RoleName}}</td>
+                    <td>{{workFlowAction.UserName}}</td>
+                    <td>{{workFlowAction.Comment}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <div class="row" ng-if="transferGoodsDetails.IsComment">
+            <label class="col-lg-2 control-label"><span string-replace="comment"></span></label>
+            <div class="col-lg-9">
+                <textarea class="form-control" maxlength="350" name="comment" ng-model="transferGoodsDetails.InitiationComment"></textarea>
+            </div>
+        </div>
+        <br />
+        <div class="row text-center">
+            <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && transferGoodsDetails.IsTragetedBranch && transferGoodsDetails.IsAllowReViewButton && !transferGoodsDetails.IsActive && !transferGoodsDetails.IsDeleted" name="receive-btn" ng-click="reviewTransferInventoryById(transferGoodsDetails)" string-replace="review"></button>
+            <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && transferGoodsDetails.IsTragetedBranch && transferGoodsDetails.IsAllowApprovalButton && !transferGoodsDetails.IsActive && !transferGoodsDetails.IsDeleted" name="approve-btn" ng-click="transferInventoryApprovalById(transferGoodsDetails,true)" string-replace="approve"></button>
+            <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && transferGoodsDetails.IsTragetedBranch && transferGoodsDetails.IsAllowApprovalButton && !transferGoodsDetails.IsActive && !transferGoodsDetails.IsDeleted" name="reject-btn" ng-click="transferInventoryApprovalById(transferGoodsDetails,false)" string-replace="reject"></button>
+            <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReview && transferGoodsDetails.IsTragetedBranch && transferGoodsDetails.IsRejectedRequest && !transferGoodsDetails.IsActive && !transferGoodsDetails.IsDeleted" ng-disabled="checkRejectedItemRequestQuantityForItems()?false:true" name="resubmit-btn" ng-click="reSubmitTransferInventory(transferGoodsDetails)" string-replace="resubmit"></button>
+            <button class="btn btn-primary m-r-10" ng-if="$root.merchatSettings.IsAllowToReceiveIntranalTransferGood && transferGoodsDetails.IsReceiving && !transferGoodsDetails.IsProcessing && transferGoodsDetails.IsTragetedBranch && !transferGoodsDetails.IsActive && !transferGoodsDetails.IsDeleted" ng-disabled="checkReceiveItemQuantityForItems()?false:true" name="save-btn" ng-click="receiveTransferInventoryById(transferGoodsDetails)" string-replace="receive"></button>
+            <button class="btn btn-default" name="cancel-btn" ng-click="cancelTransferInventory()" string-replace="cancelpos"></button>
+        </div>
+        <div id="busyindicator" class="busy-indicator" ng-show="isDataLoading">
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+    </div>
+</div>

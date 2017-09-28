@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/Style.css" rel="stylesheet" />
+</head>
+
+
+<body>
+    <div>
+        <div class="text-center">
+            <h4><span string-replace="retailinvoice"></span></h4>
+            <div class="barcode-div" ng-bind-html="Invoice | rawHtml"></div>
+            <h5>{{CurrentBranchName}}</h5>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                logo
+            </div>
+            <div class="col-xs-5 pull-right">
+                {{CurrentBranchAdd}}
+            </div>
+        </div>
+        <br />
+        <hr class="thik-line" />
+        <div class="row form-horizontal cust-receipt">
+
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{CustomerMobile}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="mobileno"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{PurchaseOrderNo}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="cponumber"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{CollectingBranchName}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="collectingbranch"></span>:</label>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{CustomerName}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="customernamepos"></span>:</label>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{MembershipCode}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="membershipno"></span>:</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label label-rtl text-right no-bold">{{InitiationBranchName}}</label>
+                    <label class="control-label label-rtl p-0"><span string-replace="issuingbranch"></span>:</label>
+                </div>
+            </div>
+        </div>
+        <hr class="thik-line" />
+        <div>
+            <table class="table table-striped table-hover table-rtl" name="bill-grid">
+                <thead>
+                    <tr>
+                        <th><span string-replace="name"></span></th>
+                        <th><span string-replace="flavor"></span></th>
+                        <th><span string-replace="unit"></span></th>
+                        <th><span string-replace="sellprice"></span></th>
+                        <th><span string-replace="totalquantity"></span></th>
+                        <th><span string-replace="totalamountpos"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in CPOItemAC">
+                        <td class="grid-width">{{item.ItemName}}</td>
+                        <td class="grid-width">{{item.Flavour}}</td>
+                        <td class="grid-width">{{item.Type}}</td>
+                        <td class="grid-width">{{item.SellPrice}}</td>
+                        <td class="grid-width">{{item.Quantity}}</td>
+                        <td class="grid-width">{{item.ItemTotalCost}}</td>
+                    </tr>
+                    <tr class="dashed-border">
+                        <td colspan="4">
+                            <div class="m-t-30">
+                                <div class="pull-right m-r-15">
+                                    <label class="verti-align-top"><span string-replace="signature"></span></label>
+                                    <div class="display-inline sign-border-div">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="text-align: left;">
+                            <label class="control-label label-rtl m-l-8 lbl-width"><span string-replace="totalpos"></span> :</label>
+                            <br />
+                            <label class="control-label label-rtl m-l-8 lbl-width"><span string-replace="advance"></span> :</label>
+                            <br />
+                            <label class="control-label label-rtl" style="margin-left:12px"><span string-replace="tobereturned"></span> :</label>
+                        </td>
+                        <td>
+                            <label class="control-label label-rtl no-bold">{{TotalCPOAmount}}</label>
+                            <br />
+                            <label class="control-label label-rtl no-bold">{{DownPaymentAmount}}</label>
+                            <br />
+                            <label class="control-label label-rtl no-bold">{{AmtRemaining}}</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+

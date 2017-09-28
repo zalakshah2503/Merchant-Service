@@ -1,0 +1,305 @@
+﻿<div ng-controller="workFlowController">
+    <div class="panel panel-default">
+        <div class="panel-heading">Workflow</div>
+        <div class="panel-body p-0">
+            <div class="alert alert-success text-center" role="alert" ng-show="rolepermissionErrorErrorMessageDisplay">
+                <span>{{errorMessage}}</span>
+            </div>
+            <div ng-hide="rolepermissionErrorErrorMessageDisplay" class="">
+                <div class="form-horizontal">
+                    <div class="row m-t-10">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 p-0">Workflow Name:</label>
+                                <div class="col-sm-8">
+                                    <ui-select ng-model="workFlowDetails.PermissionId" ng-change="addWorkFlow(workFlowDetails)" name="workflow-name" ng-disabled="isModuleName">
+                                        <ui-select-match placeholder="Select">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="workFlow.Id as workFlow in workFlowNameCollection | filter: $select.search">
+                                            <div ng-bind-html="workFlow.Name | highlight: $select.search" name="{{workFlow.Name}}"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div splitter ng-show="isWorkFlowPanelDisplay">
+                <wij-splitter id="hsplitter" orientation="horizontal" full-split="true">
+                    <panel1 min-size="{{isExpand?'0':'280' }}">    </panel1>
+                    <div>
+                        <div ng-hide="rolepermissionErrorErrorMessageDisplay" class="">
+                            <div>
+                                <form name="workflow" novalidate>
+                                    <div class="form-horizontal" ng-class="{'disabled':isDisplayCondiotionPanel}">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Activity:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-model="workFlowDetails.Permission.ActivityId" name="Activity">
+                                                            <ui-select-match placeholder="Select Role" ng-dis>{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="permission.PermissionId as permission in permissionCollection | filter: $select.search">
+                                                                <div ng-bind-html="permission.Name | highlight: $select.search" name="{{permission.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Assign From:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowDetails.Permission.RoleFromId" required name="RoleFrom">
+                                                            <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                            <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Current Status:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowDetails.Permission.OldStatus" required name="OldStatus">
+                                                            <ui-select-match placeholder="Select New Status">{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="status.StatusId as status in statusCollection | filter: $select.search">
+                                                                <div ng-bind-html="status.Name | highlight: $select.search" name="{{status.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Approve/Reject:</label>
+                                                    <div class="col-sm-6" ng-class="{'enabled':isDisplayCondiotionPanel}">
+                                                        <input type="checkbox" class="m-t-13" ng-disabled="workflow.$invalid" ng-change="checkConditon(workFlowDetails.Permission)" ng-model="workFlowDetails.Permission.IsConditionChecked" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Action:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowDetails.Permission.ActionId" required name="action">
+                                                            <ui-select-match placeholder="Select WorkFlow Action">{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="action.Id as action in workFlowActionCollection | filter: $select.search">
+                                                                <div ng-bind-html="action.Name | highlight: $select.search" name="{{action.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Assign To:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowDetails.Permission.RoleToId" required name="RoleTo">
+                                                            <ui-select-match placeholder="Select Role To">{{$select.selected.RoleName}}</ui-select-match>
+                                                            <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">New statuses:</label>
+                                                    <div class="col-sm-8">
+                                                        <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowDetails.Permission.NewStatus" required name="NewStatus">
+                                                            <ui-select-match placeholder="Select New Status">{{$select.selected.Name}}</ui-select-match>
+                                                            <ui-select-choices repeat="status.StatusId as status in statusCollection | filter: $select.search">
+                                                                <div ng-bind-html="status.Name | highlight: $select.search" name="{{status.Name}}"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4 p-0">Close:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="checkbox" ng-model="workFlowDetails.Permission.IsClosed" class="m-t-13" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="form-horizontal" ng-if="isDisplayCondiotionPanel">
+                                    <hr />
+                                    <form name="workFlowPanel" novalidate>
+                                        <div ng-if="workFlowPanelActionPanel1">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Action:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-model="workFlowConditionDetails.Permission.ActionId" required name="action">
+                                                                <ui-select-match placeholder="Select WorkFlow Action">{{$select.selected.Name}}</ui-select-match>
+                                                                <ui-select-choices repeat="action.Id as action in workFlowActionCollection | filter: $select.search">
+                                                                    <div ng-bind-html="action.Name | highlight: $select.search" name="{{action.Name}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <a title="Delete" class="pull-right pointer step-delete" name="action-edit" ng-click="removeWorkFlowPanel1()"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Assign From:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowConditionDetails.Permission.RoleFromId" name="RoleFrom">
+                                                                <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                    <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Current Status:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowConditionDetails.Permission.OldStatus" name="OldStatus">
+                                                                <ui-select-match placeholder="Select New Status">{{$select.selected.Name}}</ui-select-match>
+                                                                <ui-select-choices repeat="status.StatusId as status in statusCollection | filter: $select.search">
+                                                                    <div ng-bind-html="status.Name | highlight: $select.search" name="{{status.Name}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Close:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="checkbox" ng-model="workFlowConditionDetails.Permission.IsClosed" class="m-t-13" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Assign To:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-model="workFlowConditionDetails.Permission.RoleToId" name="RoleTo" required>
+                                                                <ui-select-match placeholder="Select Role To">{{$select.selected.RoleName}}</ui-select-match>
+                                                                <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                    <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">New statuses:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-model="workFlowConditionDetails.Permission.NewStatus" name="NewStatus" required>
+                                                                <ui-select-match placeholder="Select New Status">{{$select.selected.Name}}</ui-select-match>
+                                                                <ui-select-choices repeat="status.StatusId as status in statusCollection | filter: $select.search">
+                                                                    <div ng-bind-html="status.Name | highlight: $select.search" name="{{status.Name}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="workFlowPanelActionPanel2">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Action:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-model="workFlowCondition.Permission.ActionId" required name="action">
+                                                                <ui-select-match placeholder="Select WorkFlow Action">{{$select.selected.Name}}</ui-select-match>
+                                                                <ui-select-choices repeat="action.Id as action in workFlowActionCollection | filter: $select.search">
+                                                                    <div ng-bind-html="action.Name | highlight: $select.search" name="{{action.Name}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <a title="Delete" class="pull-right pointer step-delete" name="action-edit" ng-click="removeWorkFlowPanel2()"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Assign From:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowCondition.Permission.RoleFromId" name="RoleFrom">
+                                                                <ui-select-match placeholder="Select Role From">{{$select.selected.RoleName}}</ui-select-match>
+                                                                <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                    <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Current Status:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-disabled="isDisplayCondiotionPanel" ng-model="workFlowCondition.Permission.OldStatus" name="OldStatus">
+                                                                <ui-select-match placeholder="Select New Status">{{$select.selected.Name}}</ui-select-match>
+                                                                <ui-select-choices repeat="status.StatusId as status in statusCollection | filter: $select.search">
+                                                                    <div ng-bind-html="status.Name | highlight: $select.search" name="{{status.Name}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Close:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="checkbox" ng-model="workFlowCondition.Permission.IsClosed" class="m-t-13" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">Assign To:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-model="workFlowCondition.Permission.RoleToId" name="RoleTo" required>
+                                                                <ui-select-match placeholder="Select Role To">{{$select.selected.RoleName}}</ui-select-match>
+                                                                <ui-select-choices repeat="role.Id as role in roleList | filter: $select.search">
+                                                                    <div ng-bind-html="role.RoleName | highlight: $select.search" name="{{role.RoleName}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-4 p-0">New statuses:</label>
+                                                        <div class="col-sm-8">
+                                                            <ui-select ng-model="workFlowCondition.Permission.NewStatus" name="NewStatus" required>
+                                                                <ui-select-match placeholder="Select New Status">{{$select.selected.Name}}</ui-select-match>
+                                                                <ui-select-choices repeat="status.StatusId as status in statusCollection | filter: $select.search">
+                                                                    <div ng-bind-html="status.Name | highlight: $select.search" name="{{status.Name}}"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="row text-center" ng-if="isSubmitButtonEnable">
+                                        <button class="btn btn-primary m-r-10" ng-if="isSubmitButtonEnable" name="submit-btn" ng-click="saveWorkFlowDetails(workFlowDetails,workFlowCondition,workFlowConditionDetails)" ng-disabled="workFlowPanel.$invalid">Submit</button>
+                                        <button class="btn btn-default" name="cancel-btn" ng-click="cancelWorkFlow()">Cancel</button>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row text-center" ng-if="!isSubmitButtonEnable">
+                                    <button class="btn btn-primary m-r-10" name="submit-btn" ng-click="saveWorkFlowDetails(workFlowDetails,workFlowCondition,workFlowConditionDetails)" ng-disabled="workflow.$invalid">Submit</button>
+                                    <button class="btn btn-default" name="cancel-btn" ng-click="cancelWorkFlow()">Cancel</button>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-structure">
+                        <ul>
+                            <li ng-repeat="item in stepList" ng-include="'Templates/Workflow/WorkFlowSteps.html'"></li>
+                        </ul>
+                    </div>
+                </wij-splitter>
+            </div>
+        </div>
+    </div>
+</div>

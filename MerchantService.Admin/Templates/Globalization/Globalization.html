@@ -1,0 +1,55 @@
+﻿<div ng-controller="GlobalizationController" ng-init="getModuleList()" class="globlization-page">
+    <div ng-hide="isLanguageAdded || isLoading">
+        <label class="text-error">Please select secondary language using 'Manage Company Information' page.</label>
+    </div>
+    <div ng-show="isLanguageAdded">
+        <div class="panel panel-default">
+            <div class="panel-heading">Globalization</div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 p-0">Select Form:</label>
+                            <div class="col-sm-5">
+                                <ui-select ng-model="moduleInfo.selected" ng-change="getLabelListById(moduleInfo)" name="select-form">
+                                    <ui-select-match placeholder="Select Form">{{$select.selected.ModuleName}}</ui-select-match>
+                                    <ui-select-choices repeat="module in moduleList | filter: $select.search">
+                                        <div ng-bind-html="module.ModuleName | highlight: $select.search" name="{{module.ModuleName}}"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-error" ng-show="labelList.length == 0 && isListPanelVisible">No Record Exists</label>
+                </div>
+                <div ng-show="isListPanelVisible && labelList.length != 0 ">
+                    <br />
+                    <label>Label List</label>
+                    <hr />
+                    <div class="form-horizontal" ng-repeat="label in labelList">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{{label.ValueEn}}</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="value-text" maxlength="255" id="" ng-model="label.ValueSl">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal">
+
+                        <br />
+                        <div class="form-group">
+                            <label class="col-md-4"></label>
+                            <div class="col-md-5">
+                                <input type="submit" value="Submit" class="btn btn-primary m-r-10" ng-click="saveLabel(labelList)" />
+                                <input type="button" value="Cancel" class="btn btn-default" ng-click="closePanel()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

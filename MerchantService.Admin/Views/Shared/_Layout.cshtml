@@ -1,0 +1,239 @@
+﻿@using MerchantService.Utility.Constants;
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Merchant Service</title>
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Styles.Render("~/Content/Theme/themecss")
+    @System.Web.Optimization.Styles.Render("~/splittercss")
+    @System.Web.Optimization.Styles.Render("~/Content/Maincss")
+    @System.Web.Optimization.Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&libraries=places&language=en-US"></script>
+    <script type="text/javascript">
+        @*var apipath = "@system.configuration.configurationmanager.appsettings["apipath"]";*@
+        var apiPath = "@string.Format("{0}://{1}/", HttpContext.Current.Request.Url.Scheme,HttpContext.Current.Request.Url.Authority)";
+        var adminName = "@HttpContext.Current.Session["RoleName"].ToString()";
+    </script>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Merchant Service</a>
+        </div>
+        @Html.Partial("_LoginPartial")
+        <!-- /.navbar-header -->
+        <div navigation-menu class="menu-links hide">
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li id="dashboard">
+                            <a href="#dashboard" name="Dashboard-link"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a name="administration-main-link"><i class="fa fa-user fa-fw"></i> Administration <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li id="Manage-User">
+                                    <a href="#ManageUser" name="user-registration-link">User Registration</a>
+                                </li>
+                                <li>
+                                    <a href="#ManageRole" name="role-registration-link">Role Registration</a>
+                                </li>
+                                @*<li>
+                                        <a href="#ManageUserAccess" name="manage-user-link">Manage User Access</a>
+                                    </li>*@
+                                <li>
+                                    <a href="#ResetPassword" name="reset-password-link">Reset Password</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="Work-Flow">
+                            <a href="#WorkFlowList" name="workflow-main-link"><i class="fa fa-retweet fa-fw"></i> Workflow</a>
+                        </li>
+                        @*<li id="Work-Flow">
+                                <a href="#AddWorkFlow" name="workflow-main-link"><i class="fa fa-retweet fa-fw"></i>Dynamic Workflow</a>
+                            </li>*@
+                        <li id="Manage-Company">
+                            <a href="#ManageCompany" name="manage-company-link"><i class="fa fa-table fa-fw"></i> Manage Company Information</a>
+                        </li>
+                        <li id="Manage-Branch">
+                            <a href="#ManageBranch" name="manage-branch-link"><i class="fa fa-sitemap fa-fw"></i> Manage Branch Information</a>
+                        </li>
+                        <li>
+                            <a href="#ManageIncidentReport" name="manage-incident-link"><i class="fa fa-file fa-fw"></i>Manage Cashier Incident</a>
+                        </li>
+                        <li>
+                            <a href="#ManageSystemSetting" name="manage-system-link"><i class="fa fa-gears fa-fw"></i> Manage System Settings</a>
+                        </li>
+                        <li id="Role-Permission">
+                            <a href="#RolesandPermissions" name="role-permissions-link"><i class="fa fa-key fa-fw"></i> Roles and Permissions</a>
+                        </li>
+                        <li id="Status">
+                            <a href="#Status" name="role-permissions-link"><i class="fa fa-check-circle-o fa-fw"></i> Status</a>
+                        </li>
+                        <li>
+                            <a href="#SystemConstant" name="system-constant-link"><i class="fa fa-exclamation fa-fw"></i> System Constant </a>
+                        </li>
+                        <li>
+                            <a href="#Globalization" name="globlization-link"><i class="fa fa-globe fa-fw"></i> Globalization </a>
+                        </li>
+                        <li>
+                            <a name="reports-main-link"><i class="fa fa-file-text fa-fw"></i> Reports <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="" name="balance-sheet-report">Balance sheet Report</a>
+                                </li>
+                                <li>
+                                    <a href="" name="income-statement-report">Income statement Report </a>
+                                </li>
+                                <li>
+                                    <a href="" name="cash-flow-report">Cash flow Report</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- /.sidebar-collapse -->
+            </div>
+        </div>
+
+    </nav>
+    <div id="page-wrapper" style="min-height: 561px;margin-left:0" ng-style="{'margin-left':(!$root.IsAdmin?'250px':'0px')}">
+        <toast class="toaster-div"> </toast>
+        <ng-view></ng-view>
+        @RenderBody()
+
+        <div id="busyindicator" class="busy-indicator" ng-show="isLoading">
+
+            <img src="/Content/Images/Loader.gif" />
+        </div>
+
+    </div>
+
+
+
+
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery")
+    @System.Web.Optimization.Scripts.Render("~/bundles/bootstrap")
+    @System.Web.Optimization.Scripts.Render("~/bundles/angular")
+    @System.Web.Optimization.Scripts.Render("~/bundles/app")
+    @System.Web.Optimization.Scripts.Render("~/bundles/constants")
+    @System.Web.Optimization.Scripts.Render("~/bundles/model")
+    @System.Web.Optimization.Scripts.Render("~/bundles/service")
+    @System.Web.Optimization.Scripts.Render("~/bundles/controller")
+    @System.Web.Optimization.Scripts.Render("~/bundles/directive")
+    @System.Web.Optimization.Scripts.Render("~/bundles/themejs")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+@*RESET PASSWORD CONFIRMATION DIALOG BOX*@
+<script type="text/ng-template" id="resetPasswordConfirmation">
+    <div class="modal-content">
+        <div ng-hide="isPasswordVisible">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeResetPasswordDialogbox()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Reset Password Confirmation</h4>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to Reset <span class="text-success">{{userDetail.UserName}} </span>Password?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" name="yes-btn" ng-click="resetUserPassword(userDetail.UserId)">Yes</button>
+                <button type="button" class="btn btn-default" name="no-btn" data-dismiss="modal" ng-click="closeResetPasswordDialogbox()">No</button>
+            </div>
+        </div>
+        <div ng-show="isPasswordVisible">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeOtpDailogbox()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"> OTP Confirmation</h4>
+            </div>
+            <div class="modal-body" ng-if="isResetSucceeded">
+                <span class="text-danger">{{userDetail.UserName}}</span> one time password is <span class="text-success">{{userPassword}} </span> .
+            </div>
+            <div class="modal-body" ng-if="!isResetSucceeded">
+                <span class="text-success">{{userPassword}} </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" name="ok-btn" data-dismiss="modal" ng-click="closeOtpDailogbox()">Ok</button>
+            </div>
+        </div>
+
+    </div>
+
+</script>
+
+@*DELETE COMPANY DETAILS CONFIRMATION DIALOG BOX*@
+<script type="text/ng-template" id="comapnyDetailsConfirmation">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeCompanyDeleteDialogbox()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Reset Password Confirmation</h4>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to Delete <span class="text-success">{{companyDetails.Name}} </span>Company Details?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" name="yes-btn" ng-click="deleteCompanyDetails(companyDetails.CompanyId)">Yes</button>
+            <button type="button" class="btn btn-default" name="no-btn" data-dismiss="modal" ng-click="closeCompanyDeleteDialogbox()">No</button>
+        </div>
+    </div>
+</script>
+
+@*HELP DIALOG BOX*@
+<script type="text/ng-template" id="helpDialogBox">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeHelpDialogBox()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Help</h4>
+        </div>
+        <div class="modal-body">
+            {{helpString}}
+        </div>
+    </div>
+</script>
+
+@*WORKFLOW WARNING DIALOG BOX*@
+<script type="text/ng-template" id="warningConfirmationDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">WorkFlow</h4>
+        </div>
+        <div class="modal-body">
+            Workflow already exist.
+        </div>
+        <div class="modal-footer center-block">
+            <button type="button" class="btn btn-primary" name="yes-btn" ng-click="closeWarningDialogBox()">Ok</button>
+
+        </div>
+    </div>
+</script>
+
+@*DELETE WORKFLOW CONFIRMATION DIALOG BOX*@
+<script type="text/ng-template" id="deleteWorkFLowConfirmationDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeDeleteWorkFlowDialogDialogBox()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">WorkFlow Delete Confirmation.</h4>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete workflow information ?.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" name="yes-btn" ng-click="deleteWorkFlowInformation(workFlowDetails)">Yes</button>
+            <button type="button" class="btn btn-primary" name="yes-btn" ng-click="closeDeleteWorkFlowDialogDialogBox()">No</button>
+        </div>
+    </div>
+</script>

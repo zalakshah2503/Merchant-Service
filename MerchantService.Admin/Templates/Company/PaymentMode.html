@@ -1,0 +1,56 @@
+﻿
+<div class="text-center">
+    <div>
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">Payment Mode</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group m-l-20">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="paymentmode-creditcard" ng-model="companyDetail.CreditCardPayment">Credit Card
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="paymentmode-cheque" ng-model="companyDetail.ChequePayment">Cheque Payment
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="paymentmode-credit-account" ng-model="companyDetail.CreditAccountPayment" ng-change="changeCreditAccount(companyDetail.CreditAccountPayment)">Credit Account
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="paymentmode-debitcard" ng-model="companyDetail.DebitCardPayment">Debit Card
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="paymentmode-coupon" ng-model="companyDetail.CoupanPayment">Coupon
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="paymentmode-coupon" ng-model="companyDetail.CashPayment" ng-disabled="true">Cash
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <fieldset>
+            <legend>Customer Purchase Order </legend>
+            <div class="row m-l-20">
+                <div class="col-lg-6">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="cpo" ng-disabled="isAllowCreditAccountLimit" ng-model="companyDetail.AllowCreditAccountLimit">Allow Credit Account Customer to use his limit in Purchase Order
+                    </label>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 p-0">Customer Purchase Order Down Payment:</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" ng-model="companyDetail.CPODownPaymentDiscount" ng-min="0" ng-max="3" maxlength="6"/>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+        </fieldset>
+    </div>
+
+
+</div>
+
+
